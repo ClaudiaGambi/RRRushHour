@@ -1,7 +1,11 @@
 to do list: 
-- create board class 
-- create cars class 
+- create board class :) 
+- create cars class --> cars in plot
 - appoint red car 
 - appoint exit 
-- create csv file and read into github 
+- create csv file and read into df :)
+- cars need to move ('step' function)
+- 
 
+Voor eventuele verbeteringen:
+- board met tkinter
