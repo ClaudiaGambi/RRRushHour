@@ -1,21 +1,49 @@
-import tkinter as tk
-class Board(tk.Frame):
-    def __init__(self, parent, columns, rows, size = 32):
-        self.columns = columns
-        self.rows = rows
-        self.size = size
+import matplotlib.path as mpath
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+import pandas as pd
 
-        canvas_width = columns * size
-        canvas_height = rows * size
+class Cars():
+    def __init__(self, x_coord, y_coord, length):
+        self.x = x_coord
+        self.y = y_coord
+        plt.Rectangle((self.x, self.y), 1, length)
 
-        tk.Frame.__init__(self, parent)
-        self.canvas = tk.Canvas(self, borderwidth = 0, highlightthickness = 0,
-        width = canvas_width, height = canvas_height, background = 'bisque')
-        self.canvas.pack(side = 'top', fill = 'both', expand = True, padx = 2, pady = 2)
+class Board():
+    def __init__(self, column = 6, row = 6):
+        self.column = column
+        self.row = row
+        self.fig = plt.figure(figsize = [self.column, self.row])
+        self.ax = self.fig.add_subplot(111)
+        self.cars_list = []
 
-        self.canvas.bind('<Configure>', self.refresh)
 
-if __name__ ==' __main__':
-    root = tk.TK()
-    board = Board(root)
-    board.pack(side = 'top', fill = 'both', expand = True, padx = 4, pady = 4)
+    def create_board(self):
+        for x in range(self.column + 1):
+            self.ax.plot([x, x], [0, self.column], 'k')
+        for y in range(self.row + 1):
+            self.ax.plot([0, self.row], [y, y], 'k')
+
+        self.ax.set_position([0, 0, 1, 1])
+
+        self.ax.set_axis_off()
+
+        self.ax.set_xlim(-1, self.column + 1)
+        self.ax.set_ylim(-1, self.row + 1)
+        plt.show()
+
+    def create_car(self):
+        df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+        print(df)
+        for row, column in df.iterrows():
+            col = column[2]
+            print(col)
+            row = column[3]
+            length = column[4]
+            self.cars_list.append(Cars(col,row, length))
+
+
+
+Board = Board()
+# Board.create_board()
+Board.create_car()
