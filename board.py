@@ -4,10 +4,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 class Cars():
-    def __init__(self, x_coord, y_coord, length):
+
+    def __init__(self, x_coord, y_coord, length, orientation):
         self.x = x_coord
         self.y = y_coord
-        plt.Rectangle((self.x, self.y), 1, length)
+        self.length = length
+        self.orientation = orientation
+
 
 class Board():
     def __init__(self, column = 6, row = 6):
@@ -31,23 +34,57 @@ class Board():
         self.ax.set_xlim(-1, self.column + 1)
         self.ax.set_ylim(-1, self.row + 1)
 
-        for car in self.cars_list:
-            self.ax.add_patch(car)
+        for car in range(len(self.cars_list)):
+            print(car)
+            print(car.orientation)
+            if car.orientation == 'H':
+                self.ax.add_patch(plt.Rectangle(car.x, car.y), 1, car.length)
+                print('hi')
+            else:
+                self.ax.add_patch(plt.Rectangle(car.x, car.y), car.length, 1)
 
         plt.show()
 
     def create_car(self):
         df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
-        print(df)
+        # print(df)
         for row, column in df.iterrows():
             col = column[2]
-            print(col)
+            # print(col)
             row = column[3]
             length = column[4]
-            self.cars_list.append(Cars(col,row, length))
+            orientation = column[1]
+            # print(orientation)
+            self.cars_list.append(Cars(col, row, length, orientation))
+        print(len(self.cars_list))
+
 
 
 
 Board = Board()
 Board.create_board()
-Board.create_car()
+# Board.create_car()
+
+# cars_list = []
+# df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+# # print(df)
+# for row, column in df.iterrows():
+#     col = column[2]
+#     # print(col)
+#     row = column[3]
+#     length = column[4]
+#     orientation = column[1]
+#     # print(orientation)
+#     cars_list.append(Cars(col, row, length, orientation))
+# # print(len(self.cars_list))
+#
+# for car in self.cars_list:
+#     print(car)
+#     print(car.orientation)
+#     if car.orientation == 'H':
+#         self.ax.add_patch(plt.Rectangle(car.x, car.y), 1, car.length)
+#         print('hi')
+#     else:
+#         self.ax.add_patch(plt.Rectangle(car.x, car.y), car.length, 1)
+#
+# plt.show()
