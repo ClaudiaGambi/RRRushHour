@@ -12,13 +12,14 @@ class Cars():
         self.orientation = orientation
 
 
+
+
 class Board():
     def __init__(self, column = 6, row = 6):
         self.column = column
         self.row = row
         self.fig = plt.figure(figsize = [self.column, self.row])
         self.ax = self.fig.add_subplot(111)
-        self.cars_list = []
 
 
     def create_board(self):
@@ -34,20 +35,18 @@ class Board():
         self.ax.set_xlim(-1, self.column + 1)
         self.ax.set_ylim(-1, self.row + 1)
 
-        for car in range(len(self.cars_list)):
-            print(car)
-            print(car.orientation)
-            if car.orientation == 'H':
-                self.ax.add_patch(plt.Rectangle(car.x, car.y), 1, car.length)
-                print('hi')
-            else:
-                self.ax.add_patch(plt.Rectangle(car.x, car.y), car.length, 1)
 
-        plt.show()
+
+class RushHour():
+    def __init__(self):
+        self.cars_list = []
+
+
 
     def create_car(self):
         df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
         # print(df)
+
         for row, column in df.iterrows():
             col = column[2]
             # print(col)
@@ -59,10 +58,25 @@ class Board():
         print(len(self.cars_list))
 
 
+    def board(self):
+        Board = Board()
+        Board.create_board()
+
+        for car in self.cars_list:
+            print(car)
+            print(car.orientation)
+            if car.orientation == 'H':
+                Board.self.ax.add_patch(plt.Rectangle(car.x, car.y), 1, car.length)
+                print('hi')
+            else:
+                Board.self.ax.add_patch(plt.Rectangle(car.x, car.y), car.length, 1)
 
 
-Board = Board()
-Board.create_board()
+        Board.plt.show()
+
+game = RushHour()
+game.create_car()
+# Board.create_board()
 # Board.create_car()
 
 # cars_list = []
