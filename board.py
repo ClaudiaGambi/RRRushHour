@@ -16,6 +16,17 @@ class Cars():
         self.orientation = orientation
         self.type = type
 
+    def move(self, car_object, direction):
+        '''
+        Function to make a car move. The input is the car object and the direction
+        in which it should move (1 or -1)
+        '''
+        if car_object.orientation == 'H':
+            self.x += direction
+
+        if car_object.orientation == 'V':
+            self.y += direction
+
 class Board():
     '''
     The board class creates a grid that will function as the playing board.
@@ -46,6 +57,55 @@ Alles hieronder beter nog in class/objects/functie oid voor overzicht.
 Dat werkte eerst niet want we kregen de error dat de Board class referenced
 before assignment was.
 '''
+
+
+Board = Board()
+Board.create_board()
+
+cars_list = []
+
+# load the data from the game into dataframe
+
+# filenames als input in terminal geven
+filename = 'Rushhour6x6_1.csv'
+df = pd.read_csv(filename)
+print(df)
+
+# loop over the rows in the df and select the right values
+for row, column in df.iterrows():
+    col = column[2]
+    row = column[3]
+    length = column[4]
+    orientation = column[1]
+    type = column[0]
+
+    # for each row (each car), make it into a Cars class and append this to the cars list
+    cars_list.append(Cars(col, row, length, orientation, type))
+
+# for each car in the car list, plot them in the board grid
+for car in cars_list:
+
+    # make a car move
+    # !!! Alle auto's bewegen tegelijkertijd !!!
+    car.move(car, 1)
+
+    # if the car moves horizontally, plot car in a rondom color
+    if car.orientation == 'H':
+        Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
+
+        # if car is type X, make the color red
+        if car.type == 'X':
+            Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
+
+    # if the car moves vertically, plot car in random color
+    else:
+        Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
+
+# flip the board so it matches the game picture
+plt.gca().invert_yaxis()
+
+plt.show()
+
 
 
 Board = Board()
