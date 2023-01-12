@@ -107,47 +107,10 @@ plt.gca().invert_yaxis()
 plt.show()
 
 
+# output df
 
-Board = Board()
-Board.create_board()
-
-cars_list = []
-
-# load the data from the game into dataframe
-
-# filenames als input in terminal geven
-filename = 'Rushhour6x6_1.csv'
-df = pd.read_csv(filename)
-print(df)
-
-# loop over the rows in the df and select the right values
-for row, column in df.iterrows():
-    col = column[2]
-    row = column[3]
-    length = column[4]
-    orientation = column[1]
-    type = column[0]
-
-    # for each row (each car), make it into a Cars class and append this to the cars list
-    cars_list.append(Cars(col, row, length, orientation, type))
-
-# for each car in the car list, plot them in the board grid
-for car in cars_list:
-
-    # if the car moves horizontally, plot car in a rondom color
-    if car.orientation == 'H':
-        Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
-
-        # if car is type X, make the color red
-        if car.type == 'X':
-            Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
-
-    # if the car moves vertically, plot car in random color
-    else:
-        Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
-
-# flip the board so it matches the game picture
-plt.gca().invert_yaxis()
-
-plt.show()
-
+# output_df = pd.DataFrame(columns = ['car', 'orientation', 'col', 'row', 'length'])
+#
+# for car in range(len(cars_list) + 1):
+#     output_df.iloc[car]['car'] = cars_list[car].type
+#     print(output_df)
