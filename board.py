@@ -1,31 +1,9 @@
+import pandas as pd
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import pandas as pd
 import random
-
-class Cars():
-    '''
-    This class transforms the values for each car into a class object.
-    These values include coordinates, size , type and orientation of the car.
-    '''
-    def __init__(self, x_coord, y_coord, length, orientation, type):
-        self.x = x_coord - 1
-        self.y = y_coord - 1
-        self.length = length
-        self.orientation = orientation
-        self.type = type
-
-    def move(self, car_object, direction):
-        '''
-        Function to make a car move. The input is the car object and the direction
-        in which it should move (1 or -1)
-        '''
-        if car_object.orientation == 'H':
-            self.x += direction
-
-        if car_object.orientation == 'V':
-            self.y += direction
+import cars
 
 class Board():
     '''
@@ -37,6 +15,7 @@ class Board():
         self.row = row
         self.fig = plt.figure(figsize = [self.column, self.row])
         self.ax = self.fig.add_subplot(111)
+        self.cars_list = []
 
     def create_board(self):
         # the k is for the lines!!!
@@ -57,60 +36,30 @@ Alles hieronder beter nog in class/objects/functie oid voor overzicht.
 Dat werkte eerst niet want we kregen de error dat de Board class referenced
 before assignment was.
 '''
+    def add_cars(self):
 
+        df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
 
-Board = Board()
-Board.create_board()
+        for row, column in df.iterrows():
+            col = column[2]
+            row = column[3]
+            length = column[4]
+            orientation = column[1]
+            type = column[0]
+            self.cars_list.append(cars.Cars(col, row, length, orientation, type))
 
-cars_list = []
+        for car in self.cars_list:
 
-# load the data from the game into dataframe
+            if car.orientation == 'H':
+                self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
+                if car.type == 'X':
+                    self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
 
-# filenames als input in terminal geven
-filename = 'Rushhour6x6_1.csv'
-df = pd.read_csv(filename)
-print(df)
+            else:
+                self.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
 
-# loop over the rows in the df and select the right values
-for row, column in df.iterrows():
-    col = column[2]
-    row = column[3]
-    length = column[4]
-    orientation = column[1]
-    type = column[0]
+        plt.gca().invert_yaxis()
+        plt.show()
 
-    # for each row (each car), make it into a Cars class and append this to the cars list
-    cars_list.append(Cars(col, row, length, orientation, type))
-
-# for each car in the car list, plot them in the board grid
-for car in cars_list:
-
-    # make a car move
-    # !!! Alle auto's bewegen tegelijkertijd !!!
-    car.move(car, 1)
-
-    # if the car moves horizontally, plot car in a rondom color
-    if car.orientation == 'H':
-        Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
-
-        # if car is type X, make the color red
-        if car.type == 'X':
-            Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
-
-    # if the car moves vertically, plot car in random color
-    else:
-        Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
-
-# flip the board so it matches the game picture
-plt.gca().invert_yaxis()
-
-plt.show()
-
-
-# output df
-
-# output_df = pd.DataFrame(columns = ['car', 'orientation', 'col', 'row', 'length'])
-#
-# for car in range(len(cars_list) + 1):
-#     output_df.iloc[car]['car'] = cars_list[car].type
-#     print(output_df)
+        car = random.choice(self.cars_list)
+        cars.move(car, 1)
