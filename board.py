@@ -1,13 +1,9 @@
+import pandas as pd
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import pandas as pd
-
-class Cars():
-    def __init__(self, x_coord, y_coord, length):
-        self.x = x_coord
-        self.y = y_coord
-        car = ((self.x, self.y), 1, length)
+import random
+import cars
 
 class Board():
     def __init__(self, column = 6, row = 6):
@@ -16,7 +12,6 @@ class Board():
         self.fig = plt.figure(figsize = [self.column, self.row])
         self.ax = self.fig.add_subplot(111)
         self.cars_list = []
-
 
     def create_board(self):
         for x in range(self.column + 1):
@@ -31,23 +26,30 @@ class Board():
         self.ax.set_xlim(-1, self.column + 1)
         self.ax.set_ylim(-1, self.row + 1)
 
-        for car in self.cars_list:
-            self.ax.add_patch(plt.Rectangle())
+    def add_cars(self):
 
-        plt.show()
-
-    def create_car(self):
         df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
-        print(df)
+
         for row, column in df.iterrows():
             col = column[2]
-            print(col)
             row = column[3]
             length = column[4]
-            self.cars_list.append(Cars(col,row, length))
+            orientation = column[1]
+            type = column[0]
+            self.cars_list.append(cars.Cars(col, row, length, orientation, type))
 
+        for car in self.cars_list:
 
+            if car.orientation == 'H':
+                self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
+                if car.type == 'X':
+                    self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
 
-Board = Board()
-Board.create_board()
-Board.create_car()
+            else:
+                self.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
+
+        plt.gca().invert_yaxis()
+        plt.show()
+
+        car = random.choice(self.cars_list)
+        cars.move(car, 1)
