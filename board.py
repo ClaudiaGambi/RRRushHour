@@ -76,32 +76,27 @@ class Board():
         # loop over df to get coordinates for zeros matrix
         for index, row in df.iterrows():
 
+            # Start coordinates:
             x_co = row[3] - 1
             y_co = row[2] - 1
-            print(x_co, y_co)
-            print(grid_matrix)
-
-            if row[1] == 'H':
+            
+            # Vertical cars:
+            if row[1] == 'V':
                 for i in range(row[4]):
-                    #Save coordinate:
+                    # Save coordinate:
                     grid_matrix[x_co][y_co] = 1
-                    #Next coordinate:
+                    # Next coordinate:
                     x_co += 1
-
+            
+            # Horizontal cars:
             else:
                 for i in range(row[4]):
-                    #Save coordinate:
+                    # Save coordinate:
                     grid_matrix[x_co][y_co] = 1
-                    #Next coordinate:
+                    # Next coordinate:
                     y_co += 1
-
-
-
-            # coordinates (lijstje getallen)
-
-            # updaten: gevulde matrix
-
-        print(grid_matrix)
+    
+    print(grid_matrix)
 
     filename = 'gameboards/Rushhour6x6_1.csv'
     df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
