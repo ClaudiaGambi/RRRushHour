@@ -62,22 +62,48 @@ class Board():
         cars.move(car, 1)
 
 
-    # def board_in_array(df, filename):
-    #     '''
-    #     Create an array with the spots where the cars are
-    #     '''
-        
-    #     size = int(filename[19])
-    #     grid_matrix = np.zeros((size, size))
+    def board_in_array(df, filename):
+        '''
+        Create an array with the spots where the cars are
+        '''
 
-    #     for index, row in df.iterrows():
-    #         print(index)
-    #         print(row[3])
-    #         grid_matrix[row[3]][row[2]] = 1
+        # get the size of board from filename
+        size = int(filename[19])
 
-    #     print(grid_matrix)
+        # zeros matrix
+        grid_matrix = np.zeros((size, size))
 
-    # filename = 'gameboards/Rushhour6x6_1.csv'
-    # df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+        # loop over df to get coordinates for zeros matrix
+        for index, row in df.iterrows():
 
-    # ar = to_array(df, filename)
+            x_co = row[3] - 1
+            y_co = row[2] - 1
+            print(x_co, y_co)
+            print(grid_matrix)
+
+            if row[1] == 'H':
+                for i in range(row[4]):
+                    #Save coordinate:
+                    grid_matrix[x_co][y_co] = 1
+                    #Next coordinate:
+                    x_co += 1
+
+            else:
+                for i in range(row[4]):
+                    #Save coordinate:
+                    grid_matrix[x_co][y_co] = 1
+                    #Next coordinate:
+                    y_co += 1
+
+
+
+            # coordinates (lijstje getallen)
+
+            # updaten: gevulde matrix
+
+        print(grid_matrix)
+
+    filename = 'gameboards/Rushhour6x6_1.csv'
+    df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+
+    ar = board_in_array(df, filename)
