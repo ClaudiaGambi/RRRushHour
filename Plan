@@ -1,12 +1,9 @@
 to do list: 
-- create board class :) 
-- create cars class --> cars in plot
-- appoint red car 
-- appoint exit 
-- create csv file and read into df :)
-- cars need to move ('step' function)
-
-- Hoe de fuck werkt github?
+- one car needs to move
+- dataframe to array
+- check of de auto kan bewegen(of er niet al een andere auto staat)
+- begrenzing van de grid/auto's mogen niet buiten de grid komen
 
 Voor eventuele verbeteringen:
 - board met tkinter
+- create exit visually
