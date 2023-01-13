@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import random
 
+
 class Cars():
     '''
     This class transforms the values for each car into a class object.
