@@ -4,6 +4,7 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import random
 import cars
+import numpy as np
 
 class Board():
     '''
@@ -31,11 +32,7 @@ class Board():
         self.ax.set_xlim(-1, self.column + 1)
         self.ax.set_ylim(-1, self.row + 1)
 
-'''
-Alles hieronder beter nog in class/objects/functie oid voor overzicht.
-Dat werkte eerst niet want we kregen de error dat de Board class referenced
-before assignment was.
-'''
+
     def add_cars(self):
 
         df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
@@ -63,3 +60,25 @@ before assignment was.
 
         car = random.choice(self.cars_list)
         cars.move(car, 1)
+
+
+    def to_array(df, filename):
+        '''
+        Create an array with the spots where the cars are
+        '''
+        
+        size = int(filename[19])
+        grid_matrix = np.zeros((size, size))
+        # print(df)
+
+        for index, row in df.iterrows():
+            print(index)
+            print(row[3])
+            grid_matrix[row[3]][row[2]] = 1
+
+        print(grid_matrix)
+
+    filename = 'gameboards/Rushhour6x6_1.csv'
+    df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+
+    ar = to_array(df, filename)
