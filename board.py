@@ -62,23 +62,22 @@ class Board():
         cars.move(car, 1)
 
 
-    def to_array(df, filename):
-        '''
-        Create an array with the spots where the cars are
-        '''
+    # def board_in_array(df, filename):
+    #     '''
+    #     Create an array with the spots where the cars are
+    #     '''
         
-        size = int(filename[19])
-        grid_matrix = np.zeros((size, size))
-        # print(df)
+    #     size = int(filename[19])
+    #     grid_matrix = np.zeros((size, size))
 
-        for index, row in df.iterrows():
-            print(index)
-            print(row[3])
-            grid_matrix[row[3]][row[2]] = 1
+    #     for index, row in df.iterrows():
+    #         print(index)
+    #         print(row[3])
+    #         grid_matrix[row[3]][row[2]] = 1
 
-        print(grid_matrix)
+    #     print(grid_matrix)
 
-    filename = 'gameboards/Rushhour6x6_1.csv'
-    df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+    # filename = 'gameboards/Rushhour6x6_1.csv'
+    # df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
 
-    ar = to_array(df, filename)
+    # ar = to_array(df, filename)
