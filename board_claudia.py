@@ -16,17 +16,6 @@ class Cars():
         self.orientation = orientation
         self.type = type
 
-    def move(self, car_object, direction):
-        '''
-        Function to make a car move. The input is the car object and the direction
-        in which it should move (1 or -1)
-        '''
-        if car_object.orientation == 'H':
-            self.x += direction
-
-        if car_object.orientation == 'V':
-            self.y += direction
-
 class Board():
     '''
     The board class creates a grid that will function as the playing board.
@@ -85,10 +74,6 @@ for row, column in df.iterrows():
 # for each car in the car list, plot them in the board grid
 for car in cars_list:
 
-    # make a car move
-    # !!! Alle auto's bewegen tegelijkertijd !!!
-    car.move(car, 1)
-
     # if the car moves horizontally, plot car in a rondom color
     if car.orientation == 'H':
         Board.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
@@ -105,12 +90,3 @@ for car in cars_list:
 plt.gca().invert_yaxis()
 
 plt.show()
-
-
-# output df
-
-# output_df = pd.DataFrame(columns = ['car', 'orientation', 'col', 'row', 'length'])
-#
-# for car in range(len(cars_list) + 1):
-#     output_df.iloc[car]['car'] = cars_list[car].type
-#     print(output_df)
