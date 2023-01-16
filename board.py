@@ -40,9 +40,6 @@ class Board():
             self.step_dict[car_type] = []
         return self.cars_dict, self.step_dict
 
-
-    
-
     def create_board(self):
         # the k is for the lines!!!
         for x in range(self.column + 1):
@@ -90,7 +87,7 @@ class Board():
     def check_availability(self, new_coordinates, car_dict):
 
         for car in car_dict:
-            if new_coordinates != car[0]:
+            if new_coordinates != car[0] and new_coordinates[0] <= 6 or new_coordinates[0] >= 0 and new_coordinates[1] <= 6 or new_coordinates[1] >= 0:
                 return True
 
         return False

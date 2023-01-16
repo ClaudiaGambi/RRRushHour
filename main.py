@@ -32,7 +32,7 @@ if __name__ == '__main__':
         # choose direction randomly
         random_direction = random.choice([1, -1])
         print(random_car)
-        new_coordinates = Car.step(random_car, cars_dictionary, random_direction)
+        new_coordinates = random_car.step(random_car, cars_dictionary, random_direction)
 
         #Check availablity:
         availability = Board.check_availability(new_coordinates, dictionary)
