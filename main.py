@@ -2,7 +2,6 @@ import board
 import car
 import random
 
-
 if __name__ == '__main__':
 
     #Create starting board:
@@ -16,9 +15,12 @@ if __name__ == '__main__':
     #While not not solved:
 
         #Propose a random step:
-        car = random.choice(Board.cars_list)
-        choose +1 or -1
-        step = (car: A, move: +1/-1)
+
+        # !!!!!!!!!!!!!!!!!
+        random_car_step = random.choice(Board.cars_dictionary)
+        random_direction_step = random.choice([1, -1])
+        number_step = 0
+        step = (random_car_step, number_step += 1, random_direction_step)
 
         new_coordinates = car.step(car, 1)
 

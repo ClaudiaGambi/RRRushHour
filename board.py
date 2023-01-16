@@ -18,6 +18,11 @@ class Board():
         self.ax = self.fig.add_subplot(111)
         self.cars_list = []
 
+    def read_board_size(self, filename):
+        
+        # get the size of board from filename
+        return int(filename[19])
+
     def create_board(self):
         # the k is for the lines!!!
         for x in range(self.column + 1):
@@ -66,9 +71,6 @@ class Board():
         '''
         Create an array with the spots where the cars are
         '''
-
-        # get the size of board from filename
-        size = int(filename[19])
 
         # zeros matrix
         grid_matrix = np.zeros((size, size))
