@@ -11,13 +11,21 @@ class Car():
         self.orientation = orientation
         self.type = type
 
-    def step(self, car_object, direction):
+    def step(self, car, dictionary, direction = 1):
         '''
         Function to make a car move. The input is the car object and the direction
         in which it should move (1 or -1)
         '''
-        if car_object.orientation == 'H':
-            self.x += direction
+        print(dictionary[car])
+        print(car)
 
-        if car_object.orientation == 'V':
-            self.y += direction
+        orientation = dictionary[car][2]
+        
+        coordinates = dictionary[car][0]
+        if orientation == 'H':
+            coordinates[0] += direction
+
+        if orientation == 'V':
+            coordinates[1] += direction
+
+        return coordinates

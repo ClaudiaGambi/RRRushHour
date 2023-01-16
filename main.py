@@ -1,47 +1,53 @@
 import board
-import car
+from car import Car
 import random
+
+filename = 'gameboards/Rushhour6x6_1.csv'
 
 if __name__ == '__main__':
 
     #Create starting board:
     Board = board.Board()
-    Board.read_board_size()
-    Board.board_in_array()
+    Board.read_board_size(filename)
+    # Board.board_in_array()
+    dictionary = Board.df_to_dict(filename)
+    cars_dictionary = dictionary[0]
+    step_dictionary = dictionary[1]
+
+    # print(step_dictionary)
 
     #Plot situation:
-    Board.add_cars()  
+    # Board.add_cars()  
 
     #While not not solved:
+    while cars_dictionary['X'][0] != (5, 3):
+
+        # move count
+        move_count = 0
 
         #Propose a random step:
         # choose randomly from car dictionary
-        random_car_step = random.choice(Board.cars_dictionary)
+        random_car = random.choice(list(cars_dictionary.keys()))
 
         # choose direction randomly
-        random_direction_step = random.choice([1, -1])
-
-        # to check order of step, keep track of total number of steps in game
-        number_step = 0
-
-        # create step
-        step = (random_car_step, number_step += 1, random_direction_step)
-
-        new_coordinates = car.step(car, 1)
+        random_direction = random.choice([1, -1])
+        print(random_car)
+        new_coordinates = Car.step(random_car, cars_dictionary, random_direction)
 
         #Check availablity:
-        Board.check_availability(new_coordinates, self.dictionary_coordinates_all)
+        availability = Board.check_availability(new_coordinates, dictionary)
 
-        #If available, save the step:
-        if available = + :
-            Board.add_step_to_dictionary(step)
+        #If available, save the step in (updated) dictionary:
+        if availability == True:
+            dictionary[random_car][0] = new_coordinates
 
-        #And update locations dictionary:
-        Board.update_location(new_coordinates)
+            move_count += 1
+
+            # update step dictionary to keep track of the game
+            step_dictionary[random_car].append((move_count, random_direction))
 
         #Plot current situation:
         Board.plot_situation(self.dictionary_coordinates)  
 
-    return dictionary_with_steps             
-    
-   
+
+

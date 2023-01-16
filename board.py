@@ -3,7 +3,7 @@ import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import random
-import cars
+# import cars
 import numpy as np
 
 class Board():
@@ -16,12 +16,32 @@ class Board():
         self.row = row
         self.fig = plt.figure(figsize = [self.column, self.row])
         self.ax = self.fig.add_subplot(111)
-        self.cars_list = []
+        self.cars_dict = {}
+        self.step_dict = {}
 
-    def read_board_size(self, filename):
-        
+    def read_board_size(self, file_name):
+
         # get the size of board from filename
-        return int(filename[19])
+        return int(file_name[19])
+
+    def df_to_dict(self, file_name):
+        df = pd.read_csv(file_name)
+
+        for row, column in df.iterrows():
+            x_coord = column[2]
+            y_coord = column[3]
+            length = column[4]
+            orientation = column[1]
+            car_type = column[0]
+
+            # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
+            self.cars_dict[car_type] = [(x_coord, y_coord), length, orientation]
+
+            self.step_dict[car_type] = []
+        return self.cars_dict, self.step_dict
+
+
+    
 
     def create_board(self):
         # the k is for the lines!!!
@@ -40,15 +60,15 @@ class Board():
 
     def add_cars(self):
 
-        df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+        self.df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
 
-        for row, column in df.iterrows():
+        for row, column in self.df.iterrows():
             col = column[2]
             row = column[3]
             length = column[4]
             orientation = column[1]
             type = column[0]
-            self.cars_list.append(cars.Cars(col, row, length, orientation, type))
+            # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
 
         for car in self.cars_list:
 
@@ -67,40 +87,52 @@ class Board():
         cars.move(car, 1)
 
 
-    def board_in_array(df, filename):
-        '''
-        Create an array with the spots where the cars are
-        '''
+    def check_availability(self, new_coordinates, car_dict):
 
-        # zeros matrix
-        grid_matrix = np.zeros((size, size))
+        for car in car_dict:
+            if new_coordinates != car[0]:
+                return True
 
-        # loop over df to get coordinates for zeros matrix
-        for index, row in df.iterrows():
+        return False
 
-            # Start coordinates:
-            x_co = row[3] - 1
-            y_co = row[2] - 1
+
+
+
+    # def board_in_array(self, df, filename):
+    #     '''
+    #     Create an array with the spots where the cars are
+    #     '''
+
+    #     # zeros matrix
+    #     grid_matrix = np.zeros((size, size))
+
+    #     # loop over df to get coordinates for zeros matrix
+    #     for index, row in df.iterrows():
+
+    #         # Start coordinates:
+    #         x_co = row[3] - 1
+    #         y_co = row[2] - 1
             
-            # Vertical cars:
-            if row[1] == 'V':
-                for i in range(row[4]):
-                    # Save coordinate:
-                    grid_matrix[x_co][y_co] = 1
-                    # Next coordinate:
-                    x_co += 1
+    #         # Vertical cars:
+    #         if row[1] == 'V':
+    #             for i in range(row[4]):
+    #                 # Save coordinate:
+    #                 grid_matrix[x_co][y_co] = 1
+    #                 # Next coordinate:
+    #                 x_co += 1
             
-            # Horizontal cars:
-            else:
-                for i in range(row[4]):
-                    # Save coordinate:
-                    grid_matrix[x_co][y_co] = 1
-                    # Next coordinate:
-                    y_co += 1
+    #         # Horizontal cars:
+    #         else:
+    #             for i in range(row[4]):
+    #                 # Save coordinate:
+    #                 grid_matrix[x_co][y_co] = 1
+    #                 # Next coordinate:
+    #                 y_co += 1
     
-    print(grid_matrix)
 
-    filename = 'gameboards/Rushhour6x6_1.csv'
-    df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
+file_name = 'gameboards/Rushhour6x6_1.csv'
+bord = Board()
 
-    ar = board_in_array(df, filename)
+dict = bord.df_to_dict(file_name)
+
+print(dict)
