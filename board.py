@@ -28,14 +28,35 @@ class Board():
         df = pd.read_csv(file_name)
 
         for row, column in df.iterrows():
-            x_coord = column[2]
-            y_coord = column[3]
+            coord = (column[2],column[3])
             length = column[4]
             orientation = column[1]
             car_type = column[0]
+            list_coordinates = []
+
+            #Check orientation:
+            if orientation == "V":
+                #Create list of coordinates that are covered by the car:
+                for i in range(length):
+                    #Save coordinate to list:
+                    list_coordinates.append(coord)
+
+                    #Update coordinate:
+                    new_y = coord[1] - 1
+                    coord = (coord[0], new_y)
+
+            else:
+                #Create list of coordinates that are covered by the car:
+                for i in range(length):
+                    #Save coordinate to list:
+                    list_coordinates.append(coord)
+
+                    #Update coordinate:
+                    new_x = coord[0] + 1
+                    coord = (new_x, coord[1])
 
             # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
-            self.cars_dict[car_type] = [(x_coord, y_coord), length, orientation]
+            self.cars_dict[car_type] = [list_coordinates, length, orientation]
 
             self.step_dict[car_type] = []
         return self.cars_dict, self.step_dict
@@ -53,7 +74,6 @@ class Board():
 
         self.ax.set_xlim(-1, self.column + 1)
         self.ax.set_ylim(-1, self.row + 1)
-
 
     def add_cars(self):
 
@@ -80,56 +100,36 @@ class Board():
         plt.gca().invert_yaxis()
         plt.show()
 
-        car = random.choice(self.cars_list)
-        cars.move(car, 1)
-
-
     def check_availability(self, new_coordinates, car_dict):
+        """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
+        It also checks that the car is not going of the board yet. Outputs boolean that is True when 
+        the proposed coordinates are a possibility."""
 
-        for car in car_dict:
-            if new_coordinates != car[0] and new_coordinates[0] <= 6 or new_coordinates[0] >= 0 and new_coordinates[1] <= 6 or new_coordinates[1] >= 0:
-                return True
+        for car in car_dict.keys():
+            #Check whether coordinates cars are not of the board:
+            if new_coordinates != car_dict[car][0]:
+                #Check whether the coordinates are not of the grid:
+                if new_coordinates[0] <= 6 and new_coordinates[0] >= 0 and new_coordinates[1] <= 6 and new_coordinates[1] >= 0:
+                    return True
 
         return False
 
+    def step(self, car, dictionary, direction = 1):
+        '''
+        Function to make a car move. The input is the car object and the direction
+        in which it should move (1 or -1). Outputs new coordinates.
+        '''
 
+        orientation = dictionary[car][2]
+        
+        coordinates = dictionary[car][0]
 
+        print(coordinates)
 
-    # def board_in_array(self, df, filename):
-    #     '''
-    #     Create an array with the spots where the cars are
-    #     '''
+        if orientation == 'H':
+            coordinates[0] += direction
 
-    #     # zeros matrix
-    #     grid_matrix = np.zeros((size, size))
+        if orientation == 'V':
+            coordinates[1] += direction
 
-    #     # loop over df to get coordinates for zeros matrix
-    #     for index, row in df.iterrows():
-
-    #         # Start coordinates:
-    #         x_co = row[3] - 1
-    #         y_co = row[2] - 1
-            
-    #         # Vertical cars:
-    #         if row[1] == 'V':
-    #             for i in range(row[4]):
-    #                 # Save coordinate:
-    #                 grid_matrix[x_co][y_co] = 1
-    #                 # Next coordinate:
-    #                 x_co += 1
-            
-    #         # Horizontal cars:
-    #         else:
-    #             for i in range(row[4]):
-    #                 # Save coordinate:
-    #                 grid_matrix[x_co][y_co] = 1
-    #                 # Next coordinate:
-    #                 y_co += 1
-    
-
-file_name = 'gameboards/Rushhour6x6_1.csv'
-bord = Board()
-
-dict = bord.df_to_dict(file_name)
-
-print(dict)
+        return coordinates

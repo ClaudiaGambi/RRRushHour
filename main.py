@@ -14,7 +14,6 @@ if __name__ == '__main__':
     cars_dictionary = dictionary[0]
     step_dictionary = dictionary[1]
 
-    # print(step_dictionary)
 
     #Plot situation:
     # Board.add_cars()  
@@ -25,14 +24,14 @@ if __name__ == '__main__':
         # move count
         move_count = 0
 
-        #Propose a random step:
         # choose randomly from car dictionary
         random_car = random.choice(list(cars_dictionary.keys()))
 
         # choose direction randomly
         random_direction = random.choice([1, -1])
-        print(random_car)
-        new_coordinates = random_car.step(random_car, cars_dictionary, random_direction)
+        
+        # propose a random step:
+        new_coordinates = Board.step(random_car, cars_dictionary, random_direction)
 
         #Check availablity:
         availability = Board.check_availability(new_coordinates, dictionary)
