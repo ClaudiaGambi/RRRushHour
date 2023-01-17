@@ -19,42 +19,42 @@ class Plot_board():
         '''
         Create an empty grid to plot the cars in.
         '''
+
+        #Create lines on the board:
         for x in range(self.board_size + 1):
             self.ax.plot([x, x], [0, self.board_size], 'k')
         for y in range(self.board_size + 1):
             self.ax.plot([0, self.board_size], [y, y], 'k')
 
+        #Make sure the board is squared:
         self.ax.set_position([0, 0, 1, 1])
 
+        #No numbers visible:
         self.ax.set_axis_off()
-
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
-    def add_cars_in_plot(self):
-
-        # for every car in the dictionary
-        for car in main.cars_dictionary.keys():
-
-            # check the oreintation
-            if main.cars_dictionary[car][2] == 'H':
-                
-                # except if the car is called 'X', then it should be the red car
-                if car == 'X':
-                    self.ax.add_patch(mpatches.Rectangle(main.cars_dictionary[car][0][0], main.cars_dictionary[car][1], 1, facecolor = 'r' ))
-            
-                else:
-                    # plot patch in a random color
-                    self.ax.add_patch(mpatches.Rectangle(main.cars_dictionary[car][0][0], main.cars_dictionary[car][1], 1, facecolor = (random.random(), random.random(), random.random())))
-                
-               
-            # plot patch with different orientaion
-            else:
-                self.ax.add_patch(mpatches.Rectangle(main.cars_dictionary[car][0][0], 1, main.cars_dictionary[car][1], facecolor = (random.random(), random.random(), random.random())))
-
-        plt.gca().invert_yaxis()
         plt.show()
 
-board_plot = Plot_board()
-plotting = board_plot.create_board()
-c = board_plot.add_cars_in_plot()
+    def add_cars_in_plot(self, dictionary):
+        """
+        Method that reads coordination information of the cars dictionary. 
+        Creates a plot representing the board based on that information.
+        """
+
+        #Close former plots:
+
+        # for every car in the dictionary
+        for car in dictionary.keys():
+
+            # check the orientation
+            if dictionary[car][2] == 'H':
+                self.ax.add_patch(mpatches.Rectangle(dictionary[car][0][0], dictionary[car][1], 1, facecolor = dictionary[car][3] ))
+
+            # plot patch with different orientation
+            else:
+                self.ax.add_patch(mpatches.Rectangle(dictionary[car][0][0], 1, dictionary[car][1], facecolor = dictionary[car][3] ))
+
+        #Mirror board:
+        plt.gca().invert_yaxis()
+        plt.show()
