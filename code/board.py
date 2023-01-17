@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import random
 # import cars
 import numpy as np
+import itertools
 
 class Board():
     '''
@@ -59,46 +60,33 @@ class Board():
             self.cars_dict[car_type] = [list_coordinates, length, orientation]
 
             self.step_dict[car_type] = []
-        return self.cars_dict, self.step_dict
-
-    # def add_cars(self):
-
-        # self.df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
-
-        # for row, column in self.df.iterrows():
-        #     col = column[2]
-        #     row = column[3]
-        #     length = column[4]
-        #     orientation = column[1]
-        #     type = column[0]
-            # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
-
-        # for car in self.cars_list:
-
-        #     if car.orientation == 'H':
-        #         self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
-        #         if car.type == 'X':
-        #             self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
-
-        #     else:
-        #         self.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
-
-        # plt.gca().invert_yaxis()
-        # plt.show()
 
     def check_availability(self, new_coordinates, car_dict):
         """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility."""
 
-        for car in car_dict.keys():
-            #Check whether coordinates cars are not of the board:
-            if new_coordinates != car_dict[car][0]:
-                #Check whether the coordinates are not of the grid:
-                if new_coordinates[0] <= 6 and new_coordinates[0] >= 0 and new_coordinates[1] <= 6 and new_coordinates[1] >= 0:
-                    return True
+        #Make set of car coordinates:
+        set_new_coordinates= set(new_coordinates)
 
-        return False
+        #Check whether the car coordinates are not of the board yet:
+        flat_coords = list(itertools.chain(*set_new_coordinates))
+
+        mask = np.all(flat_coords) <= 6 & np.all(flat_coords) > 0
+        if mask == False:
+            return False
+        
+        #Loop through cars list:
+        for car in car_dict.keys():
+            #Make a set of the car coordinates:
+            coords = set(car_dict[car][0])
+            #Check whether there is overlap:
+            overlap = set_new_coordinates.intersection(coords)
+            #If there's overlap, stop:
+            if overlap != set():
+                return False
+        #No overlap? Availibilty approved:
+        return True
 
     def step(self, car, dictionary, direction = 1):
         '''
