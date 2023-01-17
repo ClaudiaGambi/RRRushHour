@@ -29,7 +29,7 @@ class Board():
         df = pd.read_csv(file_name)
 
         for row, column in df.iterrows():
-            coord = (column[2],column[3])
+            coord = (column[2]-1,column[3]-1)
             length = column[4]
             orientation = column[1]
             car_type = column[0]
@@ -80,7 +80,7 @@ class Board():
         #Check whether the car coordinates are not of the board yet:
         flat_coords = list(itertools.chain(*set_new_coordinates))
 
-        mask = np.all(flat_coords) <= 6 & np.all(flat_coords) > 0
+        mask = np.all(flat_coords) <= 5 & np.all(flat_coords) > 0
         if mask == False:
             return False
         
