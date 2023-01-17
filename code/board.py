@@ -35,6 +35,14 @@ class Board():
             car_type = column[0]
             list_coordinates = []
 
+            #Check what is the red one:
+            if car_type == 'X':
+                color = 'r'
+            
+            #Assign random colors to the others:
+            else:
+                color = (random.random(), random.random(), random.random())
+                
             #Check orientation:
             if orientation == "V":
                 #Create list of coordinates that are covered by the car:
@@ -57,7 +65,7 @@ class Board():
                     coord = (new_x, coord[1])
 
             # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
-            self.cars_dict[car_type] = [list_coordinates, length, orientation]
+            self.cars_dict[car_type] = [list_coordinates, length, orientation, color]
 
             self.step_dict[car_type] = []
 
