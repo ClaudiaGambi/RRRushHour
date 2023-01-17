@@ -34,8 +34,6 @@ class Plot_board():
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
-        plt.show()
-
     def add_cars_in_plot(self, dictionary):
         """
         Method that reads coordination information of the cars dictionary. 
