@@ -69,7 +69,7 @@ class Board():
 
             self.step_dict[car_type] = []
 
-    def check_availability(self, new_coordinates, car_dict):
+    def check_availability(self, random_car, new_coordinates, car_dict):
         """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility."""
@@ -87,6 +87,10 @@ class Board():
         count = 0
         #Loop through cars list:
         for car in car_dict.keys():
+            #Don't check with self:
+            if car == random_car:
+                continue
+            
             #Count cars:
             count +=1
             print(count)

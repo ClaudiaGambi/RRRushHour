@@ -19,9 +19,7 @@ class Plot_board():
         '''
         Create an empty grid to plot the cars in.
         '''
-        # axis = list(range(0,self.board.size))
-
-        # plt.new()
+        
         #Create basic grid:
         for x in range(self.board_size + 1):
             self.ax.plot([x, x], [0, self.board_size], 'k')
@@ -35,8 +33,6 @@ class Plot_board():
         self.ax.set_axis_off()
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
-
-        plt.show()
 
     def add_cars_in_plot(self, dictionary):
         """
