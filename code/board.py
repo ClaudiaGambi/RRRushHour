@@ -82,18 +82,30 @@ class Board():
 
         mask = np.all(flat_coords) <= 5 & np.all(flat_coords) > 0
         if mask == False:
+            print("out of the board")
             return False
-        
+        count = 0
         #Loop through cars list:
         for car in car_dict.keys():
+            #Count cars:
+            count +=1
+            print(count)
             #Make a set of the car coordinates:
             coords = set(car_dict[car][0])
+            
             #Check whether there is overlap:
             overlap = set_new_coordinates.intersection(coords)
-            #If there's overlap, stop:
-            if overlap != set():
-                return False
-        #No overlap? Availibilty approved:
+            
+            print(overlap)
+            #If there's no overlap, go to next car:
+            if overlap == set():
+                print("No overlap, check next car.")
+                continue
+        
+            #Overlap? Availibilty not approved:
+            print("Overlap")
+            return False
+        print("All cars have no overlap, take a step")
         return True
 
     def step(self, car, dictionary, direction = 1):

@@ -19,15 +19,14 @@ if __name__ == '__main__':
 
     #Plot situation:
     plot = plots.Plot_board()
-    plot.create_board() 
-    plot.add_cars_in_plot(cars_dictionary)
+    plot.create_board()
+    # plot.add_cars_in_plot(cars_dictionary)
 
     # #List to keep track of steps:
     # lst = []
 
     # #While not not solved:
-    # #while cars_dictionary['X'][0] != (5, 3):
-    # for i in range(20):
+    # while cars_dictionary['X'][0] != (5, 3):
     #     # move count
     #     move_count = 0
 
@@ -48,13 +47,11 @@ if __name__ == '__main__':
     #         cars_dictionary[random_car][0] = new_coordinates
     #         move_count += 1
 
-    #         # Keep track of the game steps:
-    #         steps_df.loc[move_count] = [random_car + random_direction]
+    #         #Plot current situation:
+    #         plot.add_cars_in_plot(cars_dictionary)
         
+    #     # Keep track of the game steps:
     #     lst.append([random_car, random_direction])
-
-    #     #Plot current situation:
-    #     plot.add_cars_in_plot(cars_dictionary)
 
             
     # steps_df = pd.DataFrame(lst, columns = ["car", "move"])
