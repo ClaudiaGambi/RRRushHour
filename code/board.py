@@ -14,8 +14,8 @@ class Board():
     def __init__(self, column = 6, row = 6):
         self.column = column
         self.row = row
-        self.fig = plt.figure(figsize = [self.column, self.row])
-        self.ax = self.fig.add_subplot(111)
+        # self.fig = plt.figure(figsize = [self.column, self.row])
+        # self.ax = self.fig.add_subplot(111)
         self.cars_dict = {}
         self.step_dict = {}
 
@@ -61,44 +61,30 @@ class Board():
             self.step_dict[car_type] = []
         return self.cars_dict, self.step_dict
 
-    def create_board(self):
-        # the k is for the lines!!!
-        for x in range(self.column + 1):
-            self.ax.plot([x, x], [0, self.column], 'k')
-        for y in range(self.row + 1):
-            self.ax.plot([0, self.row], [y, y], 'k')
+    # def add_cars(self):
 
-        self.ax.set_position([0, 0, 1, 1])
+        # self.df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
 
-        self.ax.set_axis_off()
-
-        self.ax.set_xlim(-1, self.column + 1)
-        self.ax.set_ylim(-1, self.row + 1)
-
-    def add_cars(self):
-
-        self.df = pd.read_csv('gameboards/Rushhour6x6_1.csv')
-
-        for row, column in self.df.iterrows():
-            col = column[2]
-            row = column[3]
-            length = column[4]
-            orientation = column[1]
-            type = column[0]
+        # for row, column in self.df.iterrows():
+        #     col = column[2]
+        #     row = column[3]
+        #     length = column[4]
+        #     orientation = column[1]
+        #     type = column[0]
             # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
 
-        for car in self.cars_list:
+        # for car in self.cars_list:
 
-            if car.orientation == 'H':
-                self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
-                if car.type == 'X':
-                    self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
+        #     if car.orientation == 'H':
+        #         self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = (random.random(), random.random(), random.random())))
+        #         if car.type == 'X':
+        #             self.ax.add_patch(mpatches.Rectangle((car.x, car.y), car.length, 1, facecolor = 'r' ))
 
-            else:
-                self.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
+        #     else:
+        #         self.ax.add_patch(mpatches.Rectangle((car.x, car.y), 1, car.length, facecolor = (random.random(), random.random(), random.random())))
 
-        plt.gca().invert_yaxis()
-        plt.show()
+        # plt.gca().invert_yaxis()
+        # plt.show()
 
     def check_availability(self, new_coordinates, car_dict):
         """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
@@ -117,19 +103,24 @@ class Board():
     def step(self, car, dictionary, direction = 1):
         '''
         Function to make a car move. The input is the car object and the direction
-        in which it should move (1 or -1). Outputs new coordinates.
+        in which it should move (1 or -1). Outputs list of new coordinates.
         '''
 
         orientation = dictionary[car][2]
-        
         coordinates = dictionary[car][0]
+        updated_coordinates = []
 
-        print(coordinates)
+        for coordinate in coordinates:
+            coordinate = list(coordinate)
 
-        if orientation == 'H':
-            coordinates[0] += direction
+            if orientation == 'H':
+                updated_x = coordinate[0] + direction
+                updated_coordinate = (updated_x, coordinate[1])
+                updated_coordinates.append(updated_coordinate)
 
-        if orientation == 'V':
-            coordinates[1] += direction
-
-        return coordinates
+            if orientation == 'V':
+                updated_y = coordinate[1] + direction
+                updated_coordinate = (coordinate[0], updated_y)
+                updated_coordinates.append(updated_coordinate)
+        
+        return updated_coordinates
