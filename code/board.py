@@ -82,7 +82,7 @@ class Board():
 
         for number in flat_coords:
             print(number)
-            if number >= 5 & number < 0:
+            if number >= 5 or number < 0:
                 print(flat_coords)
                 return False
 
