@@ -1,8 +1,7 @@
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import main
-import board
+
 
 class Plot_board():
     def __init__(self, filename='gameboards/Rushhour6x6_1.csv'):
@@ -56,6 +55,9 @@ class Plot_board():
         plt.show()
 
     def plot_dotted_cars(self, dictionary):
+        plt.ion()
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
         #Loop through cars list:
         for car in dictionary.keys():
             #Select the color:
@@ -66,11 +68,13 @@ class Plot_board():
                 print(coordinate)
                 column = coordinate[0]
                 row = coordinate[1]
-                plt.plot(column,row, marker = "s", color = color, markersize = 50)
+                self.ax.plot(column - 0.5,row - 0.5, marker = "s", color = color, markersize = 50)
         
         #Make sure the board is squared:
         #self.ax.set_position([0, 0, 1, 1])
         plt.axis('off')
-        plt.draw()
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
         plt.pause(1)
-        plt.close()
+        
+        # plt.close() 

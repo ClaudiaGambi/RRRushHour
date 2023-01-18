@@ -27,7 +27,7 @@ if __name__ == '__main__':
     lst = []
 
     #While not not solved:
-    while cars_dictionary['X'][0] != (5, 3):
+    while cars_dictionary['X'][0][0] != (5, 4):
     #for i in range(60):
         # move count
         move_count = 0
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
             #Plot current situation:
             plot2 = plots.Plot_board()
-            #plot2.create_board()
+            plot2.create_board()
             #plot2.add_cars_in_plot(cars_dictionary)
             plot2.plot_dotted_cars(cars_dictionary)
         
