@@ -46,10 +46,12 @@ if __name__ == '__main__':
         if availability == True:
             cars_dictionary[random_car][0] = new_coordinates
             move_count += 1
+            # print(cars_dictionary)
 
             #Plot current situation:
-            plot.create_board()
-            plot.add_cars_in_plot(cars_dictionary)
+            plot2 = plots.Plot_board()
+            plot2.create_board()
+            plot2.add_cars_in_plot(cars_dictionary)
         
         # Keep track of the game steps:
         lst.append([random_car, random_direction])

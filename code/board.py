@@ -81,6 +81,7 @@ class Board():
         flat_coords = list(itertools.chain(*set_new_coordinates))
 
         mask = np.all(flat_coords) <= 5 & np.all(flat_coords) > 0
+        print(mask)
         if mask == False:
             print("out of the board")
             return False
