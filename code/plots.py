@@ -54,3 +54,23 @@ class Plot_board():
         #Mirror board:
         plt.gca().invert_yaxis()
         plt.show()
+
+    def plot_dotted_cars(self, dictionary):
+        #Loop through cars list:
+        for car in dictionary.keys():
+            #Select the color:
+            color = dictionary[car][3]
+            print(f"Car: {car}")
+            #Loop through every coordinate of the car:
+            for coordinate in dictionary[car][0]:
+                print(coordinate)
+                column = coordinate[0]
+                row = coordinate[1]
+                plt.plot(column,row, marker = "s", color = color, markersize = 50)
+        
+        #Make sure the board is squared:
+        #self.ax.set_position([0, 0, 1, 1])
+        plt.axis('off')
+        plt.draw()
+        plt.pause(1)
+        plt.close()

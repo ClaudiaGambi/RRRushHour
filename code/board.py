@@ -29,7 +29,7 @@ class Board():
         df = pd.read_csv(file_name)
 
         for row, column in df.iterrows():
-            coord = (column[2]-1,column[3]-1)
+            coord = (column[2],7 - column[3])
             length = column[4]
             orientation = column[1]
             car_type = column[0]
@@ -51,8 +51,8 @@ class Board():
                     list_coordinates.append(coord)
 
                     #Update coordinate:
-                    new_y = coord[1] - 1
-                    coord = (coord[0], new_y)
+                    row = coord[1] - 1
+                    coord = (coord[0], row)
 
             else:
                 #Create list of coordinates that are covered by the car:
@@ -61,8 +61,8 @@ class Board():
                     list_coordinates.append(coord)
 
                     #Update coordinate:
-                    new_x = coord[0] + 1
-                    coord = (new_x, coord[1])
+                    column = coord[0] + 1
+                    coord = (column, coord[1])
 
             # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
             self.cars_dict[car_type] = [list_coordinates, length, orientation, color]
@@ -74,6 +74,9 @@ class Board():
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility."""
 
+        #print(f"New coordinates: {new_coordinates}")
+        #print(f"Car that wants to move: {random_car}")
+
         #Make set of car coordinates:
         set_new_coordinates= set(new_coordinates)
 
@@ -81,9 +84,8 @@ class Board():
         flat_coords = list(itertools.chain(*set_new_coordinates))
 
         for number in flat_coords:
-            print(number)
-            if number >= 5 or number < 0:
-                print(flat_coords)
+            if number > 6 or number < 1:
+                #print("Coordinates of the board.")
                 return False
 
         count = 0
@@ -92,8 +94,9 @@ class Board():
 
             #Don't check with self:
             if car == random_car:
+                #print(f"{car}: own car")
                 continue
-            
+            #print(f"{car}: not own car")
             #Count cars:
             count +=1
             #Make a set of the car coordinates:
@@ -101,13 +104,20 @@ class Board():
             
             #Check whether there is overlap:
             overlap = set_new_coordinates.intersection(coords)
+            #print(set_new_coordinates)
+            #print(coords)
+            #print(f"The overlap is: {overlap}")
             
             #If there's no overlap, go to next car:
-            if overlap == set():
+            if len(overlap) < 1:
+                #print(len(overlap))
+                #print("no overlap, next car")
                 continue
         
             #Overlap? Availibilty not approved:
+            #print("Overlap, propose new coordinates")
             return False
+        #print("MAKE A MOVE!!!!!!! ----------------------------------------------------")
         return True
 
     def step(self, car, dictionary, direction = 1):
