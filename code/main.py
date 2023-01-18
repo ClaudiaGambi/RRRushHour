@@ -20,42 +20,46 @@ if __name__ == '__main__':
     #Plot situation:
     plot = plots.Plot_board()
     plot.create_board()
-    # plot.add_cars_in_plot(cars_dictionary)
+    plot.add_cars_in_plot(cars_dictionary)
 
-    # #List to keep track of steps:
-    # lst = []
+    #List to keep track of steps:
+    lst = []
 
-    # #While not not solved:
+    #While not not solved:
     # while cars_dictionary['X'][0] != (5, 3):
-    #     # move count
-    #     move_count = 0
+    for i in range(30):
+        # move count
+        move_count = 0
 
-    #     # choose randomly from car dictionary
-    #     random_car = random.choice(list(cars_dictionary.keys()))
+        # choose randomly from car dictionary
+        random_car = random.choice(list(cars_dictionary.keys()))
 
-    #     # choose direction randomly
-    #     random_direction = random.choice([1, -1])
+        # choose direction randomly
+        random_direction = random.choice([1, -1])
         
-    #     # propose a random step:
-    #     new_coordinates = Board.step(random_car, cars_dictionary, random_direction)
+        # propose a random step:
+        new_coordinates = Board.step(random_car, cars_dictionary, random_direction)
 
-    #     #Check availablity:
-    #     availability = Board.check_availability(new_coordinates, cars_dictionary)
+        #Check availablity:
+        availability = Board.check_availability(random_car, new_coordinates, cars_dictionary)
 
-    #     #If available, save the step in (updated) dictionary:
-    #     if availability == True:
-    #         cars_dictionary[random_car][0] = new_coordinates
-    #         move_count += 1
+        #If available, save the step in (updated) dictionary:
+        if availability == True:
+            cars_dictionary[random_car][0] = new_coordinates
+            move_count += 1
+            # print(cars_dictionary)
 
-    #         #Plot current situation:
-    #         plot.add_cars_in_plot(cars_dictionary)
+            #Plot current situation:
+            plot2 = plots.Plot_board()
+            plot2.create_board()
+            plot2.add_cars_in_plot(cars_dictionary)
         
-    #     # Keep track of the game steps:
-    #     lst.append([random_car, random_direction])
+        # Keep track of the game steps:
+        lst.append([random_car, random_direction])
 
             
-    # steps_df = pd.DataFrame(lst, columns = ["car", "move"])
-    # print(steps_df.head())
+    steps_df = pd.DataFrame(lst, columns = ["car", "move"])
+    print(steps_df.head())
 
         
 

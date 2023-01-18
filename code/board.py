@@ -69,7 +69,7 @@ class Board():
 
             self.step_dict[car_type] = []
 
-    def check_availability(self, new_coordinates, car_dict):
+    def check_availability(self, random_car, new_coordinates, car_dict):
         """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility."""
@@ -80,32 +80,34 @@ class Board():
         #Check whether the car coordinates are not of the board yet:
         flat_coords = list(itertools.chain(*set_new_coordinates))
 
-        mask = np.all(flat_coords) <= 5 & np.all(flat_coords) > 0
-        if mask == False:
-            print("out of the board")
-            return False
+        for number in flat_coords:
+            print(number)
+            if number >= 5 or number < 0:
+                print(flat_coords)
+                return False
+
         count = 0
         #Loop through cars list:
         for car in car_dict.keys():
+
+            #Don't check with self:
+            if car == random_car:
+                continue
+            
             #Count cars:
             count +=1
-            print(count)
             #Make a set of the car coordinates:
             coords = set(car_dict[car][0])
             
             #Check whether there is overlap:
             overlap = set_new_coordinates.intersection(coords)
             
-            print(overlap)
             #If there's no overlap, go to next car:
             if overlap == set():
-                print("No overlap, check next car.")
                 continue
         
             #Overlap? Availibilty not approved:
-            print("Overlap")
             return False
-        print("All cars have no overlap, take a step")
         return True
 
     def step(self, car, dictionary, direction = 1):
@@ -113,7 +115,6 @@ class Board():
         Function to make a car move. The input is the car object and the direction
         in which it should move (1 or -1). Outputs list of new coordinates.
         '''
-
         orientation = dictionary[car][2]
         coordinates = dictionary[car][0]
         updated_coordinates = []
