@@ -10,9 +10,9 @@ if __name__ == '__main__':
 
    random_algo = randomize.Random(filename)
    random_algo.run()
-   new_car_list = random_algo.new_cars_list
-   plot = plots.Plot_board()
-   plot.create_board()
-   plot.plot_dotted_cars(new_car_list)
+#    new_car_list = random_algo.new_cars_list
+#    plot = plots.Plot_board()
+#    plot.create_board()
+#    plot.plot_dotted_cars(new_car_list)
 
     

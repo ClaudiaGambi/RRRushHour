@@ -51,6 +51,6 @@ class Plot_board():
         plt.axis('off')
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-        plt.pause(1)
+        plt.pause(0.1)
         
         # plt.close() 
