@@ -18,8 +18,6 @@ class Random():
         for car in self.board.cars_list:
              #While not not solved:
             while car.type == 'X' and car.coordinates_list[0] != (5, 4):
-
-   
    
                  # move count
                 move_count = 0
