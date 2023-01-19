@@ -15,3 +15,15 @@ wat is een goeie set?
 
 * maak car object 
 * dictionary alleen coordinates 
+
+if self.orientation == 'H':
+            for i, coordinate in enumerate(self.coordinates_list):
+                updated_x = coordinate[0] + direction
+                updated_coordinate = (updated_x, coordinate[1])
+                self.updated_coordinates[i] = updated_coordinate
+
+        if self.orientation== 'V':
+            for i, coordinate in enumerate(self.coordinates_list):
+                updated_y = coordinate[1] + direction
+                updated_coordinate = (coordinate[0], updated_y)
+                self.updated_coordinates[i] = updated_coordinate

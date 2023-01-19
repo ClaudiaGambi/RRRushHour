@@ -29,7 +29,8 @@ class Board():
         df = pd.read_csv(self.file)
 
         for row, column in df.iterrows():
-            coord = (column[2],7 - column[3])
+            # 7
+            coord = (column[2], 10 - column[3])
             length = column[4]
             orientation = column[1]
             car_type = column[0]

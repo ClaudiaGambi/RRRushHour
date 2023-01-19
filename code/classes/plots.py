@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 class Plot_board():
-    def __init__(self, filename='gameboards/Rushhour6x6_1.csv'):
+    def __init__(self):
 
-        self.board_size = 6
+        self.board_size = 9
         self.fig = plt.figure(figsize = [self.board_size, self.board_size])
         self.ax = self.fig.add_subplot(111)
 
@@ -24,7 +24,7 @@ class Plot_board():
         self.ax.set_position([0, 0, 1, 1])
 
         #No numbers visible:
-        self.ax.set_axis_off()
+        # self.ax.set_axis_off()
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
@@ -48,9 +48,11 @@ class Plot_board():
         
         #Make sure the board is squared:
         #self.ax.set_position([0, 0, 1, 1])
-        plt.axis('off')
+        #create plot that does not close figure 
+        # plt.axis('off')
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-        plt.pause(0.1)
+        plt.pause(10)
+        # plt.show()
         
         # plt.close() 
