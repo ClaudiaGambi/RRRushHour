@@ -18,7 +18,7 @@ class Board():
         self.cars_list = []
 
 
-    def df_to_dict(self):
+    def df_to_object(self):
         df = pd.read_csv(self.file)
 
         for row, column in df.iterrows():
@@ -60,7 +60,7 @@ class Board():
             self.step_dict[car_type] = []
             self.cars_list.append(car.Car(list_coordinates, length, orientation, car_type, color))
 
-    def check_availability(self, random_car, new_coordinates):
+    def check_availability(self, random_car):
         """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility."""

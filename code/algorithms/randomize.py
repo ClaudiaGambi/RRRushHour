@@ -1,6 +1,7 @@
 import random
+import pandas as pd
 from classes import board
-from classes.car import step as st
+from classes.car import step 
 
 class Random():
     '''
@@ -8,14 +9,18 @@ class Random():
     '''
     def __init__(self, filename):
         self.board = board.Board(filename)
+        self.new_cars_list = []
+        
         
     def run(self):
+        self.board.df_to_object()
+        lst = []
         for car in self.board.cars_list:
              #While not not solved:
             while car.type == 'X' and car.coordinates_list[0] != (5, 4):
 
    
-   #for i in range(60):
+   
                  # move count
                 move_count = 0
 
@@ -26,27 +31,20 @@ class Random():
                 random_direction = random.choice([1, -1])
                 
                 # propose a random step:
-                random_car.st(random_direction)
+                random_car.step(random_direction)
 
                 #Check availablity:
-                availability = Board.check_availability(random_car, new_coordinates, cars_dictionary)
+                availability = self.board.check_availability(random_car)
 
                 #If available, save the step in (updated) dictionary:
                 if availability == True:
-                    print(f"Old coordinates: {cars_dictionary[random_car][0]}")
-                    print(f"New coordinates: {new_coordinates}")
-                    cars_dictionary[random_car][0] = new_coordinates
+                    self.new_coordinates = random_car.updated_coordinates
+                    random_car.coordinates_list = random_car.updated_coordinates
                     move_count += 1
-                    # print(cars_dictionary)
-
-                    #Plot current situation:
-                    plot2 = plots.Plot_board()
-                    plot2.create_board()
-                    #plot2.add_cars_in_plot(cars_dictionary)
-                    plot2.plot_dotted_cars(cars_dictionary)
+                    
                 
                 # Keep track of the game steps:
-                lst.append([random_car, random_direction])
+                lst.append([random_car.type, random_direction])
 
                     
             steps_df = pd.DataFrame(lst, columns = ["car", "move"])
