@@ -1,6 +1,6 @@
 import pandas as pd
 import random
-import car
+from code.classes import car
 import numpy as np
 import itertools
 

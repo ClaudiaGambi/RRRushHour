@@ -1,5 +1,4 @@
-import matplotlib.path as mpath
-import matplotlib.patches as mpatches
+
 import matplotlib.pyplot as plt
 
 
@@ -31,27 +30,27 @@ class Plot_board():
 
     
 
-    def plot_dotted_cars(self, cars_list):
+    def plot_dotted_cars(self, new_car_list):
         plt.ion()
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
         #Loop through cars list:
-        for car in cars_list:
+        for car in new_car_list:
             #Select the color:
             color = car.color
             # print(f"Car: {car}")
             #Loop through every coordinate of the car:
             
-                
-            column = car.coordinates_list[0]
-            row = car.coordinates_list[1]
-            self.ax.plot(column - 0.5,row - 0.5, marker = "s", color = color, markersize = 50)
+            for coordinate in car.coordinates_list:
+                column = coordinate[0]
+                row = coordinate[1]
+                self.ax.plot(column - 0.5,row - 0.5, marker = "s", color = color, markersize = 50)
         
         #Make sure the board is squared:
         #self.ax.set_position([0, 0, 1, 1])
         plt.axis('off')
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-        plt.pause(0.1)
+        plt.pause(1)
         
         # plt.close() 

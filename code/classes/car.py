@@ -21,14 +21,15 @@ class Car():
         Function to make a car move. The input is the car object and the direction
         in which it should move (1 or -1). Outputs new coordinates.
         '''
-        
-       
+        self.updated_coordinates = []
+
         if self.orientation == 'H':
             for coordinate in self.coordinates_list:
 
                 updated_x = coordinate[0] + direction
                 updated_coordinate = (updated_x, coordinate[1])
                 self.updated_coordinates.append(updated_coordinate)
+               
 
         if self.orientation== 'V':
             for coordinate in self.coordinates_list:
