@@ -1,9 +1,6 @@
 import pandas as pd
-import matplotlib.path as mpath
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
 import random
-# import cars
+import car
 import numpy as np
 import itertools
 
@@ -12,21 +9,17 @@ class Board():
     The board class creates a grid that will function as the playing board.
     The default size of the board is 6x6, like it is for the first game.
     '''
-    def __init__(self, column = 6, row = 6):
-        self.column = column
-        self.row = row
-        # self.fig = plt.figure(figsize = [self.column, self.row])
-        # self.ax = self.fig.add_subplot(111)
-        self.cars_dict = {}
+    def __init__(self, file_name):
+        self.column = int(file_name[19])
+        self.row = int(file_name[19])
+        self.file = file_name
+        # verander eventueel als we algoritme implementeren 
         self.step_dict = {}
+        self.cars_list = []
 
-    def read_board_size(self, file_name):
 
-        # get the size of board from filename
-        return int(file_name[19])
-
-    def df_to_dict(self, file_name):
-        df = pd.read_csv(file_name)
+    def df_to_dict(self):
+        df = pd.read_csv(self.file)
 
         for row, column in df.iterrows():
             coord = (column[2],7 - column[3])
@@ -64,82 +57,53 @@ class Board():
                     column = coord[0] + 1
                     coord = (column, coord[1])
 
-            # self.cars_list.append(cars.Cars(col, row, length, orientation, type))
-            self.cars_dict[car_type] = [list_coordinates, length, orientation, color]
-
             self.step_dict[car_type] = []
+            self.cars_list.append(car.Car(list_coordinates, length, orientation, car_type, color))
 
-    def check_availability(self, random_car, new_coordinates, car_dict):
+    def check_availability(self, random_car, new_coordinates):
         """Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility."""
 
-        #print(f"New coordinates: {new_coordinates}")
-        #print(f"Car that wants to move: {random_car}")
-
         #Make set of car coordinates:
-        set_new_coordinates= set(new_coordinates)
+        
+        set_new_coordinates= set(random_car.updated_coordinates)
 
         #Check whether the car coordinates are not of the board yet:
         flat_coords = list(itertools.chain(*set_new_coordinates))
 
         for number in flat_coords:
-            if number > 6 or number < 1:
-                #print("Coordinates of the board.")
+            if number > self.column or number < 1:
+               
                 return False
 
         count = 0
         #Loop through cars list:
-        for car in car_dict.keys():
+        for car in self.cars_list:
 
             #Don't check with self:
-            if car == random_car:
-                #print(f"{car}: own car")
+            if car.type == random_car.type:
+                
                 continue
-            #print(f"{car}: not own car")
+            
             #Count cars:
             count +=1
             #Make a set of the car coordinates:
-            coords = set(car_dict[car][0])
+            coords = set(car.coordinates_list)
             
             #Check whether there is overlap:
             overlap = set_new_coordinates.intersection(coords)
-            #print(set_new_coordinates)
-            #print(coords)
-            #print(f"The overlap is: {overlap}")
+            
             
             #If there's no overlap, go to next car:
             if len(overlap) < 1:
-                #print(len(overlap))
-                #print("no overlap, next car")
+                
                 continue
         
             #Overlap? Availibilty not approved:
-            #print("Overlap, propose new coordinates")
+            
             return False
-        #print("MAKE A MOVE!!!!!!! ----------------------------------------------------")
+        
         return True
 
-    def step(self, car, dictionary, direction = 1):
-        '''
-        Function to make a car move. The input is the car object and the direction
-        in which it should move (1 or -1). Outputs list of new coordinates.
-        '''
-        orientation = dictionary[car][2]
-        coordinates = dictionary[car][0]
-        updated_coordinates = []
-
-        for coordinate in coordinates:
-            coordinate = list(coordinate)
-
-            if orientation == 'H':
-                updated_x = coordinate[0] + direction
-                updated_coordinate = (updated_x, coordinate[1])
-                updated_coordinates.append(updated_coordinate)
-
-            if orientation == 'V':
-                updated_y = coordinate[1] + direction
-                updated_coordinate = (coordinate[0], updated_y)
-                updated_coordinates.append(updated_coordinate)
-        
-        return updated_coordinates
+   

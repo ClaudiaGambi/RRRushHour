@@ -6,10 +6,6 @@ import matplotlib.pyplot as plt
 class Plot_board():
     def __init__(self, filename='gameboards/Rushhour6x6_1.csv'):
 
-        # read_board_size() missing 1 required positional argument: 'file_name'
-        # wat was dit ookalweer?
-        # self.board_size = board.Board.read_board_size(filename)
-        # tijdelijke oplossing
         self.board_size = 6
         self.fig = plt.figure(figsize = [self.board_size, self.board_size])
         self.ax = self.fig.add_subplot(111)
@@ -62,7 +58,7 @@ class Plot_board():
         for car in dictionary.keys():
             #Select the color:
             color = dictionary[car][3]
-            print(f"Car: {car}")
+            # print(f"Car: {car}")
             #Loop through every coordinate of the car:
             for coordinate in dictionary[car][0]:
                 print(coordinate)
@@ -75,6 +71,6 @@ class Plot_board():
         plt.axis('off')
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-        plt.pause(1)
+        plt.pause(0.1)
         
         # plt.close() 
