@@ -1,7 +1,8 @@
-import board
+from code.classes import board
 import random
 import pandas as pd
-import plots
+from code.classes  import plots
+from code.algorithms import random_algo
 
 filename = 'gameboards/Rushhour6x6_1.csv'
 
