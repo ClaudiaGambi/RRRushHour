@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from classes import board
+=======
+from code.classes import board
+>>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
 import copy
 
 class Breadth_first(board.Board):
@@ -8,7 +12,11 @@ class Breadth_first(board.Board):
     is the same as the solution board, the algorithm stops and returns the shortest
     root line to the solution."""
 
+<<<<<<< HEAD
     def _init_(self, starting_board):
+=======
+    def init(self, starting_board):
+>>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
         self.current_node = starting_board
         self.queue = [copy.deepcopy(starting_board)]
         self.solution_found = False

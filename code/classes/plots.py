@@ -1,12 +1,11 @@
-import matplotlib.path as mpath
-import matplotlib.patches as mpatches
+
 import matplotlib.pyplot as plt
 
 
 class Plot_board():
-    def __init__(self, filename='gameboards/Rushhour6x6_1.csv'):
+    def __init__(self, board_size):
 
-        self.board_size = 6
+        self.board_size = board_size
         self.fig = plt.figure(figsize = [self.board_size, self.board_size])
         self.ax = self.fig.add_subplot(111)
 
@@ -29,26 +28,37 @@ class Plot_board():
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
+<<<<<<< HEAD
     def plot_dotted_cars(self, cars_list):
+=======
+    
+
+    def plot_dotted_cars(self, new_car_list):
+>>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
         plt.ion()
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
+        
         #Loop through cars list:
-        for car in cars_list:
+        for car in new_car_list:
             #Select the color:
             color = car.color
-            # print(f"Car: {car}")
+           
             #Loop through every coordinate of the car:
-            
-                
-            column = car.coordinates_list[0]
-            row = car.coordinates_list[1]
-            self.ax.plot(column - 0.5,row - 0.5, marker = "s", color = color, markersize = 50)
+            for coordinate in car.coordinates_list:
+                column = coordinate[0]
+                row = coordinate[1]
+                self.ax.plot(column - 0.5,row - 0.5, marker = "s", color = color, markersize = 50)
         
-        #Make sure the board is squared:
-        #self.ax.set_position([0, 0, 1, 1])
-        plt.axis('off')
+        
+        #!!! create plot that does not close figure  !!!
+       
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
+<<<<<<< HEAD
         plt.pause(0.1)
         
+=======
+        plt.pause(10)
+        # plt.show()
+        
+        plt.close() 
+>>>>>>> fd328ffb107b79bcacf049261a5c56e020251408

@@ -1,6 +1,6 @@
 import pandas as pd
 import random
-import car
+from code.classes import car
 import numpy as np
 import itertools
 
@@ -14,12 +14,17 @@ class Board():
     move can be done: whether another car is in the way or wheter the car 
     will move of the board.
     '''
-    def __init__(self, file_name):
-        self.column = int(file_name[19])
-        self.row = int(file_name[19])
+    def __init__(self, file_name, board_size):
+        self.board_size = board_size
         self.file = file_name
+<<<<<<< HEAD
         self.step_history = pd.DataFrame(columns = ["carName", "move"])
+=======
+        # verander eventueel als we algoritme implementeren 
+        self.step_history = pd.DataFrame(columns = ['carName', 'move'])
+>>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
         self.cars_list = []
+        
 
     def df_to_object(self):
 
@@ -27,7 +32,8 @@ class Board():
         df = pd.read_csv(self.file)
 
         for row, column in df.iterrows():
-            coord = (column[2],7 - column[3])
+            # 7
+            coord = (column[2], (self.board_size + 1) - column[3])
             length = column[4]
             orientation = column[1]
             car_type = column[0]
@@ -83,7 +89,7 @@ class Board():
 
         #Check if car won't move off the board
         for number in flat_coords:
-            if number > self.column or number < 1:
+            if number > self.board_size or number < 1:
                 return False
 
         #Loop through cars list:
@@ -110,6 +116,15 @@ class Board():
         return True
 
     def update_board_history(self, carName, move):
+<<<<<<< HEAD
         new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
         self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
 
+=======
+
+        new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
+
+        self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
+
+   
+>>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
