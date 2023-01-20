@@ -77,10 +77,11 @@ class Breadth_first():
 
         #Exit coordinates:
         exit = self.current_node.exit
+        print(exit)
 
         #Red car coordinates:
         red_car_coordinate = self.current_node.cars_list[-1].coordinates_list[0]
-        #print(red_car_coordinate)
+        print(red_car_coordinate)
 
         #Are they equal?
         if exit == red_car_coordinate:
