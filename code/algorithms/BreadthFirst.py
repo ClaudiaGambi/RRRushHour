@@ -1,4 +1,5 @@
 import copy
+import numpy as np
 
 class Breadth_first():
     """The breadth first algorithm generates root nodes (possible next board
@@ -11,6 +12,9 @@ class Breadth_first():
         self.current_node = starting_board
         self.queue = [copy.deepcopy(starting_board)]
         self.solution_found = False
+        self.current_board_coordinates_string = str(starting_board.coordinates_list)
+        self.all_states_set = {self.current_board_coordinates_string}
+        self.generation = 0
 
     def generate_nodes(self):
         """Method that creates instances of all the posible next generation nodes,
@@ -29,17 +33,26 @@ class Breadth_first():
                 availability = self.current_node.check_availability(car)
                 # If available, make a copy of the current board:
                 if availability == True:
-                    #print("--------------------------------")
-                    #print(car.coordinates_list)
                     #Update coordinates of the car:
                     car.update_coordinates()
-                    #print(car.coordinates_list)
                     #And make a copy of the updated board:
                     copy_ = copy.deepcopy(self.current_node)
                     # And update board history of the copy:
-                    copy_.update_board_history(car.type, 1)
+                    copy_.update_board_history(car.type, direction)
+                    # And update coordinates list of the copy:
+                    copy_.update_coordinates_board_state()
+                    # Update current board coordinates list:
+                    self.current_board_coordinates_string = str(copy_.coordinates_list)
+                    #print(self.current_board_coordinates_string)
+                    #print(len(self.all_states_set))
+                    #Check whether the copy doesn't already exist:
+                    if self.current_board_coordinates_string in self.all_states_set:
+                        #print("board situ already exists")
+                        continue
                     # And add copy to queue:
                     self.queue.append(copy_)
+                    # And add copy to all states list:
+                    self.all_states_set.add(str(copy_.coordinates_list))
     
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
@@ -50,6 +63,12 @@ class Breadth_first():
 
         # Delete:
         self.queue.pop(0)
+
+        # Update generation:
+        old_generation = self.generation
+        self.generation = len(self.current_node.step_history)
+        if old_generation != self.generation:
+            print(self.generation)
     
     def evaluate_node(self):
         """Method that checks whether the current board has the red car next to the exit.
@@ -58,7 +77,6 @@ class Breadth_first():
 
         #Exit coordinates:
         exit = self.current_node.exit
-        #print(exit)
 
         #Red car coordinates:
         red_car_coordinate = self.current_node.cars_list[-1].coordinates_list[0]
@@ -80,7 +98,7 @@ class Breadth_first():
         while self.solution_found == False:
         #for i in range(500):
             count+=1
-            print(f"Round {count}")
+            #print(f"Round {count}")
 
             # Check whether there's minimally one node in the queue:
             if len(self.queue) < 1:

@@ -20,7 +20,7 @@ class Board():
         self.step_history = pd.DataFrame(columns = ["carName", "move"])
         self.cars_list = []
         self.exit = ()
-        
+        self.coordinates_list = []
 
     def df_to_object(self):
 
@@ -116,3 +116,11 @@ class Board():
         new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
         self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
 
+    def update_coordinates_board_state(self):
+        """Method to update the coordinates list of the board. Uses the current
+        cars object in the cars list attribute of the board. Extracts the
+        coordinates per car and adds those to the list."""
+
+        for car in self.cars_list:
+            self.coordinates_list.append(car.coordinates_list)
+        
