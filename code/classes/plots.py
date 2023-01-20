@@ -32,7 +32,7 @@ class Plot_board():
         plt.ion()
         
         #Loop through cars list:
-        for car in new_car_list:
+        for car in cars_list:
             #Select the color:
             color = car.color
            
@@ -47,5 +47,5 @@ class Plot_board():
        
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-        plt.pause(0.1)
+        plt.pause(5)
         

@@ -120,7 +120,14 @@ class Board():
         """Method to update the coordinates list of the board. Uses the current
         cars object in the cars list attribute of the board. Extracts the
         coordinates per car and adds those to the list."""
-
+        self.coordinates_list = []
         for car in self.cars_list:
             self.coordinates_list.append(car.coordinates_list)
+
+    def __str__(self):
+
+        out = ""
+        for car in self.cars_list:
+            out += str(car) + "\n"
+        return out
         

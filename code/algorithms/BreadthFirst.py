@@ -1,5 +1,6 @@
 import copy
 import numpy as np
+from code.classes import plots
 
 class Breadth_first():
     """The breadth first algorithm generates root nodes (possible next board
@@ -13,7 +14,7 @@ class Breadth_first():
         self.queue = [copy.deepcopy(starting_board)]
         self.solution_found = False
         self.current_board_coordinates_string = str(starting_board.coordinates_list)
-        self.all_states_set = {self.current_board_coordinates_string}
+        self.all_states_set = set()
         self.generation = 0
 
     def generate_nodes(self):
@@ -31,6 +32,7 @@ class Breadth_first():
                 car.step(direction)
                 # Check availability in the board:
                 availability = self.current_node.check_availability(car)
+                # print(availability, direction)
                 # If available, make a copy of the current board:
                 if availability == True:
                     #Update coordinates of the car:
@@ -44,31 +46,43 @@ class Breadth_first():
                     # Update current board coordinates list:
                     self.current_board_coordinates_string = str(copy_.coordinates_list)
                     #print(self.current_board_coordinates_string)
-                    #print(len(self.all_states_set))
+                    # print(len(self.all_states_set))
                     #Check whether the copy doesn't already exist:
-                    if self.current_board_coordinates_string in self.all_states_set:
-                        #print("board situ already exists")
-                        continue
-                    # And add copy to queue:
-                    self.queue.append(copy_)
-                    # And add copy to all states list:
-                    self.all_states_set.add(str(copy_.coordinates_list))
+                    # print(self.all_states_set)
+                    if self.current_board_coordinates_string not in self.all_states_set:
+                        # print("board situ already exists")
+                        
+                        # And add copy to queue:
+                        self.queue.append(copy_)
+                        # print(f"Len queue: {len(self.queue)}")
+                        # And add copy to all states list:
+                        self.all_states_set.add(self.current_board_coordinates_string)
+                
+                car.step(-direction)
+                car.update_coordinates()
     
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
 
+        # Delete:
+        self.queue.pop(0)
+
         # Update:
         self.current_node = self.queue[0]
 
-        # Delete:
-        self.queue.pop(0)
+        # print([str(b) for b in self.queue])
 
         # Update generation:
         old_generation = self.generation
         self.generation = len(self.current_node.step_history)
+        # print("generation old", old_generation, "new: ", self.generation,)
         if old_generation != self.generation:
-            print(self.generation)
+            print(f"Next generation: {self.generation}")
+            # for board in self.queue:
+            #     print(board)
+            # import sys
+            # sys.exit()
     
     def evaluate_node(self):
         """Method that checks whether the current board has the red car next to the exit.
@@ -95,17 +109,18 @@ class Breadth_first():
         is returned, containing all the steps that have been taken to get there."""
         count = 0
         # Continue untill a solution has been found:
-        while self.solution_found == False:
-        #for i in range(500):
+        while self.solution_found == False: 
+        # for i in range(5):
             count+=1
             #print(f"Round {count}")
 
-            # Check whether there's minimally one node in the queue:
-            if len(self.queue) < 1:
-                return print("No solution has been found.")
 
             # Add baby nodes to queue:
             self.generate_nodes()
+
+            # Check whether there's minimally one node in the queue:
+            if len(self.queue) <= 1:
+                return print("No solution has been found.")
 
             # Select new node and update queue:
             self.update_current_node()
