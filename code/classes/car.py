@@ -16,14 +16,15 @@ class Car():
         # identification of car
         self.type = type
         self.color = color
-        self.updated_coordinates = []
 
-    
     def step(self, direction = 1):
         '''
         Function to make a car move. The input is the car object and the direction
         in which it should move (1 or -1). The function outputs new coordinates.
         '''
+
+        self.updated_coordinates = []
+
         # if the car moves horizontally, add the direction to the current x coordinate
         if self.orientation == 'H':
 

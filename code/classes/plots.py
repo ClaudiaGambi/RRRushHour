@@ -29,8 +29,6 @@ class Plot_board():
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
-    
-
     def plot_dotted_cars(self, cars_list):
         plt.ion()
         # fig = plt.figure()
@@ -54,4 +52,3 @@ class Plot_board():
         self.fig.canvas.flush_events()
         plt.pause(0.1)
         
-        # plt.close() 
