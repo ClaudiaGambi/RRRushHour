@@ -18,8 +18,9 @@ class Board():
         self.board_size = board_size
         self.file = file_name
         # verander eventueel als we algoritme implementeren 
-        self.step_dict = {}
+        self.step_history = pd.DataFrame(columns = ['carName', 'move'])
         self.cars_list = []
+        
 
 
     def df_to_object(self):
@@ -111,5 +112,11 @@ class Board():
         
         # if there is no overlap and the car stays on the board:
         return True
+
+    def update_board_history(self, carName, move):
+
+        new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
+
+        self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
 
    
