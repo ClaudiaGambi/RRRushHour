@@ -50,6 +50,9 @@ class Car():
 
     def update_coordinates(self):
         self.coordinates_list = self.updated_coordinates
+
+    def __str__(self):
+        return "car: " + str(self.coordinates_list)
         
         
 
