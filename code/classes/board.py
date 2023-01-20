@@ -17,13 +17,9 @@ class Board():
     def __init__(self, file_name, board_size):
         self.board_size = board_size
         self.file = file_name
-<<<<<<< HEAD
         self.step_history = pd.DataFrame(columns = ["carName", "move"])
-=======
-        # verander eventueel als we algoritme implementeren 
-        self.step_history = pd.DataFrame(columns = ['carName', 'move'])
->>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
         self.cars_list = []
+        self.exit = ()
         
 
     def df_to_object(self):
@@ -42,6 +38,7 @@ class Board():
             #Check what is the red one:
             if car_type == 'X':
                 color = 'r'
+                self.exit = (self.board_size - 1, coord[1])
             
             #Assign random colors to the others:
             else:
@@ -116,15 +113,6 @@ class Board():
         return True
 
     def update_board_history(self, carName, move):
-<<<<<<< HEAD
         new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
         self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
 
-=======
-
-        new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
-
-        self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
-
-   
->>>>>>> fd328ffb107b79bcacf049261a5c56e020251408

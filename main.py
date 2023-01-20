@@ -1,5 +1,7 @@
-from code.classes  import plots
+#from code.classes  import plots
+from code.classes import board
 from code.algorithms import randomize
+from code.algorithms import BreadthFirst
 import argparse
 
 
@@ -9,12 +11,14 @@ def main(input_file, algorithm):
    algorithm that de file needs to be run on. The algorithm is then called on the file
    accordingly. 
    """
-   #checks which algorithm is given as input
+
+   board_size = input_file.split('Rushhour')
+   board_size = board_size[1].split('x')
+   board_size = int(board_size[0])
+
+   # Checks which algorithm is given as input
    if algorithm == 'randomize':
 
-      board_size = input_file.split('Rushhour')
-      board_size = board_size[1].split('x')
-      board_size = int(board_size[0])
       #creates the random object 
       random_algo = randomize.Random(input_file, board_size)
       
@@ -26,6 +30,17 @@ def main(input_file, algorithm):
       plot = plots.Plot_board(board_size)
       plot.create_board()
       plot.plot_dotted_cars(random_algo.new_cars_list)
+   
+   elif algorithm == "BreadthFirst":
+      #Create starting board Board instance:
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+
+      #Run algorithm:
+      bread_first = BreadthFirst.Breadth_first(starting_board)
+      bread_first.run()
+
+      print(bread_first.current_node.step_history.head(30))
 
 """
 ADD ARGUMENT PARSER 

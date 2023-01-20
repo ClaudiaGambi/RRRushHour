@@ -22,10 +22,6 @@ class Car():
         Function to make a car move. The input is the car object and the direction
         in which it should move (1 or -1). The function outputs new coordinates.
         '''
-<<<<<<< HEAD
-
-=======
->>>>>>> fd328ffb107b79bcacf049261a5c56e020251408
         self.updated_coordinates = []
 
         # if the car moves horizontally, add the direction to the current x coordinate
@@ -51,6 +47,9 @@ class Car():
 
                 # update the coordinate list
                 self.updated_coordinates.append(updated_coordinate)
+
+    def update_coordinates(self):
+        self.coordinates_list = self.updated_coordinates
         
         
 
