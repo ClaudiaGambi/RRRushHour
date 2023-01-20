@@ -14,9 +14,8 @@ class Board():
     move can be done: whether another car is in the way or wheter the car 
     will move of the board.
     '''
-    def __init__(self, file_name):
-        self.column = int(file_name[19])
-        self.row = int(file_name[19])
+    def __init__(self, file_name, board_size):
+        self.board_size = board_size
         self.file = file_name
         # verander eventueel als we algoritme implementeren 
         self.step_dict = {}
@@ -30,7 +29,7 @@ class Board():
 
         for row, column in df.iterrows():
             # 7
-            coord = (column[2], 10 - column[3])
+            coord = (column[2], (self.board_size + 1) - column[3])
             length = column[4]
             orientation = column[1]
             car_type = column[0]
@@ -87,7 +86,7 @@ class Board():
 
         #Check if car won't move off the board
         for number in flat_coords:
-            if number > self.column or number < 1:
+            if number > self.board_size or number < 1:
                 return False
 
         #Loop through cars list:

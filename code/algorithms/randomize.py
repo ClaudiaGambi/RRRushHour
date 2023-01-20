@@ -8,9 +8,9 @@ class Random():
     '''
     Implementation of random algorithm 
     '''
-    def __init__(self, filename):
-        self.board = board.Board(filename)
-        
+    def __init__(self, filename, board_size):
+        self.board = board.Board(filename, board_size)
+        self.board_size = board_size
         self.new_cars_list = []
         
         
@@ -22,7 +22,8 @@ class Random():
         # move count
         move_count = 0
         #(5,4)
-        while self.new_cars_list[-1].coordinates_list[0] != (8,5 ):
+        exit = (self.board_size - 1 ,self.new_cars_list[-1].coordinates_list[0][1])
+        while self.new_cars_list[-1].coordinates_list[0] != exit:
             
         
             # choose randomly from car list
@@ -49,6 +50,7 @@ class Random():
                 # plot = plots.Plot_board()
                 # plot.create_board()
                 # plot.plot_dotted_cars(self.new_cars_list)
+                # print('++++True+++++')
 
             # Keep track of the game steps:
             lst.append([random_car.type, random_direction])

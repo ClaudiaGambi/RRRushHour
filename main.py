@@ -12,14 +12,18 @@ def main(input_file, algorithm):
    #checks which algorithm is given as input
    if algorithm == 'randomize':
 
+      board_size = input_file.split('Rushhour')
+      board_size = board_size[1].split('x')
+      board_size = int(board_size[0])
       #creates the random object 
-      random_algo = randomize.Random(input_file)
-
+      random_algo = randomize.Random(input_file, board_size)
+      
+      # print(board_size)
       # runs the experiment
       random_algo.run()
 
       # plots the visualisation 
-      plot = plots.Plot_board()
+      plot = plots.Plot_board(board_size)
       plot.create_board()
       plot.plot_dotted_cars(random_algo.new_cars_list)
 

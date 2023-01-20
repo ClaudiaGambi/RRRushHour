@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 class Plot_board():
-    def __init__(self):
+    def __init__(self, board_size):
 
-        self.board_size = 9
+        self.board_size = board_size
         self.fig = plt.figure(figsize = [self.board_size, self.board_size])
         self.ax = self.fig.add_subplot(111)
 
@@ -24,7 +24,7 @@ class Plot_board():
         self.ax.set_position([0, 0, 1, 1])
 
         #No numbers visible:
-        # self.ax.set_axis_off()
+        self.ax.set_axis_off()
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
@@ -32,27 +32,24 @@ class Plot_board():
 
     def plot_dotted_cars(self, new_car_list):
         plt.ion()
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
+        
         #Loop through cars list:
         for car in new_car_list:
             #Select the color:
             color = car.color
-            # print(f"Car: {car}")
+           
             #Loop through every coordinate of the car:
-            
             for coordinate in car.coordinates_list:
                 column = coordinate[0]
                 row = coordinate[1]
                 self.ax.plot(column - 0.5,row - 0.5, marker = "s", color = color, markersize = 50)
         
-        #Make sure the board is squared:
-        #self.ax.set_position([0, 0, 1, 1])
-        #create plot that does not close figure 
-        # plt.axis('off')
+        
+        #!!! create plot that does not close figure  !!!
+       
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
         plt.pause(10)
         # plt.show()
         
-        # plt.close() 
+        plt.close() 
