@@ -47,7 +47,8 @@ class Car():
 
                 # update the coordinate list
                 self.updated_coordinates.append(updated_coordinate)
-        print(f"Updated coordinates: {self.updated_coordinates}")
+        
+        print(f"Step function > Updated coordinates: {self.updated_coordinates}")
 
     def update_coordinates(self):
         self.coordinates_list = self.updated_coordinates

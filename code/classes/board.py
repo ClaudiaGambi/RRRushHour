@@ -163,4 +163,4 @@ class Board():
                 column = coord[0]-1
                 row = coord[1]-1
                 array_board[row][column] = count
-        print(f"\nArray copy: \n{array_board} \n")
+        print(f"\n {array_board} \n")
