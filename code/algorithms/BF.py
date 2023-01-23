@@ -26,6 +26,8 @@ class Breadth_first():
         attribute. The board history (of each node) is saved in the board instance
         itself."""
         lst = [-1,1]
+
+        #1. 
         
         # Loop through the cars in the current node:
         for car in self.current_node.cars_list:

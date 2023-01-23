@@ -131,3 +131,34 @@ class Board():
             out += str(car) + "\n"
         return out
         
+    # def array_plot(self):
+    #     """
+    #     An easy 'plot' consistng of an arry to help debugging
+    #     """
+    #     array_board = np.zeros((self.board_size, self.board_size))
+    #     for car in self.coordinates_list:
+    #         count = 0
+    #         # identification = str(car.type)
+    #         for coordinate in car.coordinates_list:
+    #             count += 1
+
+    #             for coord in coordinate:
+    #                 column = coord[0]-1
+    #                 row = coord[1]-1
+    #                 array_board[row][column] = count
+    #     print(f"{array_board} \n")
+
+    def array_plot(self, coordinates_list):
+        """
+        An easy 'plot' consistng of an arry to help debugging
+        """
+        array_board = np.zeros((self.board_size, self.board_size))
+        count = 0
+        for coordinate in coordinates_list:
+            count += 1
+
+            for coord in coordinate:
+                column = coord[0]-1
+                row = coord[1]-1
+                array_board[row][column] = count
+        print(f"\nArray copy: \n{array_board} \n")

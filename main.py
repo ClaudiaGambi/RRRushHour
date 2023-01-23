@@ -35,6 +35,7 @@ def main(input_file, algorithm):
       #Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
       starting_board.df_to_object()
+      #starting_board.update_coordinates_board_state()
 
       #Run algorithm:
       bread_first = BreadthFirst.Breadth_first(starting_board)
