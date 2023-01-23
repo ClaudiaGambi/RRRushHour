@@ -2,6 +2,7 @@
 from code.classes import board
 from code.algorithms import randomize
 from code.algorithms import BreadthFirst
+from code.classes import plots
 import argparse
 
 
@@ -41,7 +42,7 @@ def main(input_file, algorithm):
       bread_first = BreadthFirst.Breadth_first(starting_board)
       bread_first.run()
 
-      print(bread_first.current_node.step_history.head(30))
+      print(f'HISTORY{bread_first.current_node.step_history.head(30)}')
 
 """
 ADD ARGUMENT PARSER 

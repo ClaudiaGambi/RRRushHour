@@ -72,14 +72,14 @@ class Board():
 
             self.cars_list.append(car.Car(list_coordinates, length, orientation, car_type, color))
 
-    def check_availability(self, random_car):
+    def check_availability(self, moving_car):
         """
         Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility.
         """
         #Make set of car coordinates:
-        set_new_coordinates= set(random_car.updated_coordinates)
+        set_new_coordinates= set(moving_car.updated_coordinates)
 
         #Check whether the car coordinates are not of the board yet:
         flat_coords = list(itertools.chain(*set_new_coordinates))
@@ -93,7 +93,7 @@ class Board():
         for car in self.cars_list:
 
             #Don't check with self:
-            if car.type == random_car.type:
+            if car.type == moving_car.type:
                 continue
             
             #Make a set of the car coordinates:
@@ -117,9 +117,11 @@ class Board():
         self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
 
     def update_coordinates_board_state(self):
-        """Method to update the coordinates list of the board. Uses the current
+        """
+        Method to update the coordinates list of the board. Uses the current
         cars object in the cars list attribute of the board. Extracts the
-        coordinates per car and adds those to the list."""
+        coordinates per car and adds those to the list.
+        """
         self.coordinates_list = []
         for car in self.cars_list:
             self.coordinates_list.append(car.coordinates_list)

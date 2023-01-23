@@ -38,7 +38,7 @@ class Car():
                
 
         # if the car moves vertically, add the direction to the current y coordinate
-        if self.orientation== 'V':
+        if self.orientation == 'V':
 
             # loop over all coordinates the car is on
             for coordinate in self.coordinates_list:

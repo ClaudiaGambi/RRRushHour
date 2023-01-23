@@ -1,4 +1,4 @@
-
+import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -49,3 +49,5 @@ class Plot_board():
         self.fig.canvas.flush_events()
         plt.pause(5)
         
+    
+
