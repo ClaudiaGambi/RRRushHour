@@ -12,13 +12,13 @@ class Breadth_first():
     def __init__(self, starting_board):
         self.current_node = starting_board
         self.current_node.update_coordinates_board_state()
-        print(f"\nCurrent (starting) board coordinates list: {self.current_node.coordinates_list}\n")
-        self.queue = [copy.copy(starting_board)]
+        #print(f"\nCurrent (starting) board coordinates list: {self.current_node.coordinates_list}\n")
+        self.queue = [copy.deepcopy(starting_board)]
 
-        print(f"\nCoordinates list of each board in the queue:")
+        #print(f"\nCoordinates list of each board in the queue:")
                         
-        for u in self.queue:
-            print(u.coordinates_list)
+        # for u in self.queue:
+            #print(u.coordinates_list)
 
         self.solution_found = False
         self.current_node.update_coordinates_board_state()
@@ -38,11 +38,11 @@ class Breadth_first():
         #1. Look at each possible move (on the parent board):
         for car in self.current_node.cars_list:                                 # Loop through cars on the parent board
             
-            print(f"Parent car coords: {self.current_node.coordinates_list}")
+            # #print(f"Parent car coords: {self.current_node.coordinates_list}")
 
             for direction in [-1,1]:                                            # Propose a move in both directions
                 
-                print(f"Proposed direction: {direction}")
+                ##print(f"Proposed direction: {direction}")
 
                 car.step(direction)                                             # Propose a move on the parent board
 
@@ -51,13 +51,13 @@ class Breadth_first():
 
                 availability = self.current_node.check_availability(car)        # Check availability on the parent board
 
-                print(f"Available? {availability}\n")
+                ##print(f"Available? {availability}\n")
 
         #2. If a possible move is proposed, make a copy of the parent board:
 
                 if availability == True:
 
-                    child = copy.copy(self.current_node)                        # Make a copy of the parent board
+                    child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
 
         #3. Adjust child board with the proposed move:
 
@@ -73,8 +73,8 @@ class Breadth_first():
 
                     child_coords = str(child.coordinates_list)
 
-                    print(f"Update_coordinates_board_state > Child coords: {child_coords}")
-                    print(f"Not adjusted > Parent node coords: {self.current_node.coordinates_list}")
+                    # #print(f"Update_coordinates_board_state > Child coords: {child_coords}")
+                    # #print(f"Not adjusted > Parent node coords: {self.current_node.coordinates_list}")
 
         #4. Check whether child doesn't already exists in the all states set:
 
@@ -82,19 +82,19 @@ class Breadth_first():
 
         #5. If not, add to queue and to all state set:
 
-                        print(f"\nLength of the queue: {len(self.queue)}")
-                        print(f"Coordinates list of each board in the queue:")
+                        #print(f"\nLength of the queue: {len(self.queue)}")
+                        #print(f"Coordinates list of each board in the queue:")
                         
-                        for u in self.queue:
-                            print(u.coordinates_list)
+                        # for u in self.queue:
+                            #print(u.coordinates_list)
 
                         self.queue.append(child)
 
-                        print(f"\nQueue append > Length of the queue: {len(self.queue)}")
-                        print(f"Coordinates list of each board in the queue:")
+                        #print(f"\nQueue append > Length of the queue: {len(self.queue)}")
+                        #print(f"Coordinates list of each board in the queue:")
                         
-                        for u in self.queue:
-                            print(u.coordinates_list)
+                        # for u in self.queue:
+                            #print(u.coordinates_list)
 
                         self.all_states_set.add(child_coords)
 
@@ -105,7 +105,7 @@ class Breadth_first():
         using the current node as a 'parent'. The nodes are added to the queue list
         attribute. The board history (of each node) is saved in the board instance
         itself."""
-        lst = [-1,1]
+        lst = [-3, -2, -1, 1, 2, 3]
         
         # Loop through the cars in the current node:
         for car in self.current_node.cars_list:
@@ -119,7 +119,7 @@ class Breadth_first():
                 
                 # Check availability in the board:
                 availability = self.current_node.check_availability(car)    # Car: check updated coordinates with board cars   
-                print(availability, direction)
+                #print(availability, direction)
                 
                 # If available, make a copy of the current board:
                 if availability == True:
@@ -134,28 +134,28 @@ class Breadth_first():
                     copy_.update_coordinates_board_state()                  # Update copy board car coordinates list
 
                     #Check whether the copy doesn't already exist:
-                    # print(self.all_states_set)
+                    # #print(self.all_states_set)
                     if self.current_board_coordinates_string not in self.all_states_set:
                         #Update coordinates of the car:
-                        print(f"Pre update: {car.coordinates_list}")
+                        #print(f"Pre update: {car.coordinates_list}")
                         # loop over copy car
-                        print("!!!!!!!!!!!!!!!!!!!!1")
-                        print(copy_.cars_list[i])
+                        #print("!!!!!!!!!!!!!!!!!!!!1")
+                        #print(copy_.cars_list[i])
                         copy_.cars_list[i].update_coordinates()                     # Car: updated coords >> coords_list
-                        print(f"Post update: {car.coordinates_list}")
+                        #print(f"Post update: {car.coordinates_list}")
 
                         # Save current board coordinates list:
                         self.current_board_coordinates_string = str(copy_.coordinates_list) # Board: string of car coords
                         # Show copy plot:
                         copy_.array_plot(copy_.coordinates_list)
-                        print(copy_.coordinates_list)
-                        print(f"Length all states set: {len(self.all_states_set)}")
-                        print(f"Child coords string: {self.current_board_coordinates_string}")
-                        print(f'All strings: {self.all_states_set}')
+                        #print(copy_.coordinates_list)
+                        #print(f"Length all states set: {len(self.all_states_set)}")
+                        #print(f"Child coords string: {self.current_board_coordinates_string}")
+                        #print(f'All strings: {self.all_states_set}')
 
                         # And add copy to queue:
                         self.queue.append(copy_)
-                        print(f"Len queue: {len(self.queue)}\n {self.queue}")
+                        #print(f"Len queue: {len(self.queue)}\n {self.queue}")
                         
                         # And add copy to all states list:
                         self.all_states_set.add(self.current_board_coordinates_string)
@@ -164,17 +164,17 @@ class Breadth_first():
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
 
-        print(f"\nUpdate current node method aangeroepen:")
-        print(f"Queue (nog niet aangeraakt):")
-        for u in self.queue:
-            print(u.coordinates_list)
+        #print(f"\nUpdate current node method aangeroepen:")
+        #print(f"Queue (nog niet aangeraakt):")
+        # for u in self.queue:
+            #print(u.coordinates_list)
 
         # Delete:
         self.queue.pop(0)
 
-        print(f"Queue na remove:")
-        for u in self.queue:
-            print(u.coordinates_list)
+        #print(f"Queue na remove:")
+        # for u in self.queue:
+            #print(u.coordinates_list)
 
         # Update:
         self.current_node = self.queue[0]
@@ -212,23 +212,23 @@ class Breadth_first():
         is returned, containing all the steps that have been taken to get there."""
         
         # Show array of the starting board:
-        print(f"\nStarting node: -------------------------------")
+        #print(f"\nStarting node: -------------------------------")
         self.current_node.array_plot(self.current_node.coordinates_list)
 
         # Continue untill a solution has been found:
         while self.solution_found == False: 
-
-            # Evaluate current node:
-            self.evaluate_node()
         
             # Add baby nodes to queue:
             self.generate_nodes()
 
             # Check whether there's minimally one node in the queue:
             if len(self.queue) == 0:
-                return print("No solution has been found.")
+                return #print("No solution has been found.")
 
             # Select new node and update queue:
             self.update_current_node()
+
+            # Evaluate current node:
+            self.evaluate_node()
 
         return self.current_node.step_history
