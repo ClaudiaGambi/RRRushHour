@@ -35,38 +35,56 @@ class Breadth_first():
                 # print(availability, direction)
                 # If available, make a copy of the current board:
                 if availability == True:
+
                     #Update coordinates of the car:
                     car.update_coordinates()
+
                     #And make a copy of the updated board:
                     copy_ = copy.deepcopy(self.current_node)
+
                     # And update board history of the copy:
                     copy_.update_board_history(car.type, direction)
+
+                    # test easy array plot
+                    # copy_.array_plot(copy_.coordinates_list)
+
                     # And update coordinates list of the copy:
                     copy_.update_coordinates_board_state()
+
+                    # test easy array plot
+                    copy_.array_plot(copy_.coordinates_list)
+
                     # Update current board coordinates list:
                     self.current_board_coordinates_string = str(copy_.coordinates_list)
-                    #print(self.current_board_coordinates_string)
+
                     # print(len(self.all_states_set))
                     #Check whether the copy doesn't already exist:
                     # print(self.all_states_set)
                     if self.current_board_coordinates_string not in self.all_states_set:
-                        # print("board situ already exists")
                         
                         # And add copy to queue:
                         self.queue.append(copy_)
+
                         # print(f"Len queue: {len(self.queue)}")
                         # And add copy to all states list:
                         self.all_states_set.add(self.current_board_coordinates_string)
+
+                    #!!!!!!!!!!!!!!!!!! --> 
+                    car.update_coordinates()
                 
                 car.step(-direction)
-                car.update_coordinates()
+                
+
     
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
-
         # Delete:
         self.queue.pop(0)
+
+        # print(f'LEN QUEUE {len(self.queue)}')
+        # for i in range(len(self.queue)):
+            # print(f'QUEUE NUMBER {i} {self.queue[i]}')
 
         # Update:
         self.current_node = self.queue[0]
@@ -118,9 +136,10 @@ class Breadth_first():
 
             # Add baby nodes to queue:
             self.generate_nodes()
-
+            # print(len(self.queue))
             # Check whether there's minimally one node in the queue:
             if len(self.queue) <= 1:
+                
                 return print("No solution has been found.")
 
             # Select new node and update queue:
