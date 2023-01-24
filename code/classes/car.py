@@ -40,7 +40,7 @@ class Car():
 
             # loop over all coordinates the car is on
             for coordinate in self.coordinates_list:
-                updated_y = coordinate[1] + direction
+                updated_y = coordinate[1] - direction
                 updated_coordinate = (coordinate[0], updated_y)
 
                 # update the coordinate list

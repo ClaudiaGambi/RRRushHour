@@ -5,7 +5,7 @@ from code.classes import plots
 import argparse
 
 
-def main(input_file, algorithm):
+def main(input_file, algorithm, output_file):
    """
    This function takes the input from the argument parser, which are the filename and the 
    algorithm that de file needs to be run on. The algorithm is then called on the file
@@ -13,6 +13,7 @@ def main(input_file, algorithm):
    """
 
    board_size = input_file.split('Rushhour')
+   print(board_size)
    board_size = board_size[1].split('x')
    board_size = int(board_size[0])
 
@@ -44,6 +45,7 @@ def main(input_file, algorithm):
       bread_first.run()
 
       print(f'HISTORY{bread_first.current_node.step_history.head(30)}')
+      bread_first.current_node.step_history.to_csv('output.csv', index =False)
 
 
 if __name__ == '__main__':
@@ -55,6 +57,8 @@ if __name__ == '__main__':
    parser = argparse.ArgumentParser(description = 'import dataframe with board values')
 
    # add arguments to parser
+
+   parser.add_argument('output', help = 'output file (csv)')
    parser.add_argument('input', help = 'input_file (csv')
    parser.add_argument('-algo', '--algorithm')
 
@@ -62,4 +66,4 @@ if __name__ == '__main__':
    args = parser.parse_args()
 
    # run main with arguments from parser
-   main(args.input, args.algorithm)
+   main(args.input, args.algorithm, args.output)

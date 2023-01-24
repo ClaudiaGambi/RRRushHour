@@ -14,6 +14,7 @@ class Random():
         self.new_cars_list = []
         
         
+        
     def run(self):
         self.board.df_to_object()
         self.new_cars_list = self.board.cars_list
@@ -57,7 +58,7 @@ class Random():
             # print(move_count)
         print(f'amount of steps till sollution: {move_count}')
         steps_df = pd.DataFrame(lst, columns = ["car", "move"])
-        print(steps_df.head(20))
+        # print(steps_df.head(20))
 
                 
 

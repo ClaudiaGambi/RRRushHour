@@ -17,7 +17,7 @@ class Board():
     def __init__(self, file_name, board_size):
         self.board_size = board_size
         self.file = file_name
-        self.step_history = pd.DataFrame(columns = ["carName", "move"])
+        self.step_history = pd.DataFrame(columns = ["car", "move"])
         self.cars_list = []
         self.exit = ()
         self.coordinates_list = []
@@ -112,7 +112,7 @@ class Board():
         return True
 
     def update_board_history(self, carName, move):
-        new_row = pd.DataFrame({'carName': [carName], 'move': [move]})
+        new_row = pd.DataFrame({'car': [carName], 'move': [move]})
         self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
 
     def update_coordinates_board_state(self):
