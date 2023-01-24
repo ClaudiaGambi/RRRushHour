@@ -77,16 +77,52 @@ class Board():
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility.
         """
-        #Make set of car coordinates:
-        set_new_coordinates= set(new_coords)
+        
+        #1. Define the route the car wants to drive: ------------------------------------------------
 
-        #Check whether the car coordinates are not of the board yet:
-        flat_coords = list(itertools.chain(*set_new_coordinates))
+        car_current_spot = list(moving_car.coordinates_list)
+        orientation = moving_car.orientation
 
-        #Check if car won't move off the board
+        # Amount of steps:
+        if orientation == "V":
+            steps = new_coords[0][1] - car_current_spot[0][1]
+        else:
+            steps = new_coords[0][0] - car_current_spot[0][0]
+
+        # Travel directions (for loop):
+        travel_directions = list()
+        for i in range(1, abs(steps)+1):
+
+            # Move to the right:
+            if abs(steps) == steps:
+                travel_directions.append(i)
+
+            # Move to the left:
+            else:
+                travel_directions.append(0-i)
+
+        # Coordinates the car needs to pass:
+        proposed_route = set()
+        for i in travel_directions:
+            if orientation == "V":
+                new_coord = (car_current_spot[-1][0], car_current_spot[-1][1] + i)
+                proposed_route.add(new_coord)
+            else:
+                new_coord = (car_current_spot[-1][0] + i, car_current_spot[-1][1])
+                proposed_route.add(new_coord)
+                
+        #2. Check whether the car stays on the board: -----------------------------------------------
+
+        final_destination = set(new_coords)
+
+        # Check whether the car coordinates are not of the board yet: -------------------------------
+        flat_coords = list(itertools.chain(*final_destination))
+
         for number in flat_coords:
             if number > self.board_size or number < 1:
                 return False
+    
+        #3. Check whether the proposed route doesn't generate driving accidents with any car on the board:
 
         #Loop through cars list:
         for car in self.cars_list:
@@ -99,7 +135,7 @@ class Board():
             coords = set(car.coordinates_list)
             
             #Check whether there is overlap:
-            overlap = set_new_coordinates.intersection(coords)
+            overlap = proposed_route.intersection(coords)
             
             #If there's no overlap, go to next car:
             if len(overlap) < 1:

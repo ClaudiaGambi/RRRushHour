@@ -30,9 +30,9 @@ class Breadth_first():
         for car in self.current_node.cars_list:                                 # Loop through cars on the parent board
             
 
-            for direction in [-1,1]:                                            # Propose a move in both directions
+            for direction in [-1, 1]:                                    # Propose a move in both directions
 
-                new_coords = car.step(direction)                                             # Propose a move on the parent board
+                new_coords = car.step(direction)                                # Propose a move on the parent board
 
                 # new_coords = car.updated_coordinates
                 carname = car.type
@@ -40,9 +40,7 @@ class Breadth_first():
                 # get index of car in current node
                 i = self.current_node.cars_list.index(car)
 
-                availability = self.current_node.check_availability(car, new_coords)        # Check availability on the parent board
-
-    
+                availability = self.current_node.check_availability(car, new_coords)# Check availability on the parent board
 
         #2. If a possible move is proposed, make a copy of the parent board:
 
@@ -70,10 +68,9 @@ class Breadth_first():
 
                         self.queue.append(child)
 
-
                         self.all_states_set.add(child_coords)
 
-                        child.array_plot(child.coordinates_list)                    # Show array of the board
+                        #child.array_plot(child.coordinates_list)                    # Show array of the board
 
    
     def update_current_node(self):
