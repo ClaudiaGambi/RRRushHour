@@ -78,39 +78,39 @@ class Board():
         the proposed coordinates are a possibility.
         """
         
-        #1. Define the route the car wants to drive: ------------------------------------------------
+        # #1. Define the route the car wants to drive: ------------------------------------------------
 
-        car_current_spot = list(moving_car.coordinates_list)
-        orientation = moving_car.orientation
+        # car_current_spot = list(moving_car.coordinates_list)
+        # orientation = moving_car.orientation
 
-        # Amount of steps:
-        if orientation == "V":
-            steps = new_coords[0][1] - car_current_spot[0][1]
-        else:
-            steps = new_coords[0][0] - car_current_spot[0][0]
+        # # Amount of steps:
+        # if orientation == "V":
+        #     steps = new_coords[0][1] - car_current_spot[0][1]
+        # else:
+        #     steps = new_coords[0][0] - car_current_spot[0][0]
 
-        # Travel directions (for loop):
-        travel_directions = list()
-        for i in range(1, abs(steps)+1):
+        # # Travel directions (for loop):
+        # travel_directions = list()
+        # for i in range(1, abs(steps)+1):
 
-            # Move to the right:
-            if abs(steps) == steps:
-                travel_directions.append(i)
+        #     # Move to the right:
+        #     if abs(steps) == steps:
+        #         travel_directions.append(i)
 
-            # Move to the left:
-            else:
-                travel_directions.append(0-i)
+        #     # Move to the left:
+        #     else:
+        #         travel_directions.append(0-i)
 
-        # Coordinates the car needs to pass:
-        proposed_route = set()
-        for i in travel_directions:
-            if orientation == "V":
-                new_coord = (car_current_spot[-1][0], car_current_spot[-1][1] + i)
-                proposed_route.add(new_coord)
-            else:
-                new_coord = (car_current_spot[-1][0] + i, car_current_spot[-1][1])
-                proposed_route.add(new_coord)
-                
+        # # Coordinates the car needs to pass:
+        # proposed_route = set()
+        # for i in travel_directions:
+        #     if orientation == "V":
+        #         new_coord = (car_current_spot[-1][0], car_current_spot[-1][1] + i)
+        #         proposed_route.add(new_coord)
+        #     else:
+        #         new_coord = (car_current_spot[-1][0] + i, car_current_spot[-1][1])
+        #         proposed_route.add(new_coord)
+
         #2. Check whether the car stays on the board: -----------------------------------------------
 
         final_destination = set(new_coords)
