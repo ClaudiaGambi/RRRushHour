@@ -21,7 +21,7 @@ class Random():
         
         # move count
         move_count = 0
-        #(5,4)
+       
         exit = (self.board_size - 1 ,self.new_cars_list[-1].coordinates_list[0][1])
         while self.new_cars_list[-1].coordinates_list[0] != exit:
             
@@ -36,16 +36,16 @@ class Random():
             # propose a random step:
             # print(f'----{random_car.type}------')
             # print(random_car.coordinates_list)
-            random_car.step(random_direction)
+            new_coords = random_car.step(random_direction)
 
             # print(random_car.updated_coordinates)
             
             #Check availablity:
-            availability = self.board.check_availability(random_car)
+            availability = self.board.check_availability(random_car, new_coords)
 
             #If available, save the step in (updated) dictionary:
             if availability == True:
-                random_car.coordinates_list = random_car.updated_coordinates
+                random_car.update_coordinates(new_coords)
                 move_count += 1
                 # plot = plots.Plot_board()
                 # plot.create_board()

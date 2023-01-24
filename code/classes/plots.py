@@ -28,7 +28,7 @@ class Plot_board():
         self.ax.set_xlim(-1, self.board_size + 1)
         self.ax.set_ylim(-1, self.board_size + 1)
 
-    def plot_dotted_cars(self, cars_list):
+    def plot_cars(self, cars_list):
         plt.ion()
         
         #Loop through cars list:
@@ -47,6 +47,7 @@ class Plot_board():
        
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
+        plt.show()
         plt.pause(5)
         
     

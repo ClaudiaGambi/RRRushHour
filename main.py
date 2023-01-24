@@ -29,7 +29,7 @@ def main(input_file, algorithm):
       # plots the visualisation 
       plot = plots.Plot_board(board_size)
       plot.create_board()
-      plot.plot_dotted_cars(random_algo.new_cars_list)
+      plot.plot_cars(random_algo.new_cars_list)
    
    elif algorithm == "BreadthFirst":
       #Create starting board Board instance:
