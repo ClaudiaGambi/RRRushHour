@@ -1,5 +1,3 @@
-import random 
-import pandas as pd 
 
 class Car():
     '''
@@ -17,12 +15,12 @@ class Car():
         self.type = type
         self.color = color
 
-    def step(self, direction = 1):
+    def step(self, direction ):
         '''
         Function to make a car move. The input is the car object and the direction
-        in which it should move (1 or -1). The function outputs new coordinates.
+        in which it should move (1 or -1). The function returns new coordinates.
         '''
-        self.updated_coordinates = []
+        updated_coordinates = []
 
         # if the car moves horizontally, add the direction to the current x coordinate
         if self.orientation == 'H':
@@ -34,7 +32,7 @@ class Car():
                 updated_coordinate = (updated_x, coordinate[1])
 
                 # update the coordinate list
-                self.updated_coordinates.append(updated_coordinate)
+                updated_coordinates.append(updated_coordinate)
                
 
         # if the car moves vertically, add the direction to the current y coordinate
@@ -46,15 +44,22 @@ class Car():
                 updated_coordinate = (coordinate[0], updated_y)
 
                 # update the coordinate list
-                self.updated_coordinates.append(updated_coordinate)
+                updated_coordinates.append(updated_coordinate)
         
-        # print(f"Step function > Updated coordinates: {self.updated_coordinates}")
+        return updated_coordinates
+        
+        
+    def update_coordinates(self, updated_coordinates):
+        """
+        Function updates coordinates in coordinates list to the new computed 
+        updates coordinates from the step function. This function is called 
+        if the availability in board is true. 
+        """
 
-    def update_coordinates(self):
-        self.coordinates_list = self.updated_coordinates
+        # update coordinates in coordinates list
+        self.coordinates_list = updated_coordinates
 
-    def __str__(self):
-        return "car: " + str(self.coordinates_list)
+    
         
         
 

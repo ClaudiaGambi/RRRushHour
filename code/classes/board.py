@@ -28,7 +28,6 @@ class Board():
         df = pd.read_csv(self.file)
 
         for row, column in df.iterrows():
-            # 7
             coord = (column[2], (self.board_size + 1) - column[3])
             length = column[4]
             orientation = column[1]
@@ -72,14 +71,14 @@ class Board():
 
             self.cars_list.append(car.Car(list_coordinates, length, orientation, car_type, color))
 
-    def check_availability(self, moving_car):
+    def check_availability(self, moving_car, new_coords):
         """
         Method that checks whether the proposed coordinates (input) are not taken by another car yet.
         It also checks that the car is not going of the board yet. Outputs boolean that is True when 
         the proposed coordinates are a possibility.
         """
         #Make set of car coordinates:
-        set_new_coordinates= set(moving_car.updated_coordinates)
+        set_new_coordinates= set(new_coords)
 
         #Check whether the car coordinates are not of the board yet:
         flat_coords = list(itertools.chain(*set_new_coordinates))
@@ -126,29 +125,6 @@ class Board():
         for car in self.cars_list:
             self.coordinates_list.append(car.coordinates_list)
 
-    def __str__(self):
-
-        out = ""
-        for car in self.cars_list:
-            out += str(car) + "\n"
-        return out
-        
-    # def array_plot(self):
-    #     """
-    #     An easy 'plot' consistng of an arry to help debugging
-    #     """
-    #     array_board = np.zeros((self.board_size, self.board_size))
-    #     for car in self.coordinates_list:
-    #         count = 0
-    #         # identification = str(car.type)
-    #         for coordinate in car.coordinates_list:
-    #             count += 1
-
-    #             for coord in coordinate:
-    #                 column = coord[0]-1
-    #                 row = coord[1]-1
-    #                 array_board[row][column] = count
-    #     print(f"{array_board} \n")
 
     def array_plot(self, coordinates_list):
         """
@@ -163,4 +139,4 @@ class Board():
                 column = coord[0]-1
                 row = coord[1]-1
                 array_board[row][column] = count
-        # print(f"\n {array_board} \n")
+        print(f"\n {array_board} \n")

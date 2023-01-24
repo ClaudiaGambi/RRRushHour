@@ -1,4 +1,3 @@
-#from code.classes  import plots
 from code.classes import board
 from code.algorithms import randomize
 from code.algorithms import BreadthFirst
@@ -23,7 +22,7 @@ def main(input_file, algorithm):
       #creates the random object 
       random_algo = randomize.Random(input_file, board_size)
       
-      # print(board_size)
+
       # runs the experiment
       random_algo.run()
 
@@ -35,8 +34,10 @@ def main(input_file, algorithm):
    elif algorithm == "BreadthFirst":
       #Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
+      #add carslist to instance
       starting_board.df_to_object()
-      #starting_board.update_coordinates_board_state()
+      #add board state to instance
+      starting_board.update_coordinates_board_state()
 
       #Run algorithm:
       bread_first = BreadthFirst.Breadth_first(starting_board)
@@ -44,9 +45,6 @@ def main(input_file, algorithm):
 
       print(f'HISTORY{bread_first.current_node.step_history.head(30)}')
 
-"""
-ADD ARGUMENT PARSER 
-"""
 
 if __name__ == '__main__':
    """
