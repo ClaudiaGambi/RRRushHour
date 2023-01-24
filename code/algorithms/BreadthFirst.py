@@ -50,7 +50,9 @@ class Breadth_first():
 
         #3. Adjust child board with the proposed move:
         # update coordinates of car in child board with index of mother board
+                    # print(f'before: {child.cars_list[i].coordinates_list}')
                     child.cars_list[i].update_coordinates(new_coords)
+                    # print(f'after:{child.cars_list[i].coordinates_list}')
                     
                     child.update_coordinates_board_state()                          # Update coordinates list of the child
                 
@@ -100,10 +102,11 @@ class Breadth_first():
 
         #Exit coordinates:
         exit = self.current_node.exit
+        # print(exit)
 
         #Red car coordinates:
         red_car_coordinate = self.current_node.cars_list[-1].coordinates_list[0]
-
+        # print(red_car_coordinate)
         #Are they equal?
         if exit == red_car_coordinate:
             self.solution_found = True
