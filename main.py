@@ -1,6 +1,7 @@
 from code.classes import board
 from code.algorithms import randomize
 from code.algorithms import BreadthFirst
+from code.algorithms import BF_NearExit
 from code.classes import plots
 import argparse
 
@@ -32,7 +33,7 @@ def main(input_file, algorithm, output_file):
       plot.create_board()
       plot.plot_cars(random_algo.new_cars_list)
    
-   elif algorithm == "BreadthFirst":
+   elif algorithm == "BreadthFirst" or algorithm == "BF_NearExit":
       #Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
       #add carslist to instance
@@ -41,11 +42,24 @@ def main(input_file, algorithm, output_file):
       starting_board.update_coordinates_board_state()
 
       #Run algorithm:
-      bread_first = BreadthFirst.Breadth_first(starting_board)
-      bread_first.run()
+      if algorithm == "BreadthFirst":
+         breadth_first = BreadthFirst.Breadth_first(starting_board)
+         breadth_first.run()
 
-      print(f'HISTORY{bread_first.current_node.step_history.head(30)}')
-      bread_first.current_node.step_history.to_csv('output.csv', index =False)
+         print(f'HISTORY{breadth_first.current_node.step_history}')
+         print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+
+         breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+      else:
+         #add distance to exit attribute:
+         starting_board.distance_calculator()
+         BF_NE = BF_NearExit.BF_NearExit(starting_board)
+         BF_NE.run()
+
+         print(f'HISTORY{BF_NE.current_node.step_history}')
+         print(f"Number of expanded nodes: {BF_NE.expanded_nodes}")
+
+         BF_NE.current_node.step_history.to_csv('output.csv', index =False)
 
 
 if __name__ == '__main__':

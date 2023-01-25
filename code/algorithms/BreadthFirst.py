@@ -16,6 +16,7 @@ class Breadth_first():
         self.all_states_set = set()
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
+        self.expanded_nodes = 0
 
     def generate_nodes(self):
 
@@ -29,8 +30,7 @@ class Breadth_first():
         #1. Look at each possible move (on the parent board):
         for car in self.current_node.cars_list:                                 # Loop through cars on the parent board
             
-
-            for direction in [-1, 1]:                                    # Propose a move in both directions
+            for direction in [-1, 1]:                                           # Propose a move in both directions
 
                 new_coords = car.step(direction)                                # Propose a move on the parent board
 
@@ -72,9 +72,10 @@ class Breadth_first():
 
                         self.all_states_set.add(child_coords)
 
+                        self.expanded_nodes += 1
+
                         #child.array_plot(child.coordinates_list)                    # Show array of the board
 
-   
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
@@ -83,10 +84,8 @@ class Breadth_first():
         # Delete:
         self.queue.pop(0)
 
-
         # Update:
         self.current_node = self.queue[0]
-
 
         # Update generation:
         old_generation = self.generation
