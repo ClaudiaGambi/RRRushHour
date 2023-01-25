@@ -6,9 +6,7 @@ from code.classes import plots
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
-# from pandas.plotting import table # EDIT: see deprecation warnings below
-import dataframe_image as dfi
-from code.algorithms import BF
+from code.algorithms import BF_NearExit
 # import tabulate 
 
 # import seaborn as sns
@@ -67,9 +65,11 @@ def main(input_file, algorithm, output_file):
       starting_board.df_to_object()
       #add board state to instance
       starting_board.update_coordinates_board_state()
+      
+      starting_board.distance_calculator()
 
       #Run algorithm:
-      breadth_first = BF.Breadth_first(starting_board)
+      breadth_first = BF_NearExit.BF_NearExit(starting_board)
       breadth_first.run()
 
       print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')

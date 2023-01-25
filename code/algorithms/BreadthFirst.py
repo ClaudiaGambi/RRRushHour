@@ -136,7 +136,7 @@ class Breadth_first():
 
             # Check whether there's minimally one node in the queue:
             if len(self.queue) == 0:
-                return #print("No solution has been found.")
+                return print("No solution has been found.")
 
             # Select new node and update queue:
             self.update_current_node()
