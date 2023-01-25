@@ -4,6 +4,15 @@ from code.algorithms import BreadthFirst
 from code.algorithms import BF_NearExit
 from code.classes import plots
 import argparse
+import matplotlib.pyplot as plt
+import pandas as pd 
+# from pandas.plotting import table # EDIT: see deprecation warnings below
+import dataframe_image as dfi
+from code.algorithms import BF
+# import tabulate 
+
+# import seaborn as sns
+
 
 
 def main(input_file, algorithm, output_file):
@@ -20,18 +29,36 @@ def main(input_file, algorithm, output_file):
 
    # Checks which algorithm is given as input
    if algorithm == 'randomize':
+      lst = []
+      for i in range(100):
+         #Create starting board Board instance:
+         starting_board = board.Board(input_file, board_size)
+         #add carslist to instance
+         starting_board.df_to_object()
+         #creates the random object 
+         random_algo = randomize.Random(board_size, starting_board)
+         
 
-      #creates the random object 
-      random_algo = randomize.Random(input_file, board_size)
+         # runs the experiment
+         
+         random_algo.run()
+
+         
+         lst.append([i, random_algo.move_count])
+         df = pd.DataFrame(lst, columns = ['iterations', 'moves'])
       
-
-      # runs the experiment
-      random_algo.run()
+      df.plot(kind = 'barh', title = 'Random', ylabel = 'Iterations' , xlabel = 'Amount of moves', figsize = (20,18))
+    
+      # plt.show()
+      plt.savefig('histo_random_2.png')
 
       # plots the visualisation 
-      plot = plots.Plot_board(board_size)
-      plot.create_board()
-      plot.plot_cars(random_algo.new_cars_list)
+      # plot = plots.Plot_board(board_size)
+      # plot.create_board()
+      # plot.plot_cars(random_algo.new_cars_list)
+      
+
+      # random_algo.steps_df.to_csv('output.csv', index = False)
    
    elif algorithm == "BreadthFirst" or algorithm == "BF_NearExit":
       #Create starting board Board instance:
@@ -42,24 +69,22 @@ def main(input_file, algorithm, output_file):
       starting_board.update_coordinates_board_state()
 
       #Run algorithm:
-      if algorithm == "BreadthFirst":
-         breadth_first = BreadthFirst.Breadth_first(starting_board)
-         breadth_first.run()
+      breadth_first = BF.Breadth_first(starting_board)
+      breadth_first.run()
 
-         print(f'HISTORY{breadth_first.current_node.step_history}')
-         print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+      print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
 
-         breadth_first.current_node.step_history.to_csv('output.csv', index =False)
-      else:
-         #add distance to exit attribute:
-         starting_board.distance_calculator()
-         BF_NE = BF_NearExit.BF_NearExit(starting_board)
-         BF_NE.run()
+      # ax = plt.subplot(222, frame_on=False) # no visible frame
+      # ax.xaxis.set_visible(False)  # hide the x axis
+      # ax.yaxis.set_visible(False)  # hide the y axis
 
-         print(f'HISTORY{BF_NE.current_node.step_history}')
-         print(f"Number of expanded nodes: {BF_NE.expanded_nodes}")
+      # table(ax, bread_first.current_node.step_history, loc = 'center')  # where df is your data frame
 
-         BF_NE.current_node.step_history.to_csv('output.csv', index =False)
+      # dfi.export(bread_first.current_node.step_history, 'mytable.png')
+
+      # plt.savefig('mytable.png')
 
 
 if __name__ == '__main__':
@@ -73,6 +98,7 @@ if __name__ == '__main__':
    # add arguments to parser
 
    parser.add_argument('output', help = 'output file (csv)')
+   # parser.add_argument('output', help = 'output file (png)')
    parser.add_argument('input', help = 'input_file (csv')
    parser.add_argument('-algo', '--algorithm')
 
