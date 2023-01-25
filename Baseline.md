@@ -27,3 +27,7 @@ if self.orientation == 'H':
                 updated_y = coordinate[1] + direction
                 updated_coordinate = (coordinate[0], updated_y)
                 self.updated_coordinates[i] = updated_coordinate
+
+
+heuristieken:
+- pak de 'beste' move (grootste/ meeste stappen)

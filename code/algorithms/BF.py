@@ -13,12 +13,13 @@ class Breadth_first():
         self.current_node = starting_board
         self.queue = [copy.deepcopy(starting_board)]
         self.solution_found = False
-        self.current_node.update_coordinates_board_state()
+        # self.current_node.update_coordinates_board_state()
         #self.current_board_coordinates_string = str(self.current_node.coordinates_list)
-        print(self.current_board_coordinates_string)
+        # print(self.current_board_coordinates_string)
         self.all_states_set = set()
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
+        self.expanded_nodes = 0
 
     def generate_nodes(self):
 
@@ -36,43 +37,43 @@ class Breadth_first():
 
                 car.step(direction)                                             # Propose a move on the parent board
 
-                move_coords = car.updated_coordinates
+                new_coords = car.step(direction)
                 carname = car.type
 
-                availability = self.current_node.check_availability(car)        # Check availability on the parent board
+                i = self.current_node.cars_list.index(car)
+
+                availability = self.current_node.check_availability(car, new_coords) # Check availability on the parent board
 
         #2. If a possible move is proposed, make a copy of the parent board:
 
-            if availability == True:
+                if availability == True:
 
-                child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
+                    child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
 
-        #3. Adjust child board with the proposed move:
+            #3. Adjust child board with the proposed move:
 
-                for car_ in child.cars_list:                                                                
+                    
+                    child.cars_list[i].update_coordinates(new_coords)
+                    
+                    child.update_coordinates_board_state()                          # Update coordinates list of the child
 
-                    if car_.type == carname:                                    # Update car coords with the move
-                        
-                        car_.coordinates_list = move_coords
-                
-                child.update_coordinates_board_state()                          # Update coordinates list of the child
+                    child.update_board_history(carname, direction)                  # Update board history of the child
 
-                child.update_board_history(carname, direction)                  # Update board history of the child
+                    child_coords = str(child.coordinates_list)
 
-                child_coords = str(child.coordinates_list)
+            #4. Check whether child doesn't already exists in the all states set:
 
-        #4. Check whether child doesn't already exists in the all states set:
+                    if child_coords not in self.all_states_set:
 
-                if child_coords not in self.all_states_set:
+            #5. If not, add to queue and to all state set:
 
-        #5. If not, add to queue and to all state set:
+                        self.queue.append(child)
 
-                    self.queue.append(child)
+                        self.all_states_set.add(child_coords)
 
-                    self.all_states_set.add(child_coords)
+                        # child.array_plot(child.coordinates_list)                    # Show array of the board
 
-                    child.array_plot(child.coordinates_list)                    # Show array of the board
-    
+                        self.expanded_nodes += 1
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
@@ -97,11 +98,11 @@ class Breadth_first():
 
         #Exit coordinates:
         exit = self.current_node.exit
-        print(f"Exit: {exit}")
+        # print(f"Exit: {exit}")
 
         #Red car coordinates:
         red_car_coordinate = self.current_node.cars_list[-1].coordinates_list[0]
-        print(f"Red car coordinate: {red_car_coordinate}")
+        # print(f"Red car coordinate: {red_car_coordinate}")
 
         #Are they equal?
         if exit == red_car_coordinate:
@@ -118,8 +119,7 @@ class Breadth_first():
         # Continue untill a solution has been found:
         while self.solution_found == False: 
 
-            # Evaluate current node:
-            self.evaluate_node()
+           
         
             # Add baby nodes to queue:
             self.generate_nodes()
@@ -130,5 +130,8 @@ class Breadth_first():
 
             # Select new node and update queue:
             self.update_current_node()
+
+             # Evaluate current node:
+            self.evaluate_node()
 
         return self.current_node.step_history
