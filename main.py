@@ -87,6 +87,17 @@ def main(input_file, algorithm, output_file):
       # plt.savefig('mytable.png')
 
 
+   elif algorithm == "game":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('steps.csv')
+
+      game = visuals.game(starting_board, df)
+      game.clickObject()
+      game.objectMidAir()
+      game.unclickObject()
+      game.gameOver()
+
 if __name__ == '__main__':
    """
    Creates argument parser with values it takes. 
