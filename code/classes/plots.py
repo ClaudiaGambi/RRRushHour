@@ -47,9 +47,9 @@ class Plot_board():
        
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
-        plt.show()
+        # plt.show()
         plt.pause(1)
-        plt.savefig('Board7.png')
+        plt.savefig('Board1.png')
         
     
 

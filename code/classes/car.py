@@ -15,6 +15,8 @@ class Car():
         self.type = type
         self.color = color
 
+        
+
     def step(self, direction ):
         '''
         Function to make a car move. The input is the car object and the direction
@@ -58,6 +60,16 @@ class Car():
 
         # update coordinates in coordinates list
         self.coordinates_list = updated_coordinates
+
+    def distance_calculator_star (self, other):
+
+       
+        if self.orientation == 'V':
+            distance = abs(other.coordinates_list[0][1] - self.coordinates_list[0][1])
+        else:
+            distance = abs(other.coordinates_list[0][0] - self.coordinates_list[0][0])
+
+        return distance
 
     
         

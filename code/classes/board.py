@@ -21,6 +21,8 @@ class Board():
         self.cars_list = []
         self.exit = ()
         self.coordinates_list = []
+        self.distance_to_exit = 0
+        
 
     def df_to_object(self):
 
@@ -78,38 +80,6 @@ class Board():
         the proposed coordinates are a possibility.
         """
         
-        # # #1. Define the route the car wants to drive: ------------------------------------------------
-        # #### DOET HET NIET###
-
-        # car_current_spot = list(moving_car.coordinates_list)
-        # orientation = moving_car.orientation
-
-
-
-        # # # Travel directions (for loop):
-        # travel_directions = list()
-        # for i in direction:
-
-        # #     # Move to the right:
-        # #     if abs(steps) == steps:
-        # #         travel_directions.append(i)
-
-        # #     # Move to the left:
-        # #     else:
-        # #         travel_directions.append(0-i)
-
-
-
-        # # # Coordinates the car needs to pass:
-        # # proposed_route = set()
-        # # for i in travel_directions:
-        # #     if orientation == "V":
-        # #         new_coord = (car_current_spot[-1][0], car_current_spot[-1][1] + i)
-        # #         proposed_route.add(new_coord)
-        # #     else:
-        # #         new_coord = (car_current_spot[-1][0] + i, car_current_spot[-1][1])
-        # #         proposed_route.add(new_coord)
-                
         #2. Check whether the car stays on the board: -----------------------------------------------
 
         final_destination = set(new_coords)
@@ -148,7 +118,11 @@ class Board():
 
     def update_board_history(self, carName, move):
         new_row = pd.DataFrame({'car': [carName], 'move': [move]})
-        self.step_history = pd.concat([self.step_history, new_row], ignore_index=True)
+        # new_row.reset_index(drop = True)
+        # new_row.reset_index(drop = True, inplace = True)
+        # self.step_history.reset_index(drop = True, inplace = True)
+        self.step_history = pd.concat([self.step_history, new_row],ignore_index = True)
+        self.step_history.drop(',')
 
     def update_coordinates_board_state(self):
         """
@@ -188,3 +162,12 @@ class Board():
 
         #Added for BF_NearExit algorithm:
         self.distance_to_exit = distance
+
+    def distance(self, end_cars_list):
+        distance = 0
+        for car in self.cars_list:
+            i = self.cars_list.index(car)
+            distance += car.distance_calculator_star(end_cars_list[i])
+            # print(distance)
+        
+        return distance 
