@@ -230,6 +230,6 @@ class Visual:
     def gameOver(self): 
 
         #checks if starting coordinate of red/last car is at the winning position or not
-        if self.cars[-1].startX == 320: 
+        if self.cars[-1].startX == (self.board_size - 2) * 80: 
             messagebox.showinfo('Congratulations!','You have completed the game!\nYou did it in %d moves!' % self.turns)
             self.inGame = False #cut the loop

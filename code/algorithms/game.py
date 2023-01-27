@@ -6,6 +6,9 @@ I implented is creating the car objects. I changed this so our original Car obje
 can be used in this game.
 
 The resource: https://github.com/Nadramon/Rush-Hour
+
+To run:
+python main.py -algo game data/output.csv gameboards/Rushhour6x6_1.csv
 '''
 
 # import libraries
@@ -24,11 +27,12 @@ class Car:
     In the Car class, small details are changed so the input from our original Car object
     can be used for this car object.
     '''
-
     def __init__(self, board_size, orientation, size, column, row, color):
 
         #one square is has the length of 80
         square = 80
+
+        self.board_size = board_size
 
         #starting x-coordinate
         self.startX = (column) * square 
@@ -41,7 +45,6 @@ class Car:
 
         length = square * size
         self.color = color
-
         
         #for horizontal cars
         if self.orientation == "H": 
@@ -114,10 +117,7 @@ class game:
 
         #make display window
         surface = pygame.display.set_mode((surfaceSize, surfaceSize)) 
-        
-        # start the program
-        start = True 
-
+    
         #loop condition
         self.inGame = True 
 
@@ -302,6 +302,6 @@ class game:
     def gameOver(self): 
 
         #checks if starting coordinate of red/last car is at the winning position or not
-        if self.cars[-1].startX == 320: 
+        if self.cars[-1].startX == (self.board_size - 2) * 80: 
             messagebox.showinfo('Congratulations!','You have completed the game!\nYou did it in %d moves!' % self.turns)
             self.inGame = False #cut the loop
