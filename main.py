@@ -2,15 +2,11 @@ from code.classes import board
 from code.algorithms import randomize
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_NearExit
+from code.algorithms import BF_Blocking
 from code.classes import plots
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
-from code.algorithms import BF_NearExit
-# import tabulate 
-
-# import seaborn as sns
-
 
 
 def main(input_file, algorithm, output_file):
@@ -69,12 +65,34 @@ def main(input_file, algorithm, output_file):
       starting_board.distance_calculator()
 
       #Run algorithm:
-      breadth_first = BF_NearExit.BF_NearExit(starting_board)
+      #breadth_first = BF_NearExit.BF_NearExit(starting_board)
+      breadth_first = BreadthFirst.Breadth_first(starting_board)
       breadth_first.run()
 
       print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
       print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
       breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+   
+   elif algorithm == "BF_Blocking":
+      #Create starting board Board instance:
+      starting_board = board.Board(input_file, board_size)
+      #add carslist to instance
+      starting_board.df_to_object()
+      #add board state to instance
+      starting_board.update_coordinates_board_state()
+      
+      starting_board.blocking_number_calculator()
+
+      #Run algorithm:
+      breadth_first = BF_Blocking.BF_Blocking(starting_board)
+      breadth_first.run()
+
+      print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
+      print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+
 
       # ax = plt.subplot(222, frame_on=False) # no visible frame
       # ax.xaxis.set_visible(False)  # hide the x axis

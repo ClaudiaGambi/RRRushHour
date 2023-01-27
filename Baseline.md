@@ -31,3 +31,40 @@ if self.orientation == 'H':
 
 heuristieken:
 - pak de 'beste' move (grootste/ meeste stappen)
+
+
+
+"""
+Randomize + Heuristics:
+
+1. Randomize
+        Algorithm that randomly generates moves and eventually finds a solution.
+
+2. Randomize + Cutting
+
+
+Breadth First + Heuristics:
+
+1. Breadth First
+        Algorithm that explores all possible options, per generation.
+
+2. Breadth First + NearExit
+        Breadth First algorithm that prioritizes board states where the red car is more near the exit.
+
+3. Breadth First + LoosenBoard
+        Breadth First algorithm that prioritizes board states that have more potential children board states.
+
+4. Breadth First + Blocking
+        Breadth First algorithm that prioritizes board states that have a smaller number of cars between the red car and the exit.
+
+Notes:
+- With sorting the queue generation of the board state is not taken into account.
+- Generation is also not taken into account with pruning (Breadth First).
+
+To do:
+- Make graphics summerizing findings
+- Make script OCD proof
+- Make script more efficient
+- Processing time ook printen? (Maar zonder generation time prints)
+
+"""

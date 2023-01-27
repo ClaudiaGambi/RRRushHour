@@ -1,26 +1,18 @@
-import copy
-import numpy as np
-from code.classes import plots
 from code.algorithms import BreadthFirst
 from operator import attrgetter
+import copy
 
-class BF_NearExit(BreadthFirst.Breadth_first):
-
-    """
-    A Breadth First algorithm that sorts the queue of board states according to the distance
-    of the red car to the exit. 
-    """
+class BF_Blocking(BreadthFirst.Breadth_first):
 
     def sort_queue(self):
 
         #self.queue.sort(key=lambda x: x.distance_to_exit, reverse = False)
-        self.queue.sort(key=attrgetter("distance_to_exit"))
+        self.queue.sort(key=attrgetter("blocking_number"))
     
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
 
-       
         # Delete:
         self.queue.pop(0)
 
@@ -97,7 +89,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
 
             #5. If not, add to queue and to all state set:
 
-                            child.distance_calculator()
+                            child.blocking_number_calculator()
 
                             self.queue.append(child)
 

@@ -188,3 +188,21 @@ class Board():
 
         #Added for BF_NearExit algorithm:
         self.distance_to_exit = distance
+
+    def blocking_number_calculator(self):
+
+        # Select column coordinates between red car and the exit:
+        highway = set()
+        red_car = self.cars_list[-1]
+        red_coords_front = red_car.coordinates_list[1]
+
+        for i in range(self.board_size - red_coords_front[0]):
+            coord = (red_coords_front[0] + i, red_coords_front[1])
+            highway.add(coord)
+
+        # Flatten coordinates list:
+        loose_coords = set(itertools.chain(*self.coordinates_list))
+
+        # Overlap:
+        self.blocking_number = len(loose_coords.intersection(highway))
+
