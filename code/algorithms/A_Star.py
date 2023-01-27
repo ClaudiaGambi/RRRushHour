@@ -109,11 +109,11 @@ class A_star(BreadthFirst.Breadth_first):
         self.current_node = self.queue.get().item
 
         # Update generation:
-        old_generation = self.generation
-        self.generation = len(self.current_node.step_history)
+        # old_generation = self.generation
+        # self.generation = len(self.current_node.step_history)
         
-        if old_generation != self.generation:
-            print(f"\nNext generation: {self.generation} -------------------------------\n")
+        # if old_generation != self.generation:
+            # print(f"\nNext generation: {self.generation} -------------------------------\n")
     
 
     def run(self):
@@ -122,7 +122,7 @@ class A_star(BreadthFirst.Breadth_first):
         created. When the solution has been found, the board history of that board
         is returned, containing all the steps that have been taken to get there."""
         
-        self.current_node.array_plot(self.current_node.coordinates_list)
+        # self.current_node.array_plot(self.current_node.coordinates_list)
         
 
         # Continue untill a solution has been found:

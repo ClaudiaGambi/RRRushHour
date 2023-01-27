@@ -3,8 +3,8 @@ from code.algorithms import randomize
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_Blocking
 from code.classes import plots
-from code.algorithms import game
-from code.classes import visuals
+# from code.algorithms import game
+# from code.classes import visuals
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
@@ -126,26 +126,26 @@ def main(input_file, algorithm, output_file):
       starting_board.update_coordinates_board_state()
 
       #create end board instance
-      end_board = board.Board('gameboards/end_board1.csv', board_size)
+      end_board = board.Board('gameboards/end_board7.csv', board_size)
       end_board.df_to_object()
 
       Astar = A_Star.A_star(end_board, starting_board)
       Astar.run()
       print(f'{Astar.current_node.step_history.head(30)}')
-      Astar.current_node.step_history.to_csv('output.csv')
+      Astar.current_node.step_history.to_csv('output.csv', index = False)
       # print()
 
-   elif algorithm == "game":
-      starting_board = board.Board(input_file, board_size)
-      starting_board.df_to_object()
-      df = pd.read_csv('steps.csv')
+   # elif algorithm == "game":
+   #    starting_board = board.Board(input_file, board_size)
+   #    starting_board.df_to_object()
+   #    df = pd.read_csv('steps.csv')
 
-      game.game(starting_board, board_size)
+   #    game.game(starting_board, board_size)
 
-   elif algorithm == "visual":
-      starting_board = board.Board(input_file, board_size)
-      starting_board.df_to_object()
-      df = pd.read_csv('output.csv')
+   # elif algorithm == "visual":
+   #    starting_board = board.Board(input_file, board_size)
+   #    starting_board.df_to_object()
+   #    df = pd.read_csv('output.csv')
 
 
 if __name__ == '__main__':

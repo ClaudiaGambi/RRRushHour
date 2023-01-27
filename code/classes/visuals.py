@@ -12,7 +12,7 @@ run the visual that will show the results:
 python main.py -algo visual data/output.csv gameboards/Rushhour6x6_1.csv
 '''
 #imports libraries
-import pygame
+# import pygame
 from tkinter import *
 from tkinter import messagebox
 import random

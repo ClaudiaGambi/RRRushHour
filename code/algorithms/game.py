@@ -12,7 +12,7 @@ python main.py -algo game data/output.csv gameboards/Rushhour6x6_1.csv
 '''
 
 # import libraries
-import pygame
+# import pygame
 import math
 from tkinter import *
 from tkinter import messagebox

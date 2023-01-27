@@ -71,7 +71,7 @@ class Random():
         new_board_df = pd.DataFrame(lst_total, columns = ['car', 'orientation', 'col', 'row', 'length'])
         self.new_board_df = pd.concat([self.new_board_df, new_board_df])
         
-        self.new_board_df.to_csv('gameboards/end_board1.csv', index = False)
+        self.new_board_df.to_csv('gameboards/end_board7.csv', index = False)
         
     
 

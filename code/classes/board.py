@@ -122,8 +122,7 @@ class Board():
         # new_row.reset_index(drop = True, inplace = True)
         # self.step_history.reset_index(drop = True, inplace = True)
         self.step_history = pd.concat([self.step_history, new_row],ignore_index = True)
-        self.step_history.drop(',')
-
+        
     def update_coordinates_board_state(self):
         """
         Method to update the coordinates list of the board. Uses the current
