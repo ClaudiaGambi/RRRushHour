@@ -18,6 +18,7 @@ class Breadth_first():
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
         self.expanded_nodes = 0
+        self.evaluated_nodes = 0
 
     def generate_nodes(self):
 
@@ -94,6 +95,9 @@ class Breadth_first():
        
         # Delete:
         self.queue.pop(0)
+
+        #Save number of evaluated nodes:
+        self.evaluated_nodes += 1
 
         # Update:
         self.current_node = self.queue[0]

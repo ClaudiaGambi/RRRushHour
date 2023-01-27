@@ -1,7 +1,10 @@
 from code.classes import board
 from code.algorithms import randomize
 from code.algorithms import BreadthFirst
+from code.algorithms import BF_Blocking
 from code.classes import plots
+from code.algorithms import game
+from code.classes import visuals
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
@@ -64,13 +67,54 @@ def main(input_file, algorithm, output_file):
       starting_board.update_coordinates_board_state()
 
       #Run algorithm:
-      # breadth_first = BF.Breadth_first(starting_board)
+      #breadth_first = BF_NearExit.BF_NearExit(starting_board)
       breadth_first = BreadthFirst.Breadth_first(starting_board)
       breadth_first.run()
 
       print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
       print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
       breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+   
+   elif algorithm == "BF_Blocking":
+      #Create starting board Board instance:
+      starting_board = board.Board(input_file, board_size)
+      #add carslist to instance
+      starting_board.df_to_object()
+      #add board state to instance
+      starting_board.update_coordinates_board_state()
+      
+      starting_board.blocking_number_calculator()
+
+      #Run algorithm:
+      breadth_first = BF_Blocking.BF_Blocking(starting_board)
+      breadth_first.run()
+
+      print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
+      print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+   
+   elif algorithm == "BF_Blocking":
+      #Create starting board Board instance:
+      starting_board = board.Board(input_file, board_size)
+      #add carslist to instance
+      starting_board.df_to_object()
+      #add board state to instance
+      starting_board.update_coordinates_board_state()
+      
+      starting_board.blocking_number_calculator()
+
+      #Run algorithm:
+      breadth_first = BF_Blocking.BF_Blocking(starting_board)
+      breadth_first.run()
+
+      print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
+      print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+
+
 
    elif algorithm == "Astar":
 
@@ -90,6 +134,19 @@ def main(input_file, algorithm, output_file):
       print(f'{Astar.current_node.step_history.head(30)}')
       Astar.current_node.step_history.to_csv('output.csv')
       # print()
+
+   elif algorithm == "game":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('steps.csv')
+
+      game.game(starting_board, board_size)
+
+   elif algorithm == "visual":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('output.csv')
+
 
 if __name__ == '__main__':
    """
