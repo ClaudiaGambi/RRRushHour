@@ -3,6 +3,8 @@ from code.algorithms import randomize
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_NearExit
 from code.classes import plots
+from code.algorithms import game
+from code.classes import visuals
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
@@ -21,7 +23,6 @@ def main(input_file, algorithm, output_file):
    """
 
    board_size = input_file.split('Rushhour')
-   print(board_size)
    board_size = board_size[1].split('x')
    board_size = int(board_size[0])
 
@@ -92,12 +93,15 @@ def main(input_file, algorithm, output_file):
       starting_board.df_to_object()
       df = pd.read_csv('steps.csv')
 
-      game = visuals.game(starting_board, df)
-      game.clickObject()
-      game.objectMidAir()
-      game.unclickObject()
-      game.gameOver()
+      game.game(starting_board, board_size)
 
+   elif algorithm == "visual":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('output.csv')
+
+      visuals.Visual(starting_board, df, board_size)
+      
 if __name__ == '__main__':
    """
    Creates argument parser with values it takes. 
