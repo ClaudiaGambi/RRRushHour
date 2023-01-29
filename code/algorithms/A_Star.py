@@ -19,7 +19,7 @@ class A_star(BreadthFirst.Breadth_first):
         #open_list
         self.queue = [copy.deepcopy(starting_board)]
         self.queue = PriorityQueue()
-        self.queue.put(PrioritizedItem(self.current_node.distance( self.end_node.cars_list), self.current_node))
+        self.queue.put(PrioritizedItem(self.current_node.cost_star(  self.end_node.cars_list), self.current_node))
         
         self.solution_found = False
         #closed_list
@@ -86,7 +86,7 @@ class A_star(BreadthFirst.Breadth_first):
 
                         #5. If not, add to queue and to all state set:
 
-                        self.queue.put(PrioritizedItem(child.distance(self.end_node.cars_list),child))
+                        self.queue.put(PrioritizedItem(child.cost_star(self.end_node.cars_list),child))
 
                         # print(child.distance(self.end_node.cars_list), child)
                         self.all_states_set.add(child_coords)
@@ -101,9 +101,6 @@ class A_star(BreadthFirst.Breadth_first):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""
 
-       
-        # Delete:
-        # self.queue.get()
 
         # Update:
         self.current_node = self.queue.get().item
@@ -113,7 +110,7 @@ class A_star(BreadthFirst.Breadth_first):
         # self.generation = len(self.current_node.step_history)
         
         # if old_generation != self.generation:
-            # print(f"\nNext generation: {self.generation} -------------------------------\n")
+        #     print(f"\nNext generation: {self.generation} -------------------------------\n")
     
 
     def run(self):

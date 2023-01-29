@@ -22,6 +22,7 @@ class Board():
         self.exit = ()
         self.coordinates_list = []
         self.distance_to_exit = 0
+        self.distance_total = 0
         
 
     def df_to_object(self):
@@ -181,11 +182,49 @@ class Board():
 
 
 
-    def distance(self, end_cars_list):
-        distance = 0
-        for car in self.cars_list:
-            i = self.cars_list.index(car)
-            distance += car.distance_calculator_star(end_cars_list[i])
+    def distance(self, car, end_cars_list):
+        # self.distance_totale = 0
+
+        i = self.cars_list.index(car)
+        self.distance_total += car.distance_calculator_star(end_cars_list[i])
             # print(distance)
         
-        return distance 
+        return self.distance_total
+    
+    def cost_star(self, end_cars_list):
+        distance_total = 0
+        highway = set()
+        for car in self.cars_list:
+            # coor, front = car.orientation_blockage()
+            i = self.cars_list.index(car)
+            distance_total += car.distance_calculator_star(end_cars_list[i])
+            # print(f'dist:{distance_total}')
+            # print(distance)
+            
+            red_car = self.cars_list[-1]
+            red_coords_front = red_car.coordinates_list[1]
+
+            for i in range(self.board_size - red_coords_front[0]):
+                coord = (red_coords_front[0] + i, red_coords_front[1])
+                highway.add(coord)
+
+        # Flatten coordinates list:
+            loose_coords = set(itertools.chain(*self.coordinates_list))
+
+        # Overlap:
+            blokkage = len(loose_coords.intersection(highway))
+        
+
+            
+        cost = distance_total + blokkage 
+        # print(cost)
+        
+        return cost 
+
+
+
+                
+                    
+
+
+    

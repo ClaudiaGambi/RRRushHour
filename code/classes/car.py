@@ -71,6 +71,27 @@ class Car():
 
         return distance
 
+    def orientation_blockage(self):
+        front = 0
+        if self.length == 2:
+            coor = self.coordinates_list[1]
+            if self.orientation == 'H':
+                front = coor[0]
+            else:
+                front == coor[1]
+
+
+        if self.length == 3:
+            coor = self.coordinates_list[2]
+            if self.orientation == 'V':
+                front = coor[1]
+            else:
+                front = coor[0]
+        
+        return coor ,front
+    
+    
+
     
         
         
