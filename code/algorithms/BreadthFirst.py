@@ -11,6 +11,8 @@ class Breadth_first():
 
     def __init__(self, starting_board):
         self.current_node = starting_board
+
+        # KLEINERE REPRESENTATIE VERZINNEN: NIET CARS INSTANCES IN BOARD INSTANCE OPSLAAN
         self.queue = [copy.deepcopy(starting_board)]
         self.solution_found = False
         #closed_list

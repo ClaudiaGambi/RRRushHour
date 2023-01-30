@@ -14,11 +14,9 @@ class Random():
         self.board_size = board_size
         self.new_cars_list = []
         self.steps_df = pd.DataFrame()
-        self.new_board_df = pd.DataFrame() 
+        # self.new_board_df = pd.DataFrame() 
         self.csv = None
         self.move_count = 0
-
-        
         
     def run(self):
 
@@ -52,6 +50,7 @@ class Random():
             if availability == True:
                 random_car.update_coordinates(new_coords)
                 self.move_count += 1
+                self.board.update_coordinates_board_state()
                 # plot = plots.Plot_board()
                 # plot.create_board()
                 # plot.plot_dotted_cars(self.new_cars_list)
@@ -64,15 +63,7 @@ class Random():
         # df = pd.DataFrame(lst, columns = ["car", "move"])
         # self.steps_df = pd.concat([self.steps_df, df])
 
-        # for car in self.new_cars_list:
-        #     coord = car.coordinates_list[0]
-        #     col = coord[0]
-        #     row = (self.board_size + 1) - coord[1] 
-        #     lst_total.append([car.type, car.orientation, col, row, car.length])
-        # new_board_df = pd.DataFrame(lst_total, columns = ['car', 'orientation', 'col', 'row', 'length'])
-        # self.new_board_df = pd.concat([self.new_board_df, new_board_df])
         
-        # self.new_board_df.to_csv('gameboards/end_board7.csv', index = False)
         
     
 

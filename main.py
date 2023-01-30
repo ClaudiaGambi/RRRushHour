@@ -8,14 +8,11 @@ from code.classes import visuals
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
-from code.algorithms import BF
+import numpy as np
 from code.algorithms import BF_NearExit 
 from code.algorithms import A_Star
 import time 
 import subprocess 
-
-
-
 
 def main(input_file, algorithm, output_file):
    """
@@ -28,46 +25,76 @@ def main(input_file, algorithm, output_file):
    board_size = board_size[1].split('x')
    board_size = int(board_size[0])
 
-   # Checks which algorithm is given as input
+   # Checks which algorithm is given as input:
    if algorithm == 'randomize':
-      lst = []
-      moves_list = []
-      coordinates_list = []
-      total_moves = 0
-      # key = 0
-      board_dict = {}
+      
+   #1. Create empty starting lists of values we want to save (per run):
+
+      move_counts_list = []
+      solution_boards_count = {}
+      most_found_endstate = "Will be written over by board instances"
+
+      count = 0
+
+      # Run the experiment 100 times:
       for i in range(100):
-         #Create starting board Board instance:
+         count += 1
+         print(count)
+   #2. Create an instance of the algorithm with the right starting board:
+         
+         # Create starting board Board instance:
          starting_board = board.Board(input_file, board_size)
-            #add carslist to instance
+         # Add carslist to instance:
          starting_board.df_to_object()
-         #creates the random object 
+         # Creates the random algorithm instance:
          random_algo = randomize.Random(board_size, starting_board)
          
-
-      # runs the experiment
-      
-         random_algo.run()
+   #3. Run the experiment:
          
-         lst.append([i, random_algo.move_count])
-         df = pd.DataFrame(lst, columns = ['iterations', 'moves'])
-         total_moves += random_algo.move_count
-         moves_list.append(random_algo.move_count)
+         random_algo.run()
+   
+   #4. Save the results:
 
-         if str(random_algo.board.coordinates_list) not in board_dict.keys():
-            print(random_algo.board.coordinates_list)
-            board_dict[str(random_algo.board.coordinates_list)] = 1
+         # Save all the move counts in a list (for creating a histogram plot):
+         move_counts_list.append(random_algo.move_count)
+
+         # Save occurance of each solution board:
+         board_coords = str(random_algo.board.coordinates_list)
+
+         if board_coords not in solution_boards_count.keys():
+            solution_boards_count[board_coords] = 1
+         
          else:
-            # key += 1
-            board_dict[str(random_algo.board.coordinates_list)] +=1
-      print(board_dict)
+            solution_boards_count[board_coords] +=1
+
+         # Apoint most found endstate:
+         highest_occurence = max(solution_boards_count.values())
+
+         if solution_boards_count[board_coords] == highest_occurence:
+            most_found_endstate = random_algo.board
       
-      gemiddelde = total_moves / 100 
-      max_value = max(moves_list)
-      min_value = min(moves_list)
+      print(solution_boards_count.values())
+      
+   #5. Return the most found endstate:
+      
+      lst_total = []
+      for car in most_found_endstate.cars_list:
+         coord = car.coordinates_list[0]
+         col = coord[0]
+         row = (most_found_endstate.board_size + 1) - coord[1] 
+         lst_total.append([car.type, car.orientation, col, row, car.length])
+         
+      new_board_df = pd.DataFrame(lst_total, columns = ['car', 'orientation', 'col', 'row', 'length'])
+      new_board_df.to_csv('gameboards/end_board1.csv', index = False)
+
+   #6. Print values:
+
+      gemiddelde = np.mean(move_counts_list)
+      max_value = max(move_counts_list)
+      min_value = min(move_counts_list)
 
       print(f'het gemiddelde is {gemiddelde}', f'maximum is {max_value} en minimum is {min_value}.')
-
+      print(move_counts_list)
       
       # df.plot(kind = 'barh', title = 'Random', ylabel = 'Iterations' , xlabel = 'Amount of moves', figsize = (20,18))
     
