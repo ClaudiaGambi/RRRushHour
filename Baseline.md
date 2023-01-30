@@ -66,5 +66,6 @@ To do:
 - Make script OCD proof
 - Make script more efficient
 - Processing time ook printen? (Maar zonder generation time prints)
+- State space: 
 
 """
