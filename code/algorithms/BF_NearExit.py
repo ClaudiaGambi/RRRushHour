@@ -1,8 +1,18 @@
 import copy
-import numpy as np
-from code.classes import plots
+# import numpy as np
+# from code.classes import plots
 from code.algorithms import BreadthFirst
-from operator import attrgetter
+# from operator import attrgetter
+from queue import PriorityQueue
+from typing import Any
+from dataclasses import dataclass, field
+import copy 
+
+@dataclass(order=True)
+class PrioritizedItem:
+    priority: int 
+    item: Any = field(compare=False)
+
 
 class BF_NearExit(BreadthFirst.Breadth_first):
 
@@ -10,36 +20,27 @@ class BF_NearExit(BreadthFirst.Breadth_first):
     A Breadth First algorithm that sorts the queue of board states according to the distance
     of the red car to the exit. 
     """
-
-    def sort_queue(self):
-
-        #self.queue.sort(key=lambda x: x.distance_to_exit, reverse = False)
-        self.queue.sort(key=attrgetter("distance_to_exit"))
-    
-    def update_current_node(self):
-        """Method to update the current node. It takes the first node from the queue,
-        deletes it from there and moves it to the current node attribute."""
-
-       
-        # Delete:
-        self.queue.pop(0)
-
-        # Save number of evaluated nodes:
-        self.evaluated_nodes += 1
-
-        # Sort:
-        self.sort_queue()
-
-        # Update:
-        self.current_node = self.queue[0]
-
-        # Update generation:
-        old_generation = self.generation
-        self.generation = len(self.current_node.step_history)
+    def __init__(self,starting_board):
+        self.current_node = starting_board
+        #open_list
+        self.queue = [copy.deepcopy(starting_board)]
+        self.queue = PriorityQueue()
+        self.queue.put(PrioritizedItem(self.current_node.distance_calculator(), self.current_node))
         
-        if old_generation != self.generation:
-            print(f"\nNext generation: {self.generation} -------------------------------\n")
+        self.solution_found = False
+        #closed_list
+        self.all_states_set = set()
+        self.all_states_set.add(str(self.current_node.coordinates_list))
+        self.generation = 1
+        self.expanded_nodes = 0
+    
 
+    # def sort_queue(self):
+
+    #     #self.queue.sort(key=lambda x: x.distance_to_exit, reverse = False)
+    #     self.queue.sort(key=attrgetter("distance_to_exit"))
+    
+   
     def generate_nodes(self):
 
         """
@@ -97,12 +98,63 @@ class BF_NearExit(BreadthFirst.Breadth_first):
 
             #5. If not, add to queue and to all state set:
 
-                            child.distance_calculator()
+                            # child.distance_calculator()
 
-                            self.queue.append(child)
+                            self.queue.put(child.distance_calculator(), child)
 
                             self.all_states_set.add(child_coords)
 
                             # child.array_plot(child.coordinates_list)                    # Show array of the board
 
                             self.expanded_nodes += 1
+
+    def update_current_node(self):
+        """Method to update the current node. It takes the first node from the queue,
+        deletes it from there and moves it to the current node attribute."""
+
+       
+        # Delete:
+        # self.queue.pop(0)
+
+        # Save number of evaluated nodes:
+        self.evaluated_nodes += 1
+
+        # Sort:
+        # self.sort_queue()
+
+        # Update:
+        self.current_node = self.queue.get().item
+
+        # Update generation:
+        old_generation = self.generation
+        self.generation = len(self.current_node.step_history)
+        
+        if old_generation != self.generation:
+            print(f"\nNext generation: {self.generation} -------------------------------\n")
+        
+    def run(self):
+        """Method that runs the algorithm. It continues untill a solution has been
+        found. Untill then, each node in the queue is evaluated and root nodes are 
+        created. When the solution has been found, the board history of that board
+        is returned, containing all the steps that have been taken to get there."""
+        
+        # self.current_node.array_plot(self.current_node.coordinates_list)
+        
+
+        # Continue untill a solution has been found:
+        while self.solution_found == False: 
+        
+            # Add baby nodes to queue:
+            self.generate_nodes()
+
+            # Check whether there's minimally one node in the queue:
+            if self.queue.qsize() == 0:
+                return print("No solution has been found.")
+
+            # Select new node and update queue:
+            self.update_current_node()
+
+                # Evaluate current node:
+            self.evaluate_node()
+
+        return self.current_node.step_history

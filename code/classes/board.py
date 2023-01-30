@@ -119,9 +119,6 @@ class Board():
 
     def update_board_history(self, carName, move):
         new_row = pd.DataFrame({'car': [carName], 'move': [move]})
-        # new_row.reset_index(drop = True)
-        # new_row.reset_index(drop = True, inplace = True)
-        # self.step_history.reset_index(drop = True, inplace = True)
         self.step_history = pd.concat([self.step_history, new_row],ignore_index = True)
         
     def update_coordinates_board_state(self):
@@ -192,19 +189,34 @@ class Board():
         return self.distance_total
     
     def cost_star(self, end_cars_list):
+        """
+        Function that calculates the cost for every board instance based on distance from current spot to end destination 
+        and the amount of cars blocking the red car. The function returns the computed cost. 
+        """
+
+        #set variables for distance and the red car's way
         distance_total = 0
         highway = set()
+
+        # loop over cars list
         for car in self.cars_list:
-            # coor, front = car.orientation_blockage()
-            i = self.cars_list.index(car)
-            distance_total += car.distance_calculator_star(end_cars_list[i])
-            # print(f'dist:{distance_total}')
-            # print(distance)
             
+            # get index of car
+            i = self.cars_list.index(car)
+
+            # calculate distance with function in car class and sum up
+            distance_total += car.distance_calculator_star(end_cars_list[i])
+            
+            # get red car
             red_car = self.cars_list[-1]
+
+            # get fron coordinates of red car
             red_coords_front = red_car.coordinates_list[1]
 
+            # loop over distance from red car to exit 
             for i in range(self.board_size - red_coords_front[0]):
+
+                # get coordinates in front of red car and add to highway set
                 coord = (red_coords_front[0] + i, red_coords_front[1])
                 highway.add(coord)
 
@@ -215,9 +227,8 @@ class Board():
             blokkage = len(loose_coords.intersection(highway))
         
 
-            
+        # compute cost
         cost = distance_total + blokkage 
-        # print(cost)
         
         return cost 
 

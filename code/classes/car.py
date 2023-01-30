@@ -19,8 +19,8 @@ class Car():
 
     def step(self, direction ):
         '''
-        Function to make a car move. The input is the car object and the direction
-        in which it should move (1 or -1). The function returns new coordinates.
+        Function to make a car move. The input is the car object, the direction and the amount of steps
+        in which it should move. The function returns new coordinates.
         '''
         updated_coordinates = []
 
@@ -62,34 +62,24 @@ class Car():
         self.coordinates_list = updated_coordinates
 
     def distance_calculator_star (self, other):
+        """
+        Function that takes a car (self) and a car from another board (other) and calculates the distance between the two cars.
+        The distance is computed according to the orientation and then returned.
+        """
 
-       
+        #get orientation of car 
         if self.orientation == 'V':
+
+            # calculate distance with y values 
             distance = abs(other.coordinates_list[0][1] - self.coordinates_list[0][1])
         else:
+
+            # calculate distance with x values 
             distance = abs(other.coordinates_list[0][0] - self.coordinates_list[0][0])
 
         return distance
 
-    def orientation_blockage(self):
-        front = 0
-        if self.length == 2:
-            coor = self.coordinates_list[1]
-            if self.orientation == 'H':
-                front = coor[0]
-            else:
-                front == coor[1]
-
-
-        if self.length == 3:
-            coor = self.coordinates_list[2]
-            if self.orientation == 'V':
-                front = coor[1]
-            else:
-                front = coor[0]
-        
-        return coor ,front
-    
+   
     
 
     
