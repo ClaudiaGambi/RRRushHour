@@ -3,14 +3,16 @@ from code.algorithms import randomize
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_Blocking
 from code.classes import plots
-# from code.algorithms import game
-# from code.classes import visuals
+from code.algorithms import game
+from code.classes import visuals
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
 from code.algorithms import BF
 from code.algorithms import BF_NearExit 
 from code.algorithms import A_Star
+import time 
+import subprocess 
 
 
 
@@ -29,21 +31,43 @@ def main(input_file, algorithm, output_file):
    # Checks which algorithm is given as input
    if algorithm == 'randomize':
       lst = []
-      # for i in range(100):
+      moves_list = []
+      coordinates_list = []
+      total_moves = 0
+      # key = 0
+      board_dict = {}
+      for i in range(100):
          #Create starting board Board instance:
-      starting_board = board.Board(input_file, board_size)
-         #add carslist to instance
-      starting_board.df_to_object()
-      #creates the random object 
-      random_algo = randomize.Random(board_size, starting_board)
-      
+         starting_board = board.Board(input_file, board_size)
+            #add carslist to instance
+         starting_board.df_to_object()
+         #creates the random object 
+         random_algo = randomize.Random(board_size, starting_board)
+         
 
       # runs the experiment
       
-      random_algo.run()
+         random_algo.run()
          
-         # lst.append([i, random_algo.move_count])
-         # df = pd.DataFrame(lst, columns = ['iterations', 'moves'])
+         lst.append([i, random_algo.move_count])
+         df = pd.DataFrame(lst, columns = ['iterations', 'moves'])
+         total_moves += random_algo.move_count
+         moves_list.append(random_algo.move_count)
+
+         if str(random_algo.board.coordinates_list) not in board_dict.keys():
+            print(random_algo.board.coordinates_list)
+            board_dict[str(random_algo.board.coordinates_list)] = 1
+         else:
+            # key += 1
+            board_dict[str(random_algo.board.coordinates_list)] +=1
+      print(board_dict)
+      
+      gemiddelde = total_moves / 100 
+      max_value = max(moves_list)
+      min_value = min(moves_list)
+
+      print(f'het gemiddelde is {gemiddelde}', f'maximum is {max_value} en minimum is {min_value}.')
+
       
       # df.plot(kind = 'barh', title = 'Random', ylabel = 'Iterations' , xlabel = 'Amount of moves', figsize = (20,18))
     
@@ -51,9 +75,9 @@ def main(input_file, algorithm, output_file):
       # plt.savefig('histo_random_1.png')
 
       # plots the visualisation 
-      plot = plots.Plot_board(board_size)
-      plot.create_board()
-      plot.plot_cars(random_algo.new_cars_list)
+      # plot = plots.Plot_board(board_size)
+      # plot.create_board()
+      # plot.plot_cars(random_algo.new_cars_list)
 
 
       # random_algo.steps_df.to_csv('output.csv', index = False)
@@ -95,7 +119,7 @@ def main(input_file, algorithm, output_file):
       print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
       breadth_first.current_node.step_history.to_csv('output.csv', index =False)
    
-   elif algorithm == "BF_Blocking":
+   elif algorithm == "BF_NearExit":
       #Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
       #add carslist to instance
@@ -106,7 +130,7 @@ def main(input_file, algorithm, output_file):
       starting_board.blocking_number_calculator()
 
       #Run algorithm:
-      breadth_first = BF_Blocking.BF_Blocking(starting_board)
+      breadth_first = BF_NearExit.BF_NearExit(starting_board)
       breadth_first.run()
 
       print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
@@ -135,17 +159,17 @@ def main(input_file, algorithm, output_file):
       Astar.current_node.step_history.to_csv('output.csv', index = False)
       # print()
 
-   # elif algorithm == "game":
-   #    starting_board = board.Board(input_file, board_size)
-   #    starting_board.df_to_object()
-   #    df = pd.read_csv('steps.csv')
+   elif algorithm == "game":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('steps.csv')
 
-   #    game.game(starting_board, board_size)
+      game.game(starting_board, board_size)
 
-   # elif algorithm == "visual":
-   #    starting_board = board.Board(input_file, board_size)
-   #    starting_board.df_to_object()
-   #    df = pd.read_csv('output.csv')
+   elif algorithm == "visual":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('output.csv')
 
 
 if __name__ == '__main__':

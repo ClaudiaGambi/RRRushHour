@@ -35,7 +35,8 @@ class A_star(BreadthFirst.Breadth_first):
        
 
         #1. Look at each possible move (on the parent board):
-        for car in self.current_node.cars_list:                                 # Loop through cars on the parent board
+        # Loop through cars on the parent board
+        for car in self.current_node.cars_list:                                 
             
             
             for direction in [-1, 1]:
@@ -105,12 +106,12 @@ class A_star(BreadthFirst.Breadth_first):
         # Update:
         self.current_node = self.queue.get().item
 
-        # Update generation:
-        # old_generation = self.generation
-        # self.generation = len(self.current_node.step_history)
+        #Update generation:
+        old_generation = self.generation
+        self.generation = len(self.current_node.step_history)
         
-        # if old_generation != self.generation:
-        #     print(f"\nNext generation: {self.generation} -------------------------------\n")
+        if old_generation != self.generation:
+            print(f"\nNext generation: {self.generation} -------------------------------\n")
     
 
     def run(self):
