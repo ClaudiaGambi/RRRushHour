@@ -27,6 +27,10 @@ de naam van de inputfile (het bord), en twee outputfiles. Een voorbeeld hiervan 
 ```
 python main.py gameboards/Rushhour12x12_7.csv -algo randomize output/end_board7.csv output/RandomOutput_Board12x12.csv
 ```
+De verschillende borden hebben de namen: gameboards/Rushhour6x6_1.csv, gameboards/Rushhour6x6_2.csv, gameboards/Rushhour6x6_3.csv, gameboards/Rushhour9x9_4.csv,
+gameboards/Rushhour9x9_5.csv, gameboards/Rushhour9x9_6.csv, gameboards/Rushhour12x12_7.csv
+
+De verschillende algoritmen hebben de namen: randomize, BreadthFirst, BF_Blocking, BF_NearExit, Astar, game en visual.
 
 ### Structuur
 
