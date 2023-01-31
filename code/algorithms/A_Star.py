@@ -19,7 +19,7 @@ class A_star(BreadthFirst.Breadth_first):
         #open_list
         self.queue = [copy.deepcopy(starting_board)]
         self.queue = PriorityQueue()
-        self.queue.put(PrioritizedItem(self.current_node.cost_star(  self.end_node.cars_list), self.current_node))
+        self.queue.put(PrioritizedItem(self.current_node.cost_star(self.end_node.cars_list), self.current_node))
         
         self.solution_found = False
         #closed_list
@@ -82,10 +82,10 @@ class A_star(BreadthFirst.Breadth_first):
                     new_coords = car.step(distance)
 
     def update_current_node(self):
-        """Method to update the current node. It takes the first node from the queue,
-        deletes it from there and moves it to the current node attribute."""
-
-
+        """
+        Method to update the current node. It takes the first node from the queue,
+        deletes it from there and moves it to the current node attribute.
+        """
         # Update:
         self.current_node = self.queue.get().item
 
@@ -95,16 +95,14 @@ class A_star(BreadthFirst.Breadth_first):
         
         if old_generation != self.generation:
             print(f"\nNext generation: {self.generation} -------------------------------\n")
-    
 
     def run(self):
-        """Method that runs the algorithm. It continues untill a solution has been
+        """
+        Method that runs the algorithm. It continues untill a solution has been
         found. Untill then, each node in the queue is evaluated and root nodes are 
         created. When the solution has been found, the board history of that board
-        is returned, containing all the steps that have been taken to get there."""
-        
-        # self.current_node.array_plot(self.current_node.coordinates_list)
-        
+        is returned, containing all the steps that have been taken to get there.
+        """        
 
         # Continue untill a solution has been found:
         while self.solution_found == False: 

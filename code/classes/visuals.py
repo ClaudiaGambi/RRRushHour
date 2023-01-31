@@ -107,6 +107,8 @@ class Visual:
     '''
     def __init__(self, board, df, board_size):
 
+        print(board, df, board_size)
+
         # get cars list from board object
         self.cars_list = board.cars_list
         self.makeCars(board_size)
@@ -118,6 +120,8 @@ class Visual:
 
         # drop not needed columns, get the right answers in a dataframe
         self.answers = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+        # self.answers = df.drop(0, axis=0)
+        print(self.answers)
         
         pygame.init() #run pygame
         surfaceSize = self.board_size * 80

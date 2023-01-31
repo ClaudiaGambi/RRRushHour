@@ -245,9 +245,10 @@ def main(algorithm, input_file, output_file1, output2):
    elif algorithm == "game":
       starting_board = board.Board(input_file, board_size)
       starting_board.df_to_object()
-      df = pd.read_csv('steps.csv')
+      df = pd.read_csv(output_file1)
+      print(df)
 
-      game.game(starting_board, board_size)
+      visuals.Visual(starting_board, df, board_size)
 
 # --------------------------- Argument parser --------------------------------
 
