@@ -12,7 +12,7 @@ run the visual that will show the results:
 python main.py -algo visual data/output.csv gameboards/Rushhour6x6_1.csv
 '''
 #imports libraries
-# import pygame
+import pygame
 from tkinter import *
 from tkinter import messagebox
 import random
@@ -85,12 +85,17 @@ class Car:
             #Ending y coordinate of where the car can be positioned
             self.endLimitY = board_size * 80 - length + 80
 
-        self.currentX = self.startX #current x-coordinate of car
-        self.currentY = self.startY #current y-coordinate of car
+        #current x-coordinate of car
+        self.currentX = self.startX 
 
-        self.rectDrag = False #boolean if the car is currently being dragged or not
+        #current y-coordinate of car
+        self.currentY = self.startY 
 
-        self.rect = pygame.Rect(self.startX, self.startY, self.X, self.Y) #make rectangle object
+        #boolean if the car is currently being dragged or not
+        self.rectDrag = False 
+
+        #make rectangle object
+        self.rect = pygame.Rect(self.startX, self.startY, self.X, self.Y) 
 
 class Visual:
     '''
@@ -116,7 +121,9 @@ class Visual:
         
         pygame.init() #run pygame
         surfaceSize = self.board_size * 80
-        surface = pygame.display.set_mode((surfaceSize, surfaceSize)) #make display window
+
+        #make display window
+        surface = pygame.display.set_mode((surfaceSize, surfaceSize)) 
 
         self.inGame = True
 

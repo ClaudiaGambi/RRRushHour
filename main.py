@@ -25,7 +25,7 @@ def main(input_file, algorithm, output_file1, output2):
    
    # Extract the boardsize from the output file name:
    board_size = int(re.findall(r'\d+', input_file)[0])
-   board_number = board_size = int(re.findall(r'\d+', input_file)[-1])
+   board_number = int(re.findall(r'\d+', input_file)[-1])
 
    # Checks which algorithm is given as input:
    if algorithm == 'randomize':
