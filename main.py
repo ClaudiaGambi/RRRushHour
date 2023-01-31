@@ -4,9 +4,9 @@ from code.algorithms import BreadthFirst
 from code.algorithms import BF_Blocking
 from code.algorithms import BF_NearExit 
 from code.algorithms import A_Star
-# from code.classes import plots
-# from code.algorithms import game
-# from code.classes import visuals
+from code.classes import plots
+from code.algorithms import game
+from code.classes import visuals
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
@@ -202,7 +202,10 @@ def main(input_file, algorithm, output_file1, output2):
    elif algorithm == "visual":
       starting_board = board.Board(input_file, board_size)
       starting_board.df_to_object()
-      df = pd.read_csv('output.csv')
+      df = pd.read_csv(output_file1)
+      print(df)
+
+      visuals.Visual(starting_board, df, board_size)
 
 
 if __name__ == '__main__':
