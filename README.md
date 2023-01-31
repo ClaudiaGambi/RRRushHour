@@ -3,6 +3,13 @@
 Rush Hour is een ogenschijnlijk eenvoudig puzzeltje met een verrassend uitdagend karakter. In een veld van 6 hoog en 6 breed staat een rode auto 
 en die moet naar de uitgang, die recht voor je ligt. Andere voertuigen versperren de weg; auto’s van twee eenheden lang en trucks van drie eenheden lang, 
 die alleen in hun rijrichting bewogen mogen worden. Ze mogen niet draaien. De opdracht is simpel: beweeg de rode auto naar buiten.
+
+## Experimenten
+
+Dit script is geschreven met het doel om te onderzoeken hoe bepaalde algoritmen en heuristieken presteren bij verschillende startsituaties en de (eventuele) verschillen te verklaren. Er zijn verschillende algoritmen en heuristieken in het script te vinden: een Randomized search, een Breadth First search, een Breadth First search gecombineerd met een 'distance red car to exit' heuristiek, een Breadth First search gecombineerd met een 'number of blocking cars' heuristiek, een A* search gecombineerd met een 'distance to endstate' heuristiek en A* gecombineerd met een 'distance to endstate' en een 'number of blocking cars' heuristiek.
+
+De prestatie van de algoritmen is wordt verdeeld in drie onderdelen: voor hoeveel startsituaties er een oplossing wordt gevonden, hoe goed de gevonden oplossingen zijn en hoe efficient de zoektocht was.
+
 ## Aan de slag
 
 ### Vereisten
@@ -10,13 +17,13 @@ die alleen in hun rijrichting bewogen mogen worden. Ze mogen niet draaien. De op
 Deze codebase is volledig geschreven in Python 3.9.2. In requirements.txt staan alle benodigde packages om de code succesvol te draaien. Deze zijn gemakkelijk te installeren via pip dmv. de volgende instructie:
 
 ```
-pip install -r requirements.txt (nog doen!!!!)
+pip install -r requirements.txt
 ```
 
 Of via conda:
 
 ```
-conda install --file requirements.txt (!!!!!!!!!)
+conda install --file requirements.txt
 ```
 
 ### Gebruik
