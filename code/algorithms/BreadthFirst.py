@@ -105,11 +105,11 @@ class Breadth_first():
         self.current_node = self.queue[0]
 
         # Update generation:
-        old_generation = self.generation
-        self.generation = len(self.current_node.step_history)
+        # old_generation = self.generation
+        # self.generation = len(self.current_node.step_history)
         
-        if old_generation != self.generation:
-            print(f"\nNext generation: {self.generation} -------------------------------\n")
+        # if old_generation != self.generation:
+        #     print(f"\nNext generation: {self.generation} -------------------------------\n")
     
     def evaluate_node(self):
         """Method that checks whether the current board has the red car next to the exit.

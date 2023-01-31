@@ -33,7 +33,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
         self.expanded_nodes = 0
-    
+        self.evaluated_nodes = 0
 
     # def sort_queue(self):
 
@@ -100,13 +100,16 @@ class BF_NearExit(BreadthFirst.Breadth_first):
 
                             # child.distance_calculator()
 
-                            self.queue.put(child.distance_calculator(), child)
+                            self.queue.put(PrioritizedItem(child.distance_calculator(), child))
 
                             self.all_states_set.add(child_coords)
 
                             # child.array_plot(child.coordinates_list)                    # Show array of the board
 
                             self.expanded_nodes += 1
+
+                    distance = direction * count
+                    new_coords = car.step(distance)
 
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
@@ -126,11 +129,11 @@ class BF_NearExit(BreadthFirst.Breadth_first):
         self.current_node = self.queue.get().item
 
         # Update generation:
-        old_generation = self.generation
-        self.generation = len(self.current_node.step_history)
+        # old_generation = self.generation
+        # self.generation = len(self.current_node.step_history)
         
-        if old_generation != self.generation:
-            print(f"\nNext generation: {self.generation} -------------------------------\n")
+        # if old_generation != self.generation:
+        #     print(f"\nNext generation: {self.generation} -------------------------------\n")
         
     def run(self):
         """Method that runs the algorithm. It continues untill a solution has been
