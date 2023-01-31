@@ -1,4 +1,6 @@
 
+# ----------------------- Import packages and code ----------------------------
+
 from code.algorithms import randomize
 from code.algorithms import A_Star
 from code.algorithms import BreadthFirst
@@ -17,34 +19,34 @@ import numpy as np
 import re
 import csv
 
+# -----------------------------------------------------------------------------
+
 def main(algorithm, input_file, output_file1, output2):
    """
-   This function takes the input from the argument parser, which are the filename and the 
-   algorithm that de file needs to be run on. The algorithm is then called on the file
-   accordingly. 
+   This function takes the input from the argument parser, which are the
+   filename and the algorithm that de file needs to be run on. The algorithm is
+   then called on the file accordingly. 
    """
    
    # Extract the boardsize from the output file name:
    board_size = int(re.findall(r'\d+', input_file)[0])
    board_number = int(re.findall(r'\d+', input_file)[-1])
 
-# ---------------------------------------------- Random --------------------------------------------------------------
-   if algorithm == 'randomize':
+# ---------------------------------- Random ----------------------------------
+   
+   if algorithm == 'Random':
       
-      #1. Create empty starting lists of values we want to save (per run):
-
+      # A list of the amount of steps taken untill the solution is found per run:
       move_counts_list = []
-      solution_boards_count = {}
-      most_found_endstate = "Will be written over by board instances"
 
-      count = 0
+      # A dictionary that retains the occurence of each endboard state found:
+      solution_boards_count = {}
+
+      # The board instance with the highest occurence: 
+      most_found_endstate = "Will be written over by board instances"
 
       # Run the experiment 100 times:
       for i in range(100):
-         count += 1
-         print(count)
-
-      #2. Create an instance of the algorithm with the right starting board:
 
          # Create starting board Board instance:
          starting_board = board.Board(input_file, board_size)
@@ -55,13 +57,10 @@ def main(algorithm, input_file, output_file1, output2):
          # Creates the random algorithm instance:
          random_algo = randomize.Random(board_size, starting_board)
 
-         #3. Run the experiment:
-
+         #Run the experiment:
          random_algo.run()
 
-   #4. Save the results:
-
-         # Save all the move counts in a list (for creating a histogram plot):
+         # Save the move count in a list (for creating a histogram plot):
          move_counts_list.append(random_algo.move_count)
 
          # Save occurance of each solution board:
@@ -78,16 +77,16 @@ def main(algorithm, input_file, output_file1, output2):
          if solution_boards_count[board_coords] == highest_occurence:
             most_found_endstate = random_algo.board
       
-      #5. Return csv's:
-
-      # Most found endstate:
+      # Look at each car in the most found endstate:
       lst_total = []
       for car in most_found_endstate.cars_list:
+         #  And save the needed attributes:
          coord = car.coordinates_list[0]
          col = coord[0]
          row = (most_found_endstate.board_size + 1) - coord[1] 
          lst_total.append([car.type, car.orientation, col, row, car.length])
 
+      # Make csv of most found endstate (to be used in A*):
       new_board_df = pd.DataFrame(lst_total, columns = ['car', 'orientation', 'col', 'row', 'length'])
       new_board_df.to_csv(f'output/end_board{board_number}.csv', index = False)
 
@@ -96,8 +95,7 @@ def main(algorithm, input_file, output_file1, output2):
       with open(f"output/RandomOutput_Board{board_size}x{board_size}.csv", "w", newline = "") as fou:
          fou.write(data)
 
-      #6. Print values:
-
+      # Print information about the amount of steps:
       mean = np.mean(move_counts_list)
       max_value = max(move_counts_list)
       min_value = min(move_counts_list)
@@ -105,99 +103,110 @@ def main(algorithm, input_file, output_file1, output2):
       print("Amount of steps untill solution:")
       print(f"Mean: {mean}\nMax: {max_value}\nMin: {min_value}")
 
+# ------------------------------ Breadth First -------------------------------
+
    elif algorithm == "BreadthFirst":
       
-      #Create starting board Board instance:
+      # Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
-      #add carslist to instance
+      
+      # Add carslist to instance:
       starting_board.df_to_object()
-      #add board state to instance
+      
+      # Add board state to instance:
       starting_board.update_coordinates_board_state()
 
       #Run algorithm:
-      #breadth_first = BF_NearExit.BF_NearExit(starting_board)
       breadth_first = BreadthFirst.Breadth_first(starting_board)
       breadth_first.run()
 
-      
-      
-      # while time.time() - start < 600:
-      #    print(f'run: {n_runs}')
-      #    subprocess.call(["python3", "code/algorithms/BreadthFirst.py"])
-         
-      #    n_runs += 1
-
-      # print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
-      # print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
-      # print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
-      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
-   
-   elif algorithm == "BF_Blocking":
-      #Create starting board Board instance:
-      starting_board = board.Board(input_file, board_size)
-      #add carslist to instance
-      starting_board.df_to_object()
-      #add board state to instance
-      starting_board.update_coordinates_board_state()
-      
-      starting_board.blocking_number_calculator()
-
-      #Run algorithm:
-      breadth_first = BF_Blocking.BF_Blocking(starting_board)
-      breadth_first.run()
-
+      # Print information about algorithm tree:
       print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
       print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
       print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+
+      # Export the step history of the solution board to a csv file:
+      breadth_first.current_node.step_history.to_csv('output.csv', index = False)
+
+# --------------- Breadth First with heuristic: # blocking cars --------------
+
+   elif algorithm == "BF_Blocking":
+      
+      # Create starting board Board instance:
+      starting_board = board.Board(input_file, board_size)
+      
+      # Add carslist to instance
+      starting_board.df_to_object()
+      
+      # Add board state to instance
+      starting_board.update_coordinates_board_state()
+
+      # Run algorithm:
+      breadth_first = BF_Blocking.BF_Blocking(starting_board)
+      breadth_first.run()
+
+      # Print information about algorithm tree:
+      print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
+      print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
+
+      # Export the step history of the solution board to a csv file:
       breadth_first.current_node.step_history.to_csv('output.csv', index =False)
-   
+
+# --------------- Breadth First with heuristic: distance to exit -------------
+
    elif algorithm == "BF_NearExit":
       
-      #Create starting board Board instance:
+      # Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
-      #add carslist to instance
-      starting_board.df_to_object()
-      #add board state to instance
-      starting_board.update_coordinates_board_state()
       
-      # starting_board.blocking_number_calculator()
+      # Add carslist to instance:
+      starting_board.df_to_object()
+      
+      # Add board state to instance:
+      starting_board.update_coordinates_board_state()
 
-      #Run algorithm:
+      # Run algorithm:
       best_first = BF_NearExit.BF_NearExit(starting_board)
       best_first.run()
 
-      # print(f'HISTORY{best_first.current_node.step_history.head(30)}')
-      # print(f"Number of evaluated nodes: {best_first.evaluated_nodes}")
-      # print(f"Number of expanded nodes: {best_first.expanded_nodes}")
-      # best_first.current_node.step_history.to_csv('output.csv', index =False)
+      # Print information about algorithm tree:
+      print(f'HISTORY{best_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {best_first.evaluated_nodes}")
+      print(f"Number of expanded nodes: {best_first.expanded_nodes}")
+
+      # Export the step history of the solution board to a csv file:
+      best_first.current_node.step_history.to_csv('output.csv', index =False)
+
+# --------------------------------- A* ---------------------------------------
 
    elif algorithm == "Astar":
 
-     #Create starting board Board instance:
+      # Create starting board Board instance:
       starting_board = board.Board(input_file, board_size)
-      #add carslist to instance
+      
+      # Add carslist to instance:
       starting_board.df_to_object()
-      #add board state to instance
+      
+      # Add board state to instance:
       starting_board.update_coordinates_board_state()
 
-      #create end board instance
+      # Create end board instance:
       end_board = board.Board('gameboards/end_board4.csv', board_size)
       end_board.df_to_object()
 
+      # Run the algorithm:
       Astar = A_Star.A_star(end_board, starting_board)
       Astar.run()
-      print(f'{Astar.current_node.step_history.head(30)}')
+
+      # Export the step history of the solution board to a csv file:
       Astar.current_node.step_history.to_csv('output.csv', index = False)
-      # print()
 
-   elif algorithm == "game":
-      starting_board = board.Board(input_file, board_size)
-      starting_board.df_to_object()
-      df = pd.read_csv('steps.csv')
+# ---------------------------- Visualisation ---------------------------------
 
-      game.game(starting_board, board_size)
+   elif algorithm == "Visual":
 
-   elif algorithm == "visual":
+
       starting_board = board.Board(input_file, board_size)
       starting_board.df_to_object()
       df = pd.read_csv('output.csv')
@@ -231,6 +240,16 @@ def main(algorithm, input_file, output_file1, output2):
       plt.legend(loc='upper right')
       plt.show()
 
+# ------------------------ Interactive simulation ----------------------------
+
+   elif algorithm == "game":
+      starting_board = board.Board(input_file, board_size)
+      starting_board.df_to_object()
+      df = pd.read_csv('steps.csv')
+
+      game.game(starting_board, board_size)
+
+# --------------------------- Argument parser --------------------------------
 
 if __name__ == '__main__':
    """
@@ -241,10 +260,10 @@ if __name__ == '__main__':
    parser = argparse.ArgumentParser(description = 'import dataframe with board values')
 
    # Add arguments to parser:
-   parser.add_argument('-algo', '--algorithm')
-   parser.add_argument('input', help = 'input_file (csv')
-   parser.add_argument('output1', help = 'output file1 (csv)')
-   parser.add_argument('output2', help = 'output file2 (csv)')
+   parser.add_argument('algo', 'algorithm', help = "fill in algoritm/mode")
+   parser.add_argument('-input', help = 'input_file (csv)')
+   parser.add_argument('-output1', help = 'output file1 (csv)')
+   parser.add_argument('-output2', help = '[output file2 (csv)]') #optional
 
    # Reads arguments from commandline:
    args = parser.parse_args()
