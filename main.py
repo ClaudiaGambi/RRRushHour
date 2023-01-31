@@ -1,12 +1,15 @@
-from code.classes import board
+
 from code.algorithms import randomize
-from code.algorithms import BreadthFirst
-from code.algorithms import BF_Blocking
-from code.algorithms import BF_NearExit 
 from code.algorithms import A_Star
-# from code.classes import plots
+from code.algorithms import BreadthFirst
+from code.algorithms import BF_NearExit 
+from code.algorithms import BF_Blocking
 # from code.algorithms import game
+
+from code.classes import board
+# from code.classes import plots
 # from code.classes import visuals
+
 import argparse
 import matplotlib.pyplot as plt
 import pandas as pd 
@@ -14,9 +17,7 @@ import numpy as np
 import re
 import csv
 
-
-
-def main(input_file, algorithm, output_file1, output2):
+def main(algorithm, input_file, output_file1, output2):
    """
    This function takes the input from the argument parser, which are the filename and the 
    algorithm that de file needs to be run on. The algorithm is then called on the file
@@ -27,7 +28,7 @@ def main(input_file, algorithm, output_file1, output2):
    board_size = int(re.findall(r'\d+', input_file)[0])
    board_number = int(re.findall(r'\d+', input_file)[-1])
 
-   # Checks which algorithm is given as input:
+# ---------------------------------------------- Random --------------------------------------------------------------
    if algorithm == 'randomize':
       
       #1. Create empty starting lists of values we want to save (per run):
@@ -130,7 +131,6 @@ def main(input_file, algorithm, output_file1, output2):
       # print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
       # print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
       breadth_first.current_node.step_history.to_csv('output.csv', index =False)
-
    
    elif algorithm == "BF_Blocking":
       #Create starting board Board instance:
@@ -171,8 +171,6 @@ def main(input_file, algorithm, output_file1, output2):
       # print(f"Number of expanded nodes: {best_first.expanded_nodes}")
       # best_first.current_node.step_history.to_csv('output.csv', index =False)
 
-   
-
    elif algorithm == "Astar":
 
      #Create starting board Board instance:
@@ -204,6 +202,35 @@ def main(input_file, algorithm, output_file1, output2):
       starting_board.df_to_object()
       df = pd.read_csv('output.csv')
 
+   elif algorithm == "plotHist":
+      "Creates a histogram plot based on the input files and returns it as a png."
+
+      # Bin colors:
+      trafic_light = ["red", "orange", "green"]
+
+      # Input:
+      lsts = [output2, output_file1, input_file]
+
+      for i in range(len(lsts)):
+         
+         # Define board number:
+         board_size = int(re.findall(r'\d+', lsts[i])[0])
+
+         # Read in file:
+         file = open(lsts[i], "r")
+         board = list(csv.reader(file, delimiter = ","))[0]
+         file.close()
+
+         # Convert strings to integers:
+         for j in range(len(board)):
+            board[j] = int(board[j])
+
+         # Plot:
+         plt.hist(board, alpha = 0.8, color = trafic_light[i], label= f'Board {board_size}x{board_size}')
+      
+      plt.legend(loc='upper right')
+      plt.show()
+
 
 if __name__ == '__main__':
    """
@@ -214,8 +241,8 @@ if __name__ == '__main__':
    parser = argparse.ArgumentParser(description = 'import dataframe with board values')
 
    # Add arguments to parser:
-   parser.add_argument('input', help = 'input_file (csv')
    parser.add_argument('-algo', '--algorithm')
+   parser.add_argument('input', help = 'input_file (csv')
    parser.add_argument('output1', help = 'output file1 (csv)')
    parser.add_argument('output2', help = 'output file2 (csv)')
 
@@ -223,4 +250,4 @@ if __name__ == '__main__':
    args = parser.parse_args()
 
    # Run main with arguments from parser:
-   main(args.input, args.algorithm, args.output1, args.output2)
+   main(args.algorithm, args.input, args.output1, args.output2)
