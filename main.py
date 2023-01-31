@@ -12,18 +12,20 @@ import matplotlib.pyplot as plt
 import pandas as pd 
 import numpy as np
 import re
+import csv
 
 
 
-def main(input_file, algorithm, output_file):
+def main(input_file, algorithm, output_file1, output2):
    """
    This function takes the input from the argument parser, which are the filename and the 
    algorithm that de file needs to be run on. The algorithm is then called on the file
    accordingly. 
    """
-
+   
    # Extract the boardsize from the output file name:
    board_size = int(re.findall(r'\d+', input_file)[0])
+   board_number = board_size = int(re.findall(r'\d+', input_file)[-1])
 
    # Checks which algorithm is given as input:
    if algorithm == 'randomize':
@@ -74,11 +76,10 @@ def main(input_file, algorithm, output_file):
 
          if solution_boards_count[board_coords] == highest_occurence:
             most_found_endstate = random_algo.board
-
-      print(solution_boards_count.values())
       
-      #5. Return the most found endstate:
+      #5. Return csv's:
 
+      # Most found endstate:
       lst_total = []
       for car in most_found_endstate.cars_list:
          coord = car.coordinates_list[0]
@@ -87,16 +88,21 @@ def main(input_file, algorithm, output_file):
          lst_total.append([car.type, car.orientation, col, row, car.length])
 
       new_board_df = pd.DataFrame(lst_total, columns = ['car', 'orientation', 'col', 'row', 'length'])
-      new_board_df.to_csv('gameboards/end_board1.csv', index = False)
+      new_board_df.to_csv(f'output/end_board{board_number}.csv', index = False)
+
+      # Move count list:
+      data = ",".join([str(i) for i in move_counts_list])
+      with open(f"output/RandomOutput_Board{board_size}x{board_size}.csv", "w", newline = "") as fou:
+         fou.write(data)
 
       #6. Print values:
 
-      gemiddelde = np.mean(move_counts_list)
+      mean = np.mean(move_counts_list)
       max_value = max(move_counts_list)
       min_value = min(move_counts_list)
 
-      print(f'het gemiddelde is {gemiddelde}', f'maximum is {max_value} en minimum is {min_value}.')
-      print(move_counts_list)
+      print("Amount of steps untill solution:")
+      print(f"Mean: {mean}\nMax: {max_value}\nMin: {min_value}")
 
    elif algorithm == "BreadthFirst":
       
@@ -204,18 +210,17 @@ if __name__ == '__main__':
    Creates argument parser with values it takes. 
    """
 
-   # create parser
+   # Create parser:
    parser = argparse.ArgumentParser(description = 'import dataframe with board values')
 
-   # add arguments to parser
-
-   parser.add_argument('output', help = 'output file (csv)')
-   # parser.add_argument('output', help = 'output file (png)')
+   # Add arguments to parser:
    parser.add_argument('input', help = 'input_file (csv')
    parser.add_argument('-algo', '--algorithm')
+   parser.add_argument('output1', help = 'output file1 (csv)')
+   parser.add_argument('output2', help = 'output file2 (csv)')
 
-   # reads arguments from commandline
+   # Reads arguments from commandline:
    args = parser.parse_args()
 
-   # run main with arguments from parser
-   main(args.input, args.algorithm, args.output)
+   # Run main with arguments from parser:
+   main(args.input, args.algorithm, args.output1, args.output2)
