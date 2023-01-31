@@ -36,12 +36,14 @@ class Breadth_first():
             
             
             for direction in [-1, 1]:
-                count = 1
+                count = 0
                 distance = direction * count
                 new_coords = car.step(distance)
 
                 while self.current_node.check_availability(car, new_coords) == True:
                     count +=1
+                   
+
                     # print(count)
                     
                     # print(new_coords)  
@@ -87,9 +89,10 @@ class Breadth_first():
                         # child.array_plot(child.coordinates_list)                    # Show array of the board
 
                         self.expanded_nodes += 1
+
                     distance = direction * count
                     new_coords = car.step(distance)
-
+                    
     def update_current_node(self):
         """Method to update the current node. It takes the first node from the queue,
         deletes it from there and moves it to the current node attribute."""

@@ -82,16 +82,16 @@ def main(input_file, algorithm, output_file):
       #add board state to instance
       starting_board.update_coordinates_board_state()
       
-      starting_board.blocking_number_calculator()
+      # starting_board.blocking_number_calculator()
 
       #Run algorithm:
-      breadth_first = BF_Blocking.BF_Blocking(starting_board)
-      breadth_first.run()
+      best_first_bl = BF_Blocking.BF_Blocking(starting_board)
+      best_first_bl.run()
 
-      print(f'HISTORY{breadth_first.current_node.step_history.head(30)}')
-      print(f"Number of evaluated nodes: {breadth_first.evaluated_nodes}")
-      print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
-      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+      print(f'HISTORY{best_first_bl.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {best_first_bl.evaluated_nodes}")
+      print(f"Number of expanded nodes: {best_first_bl.expanded_nodes}")
+      best_first_bl.current_node.step_history.to_csv('output.csv', index =False)
    
    elif algorithm == "BF_NearExit":
       
@@ -108,10 +108,10 @@ def main(input_file, algorithm, output_file):
       best_first = BF_NearExit.BF_NearExit(starting_board)
       best_first.run()
 
-      # print(f'HISTORY{best_first.current_node.step_history.head(30)}')
-      # print(f"Number of evaluated nodes: {best_first.evaluated_nodes}")
-      # print(f"Number of expanded nodes: {best_first.expanded_nodes}")
-      # best_first.current_node.step_history.to_csv('output.csv', index =False)
+      print(f'HISTORY{best_first.current_node.step_history.head(30)}')
+      print(f"Number of evaluated nodes: {best_first.evaluated_nodes}")
+      print(f"Number of expanded nodes: {best_first.expanded_nodes}")
+      best_first.current_node.step_history.to_csv('output.csv', index =False)
 
    
 
