@@ -10,9 +10,9 @@ class PrioritizedItem:
     priority: int 
     item: Any = field(compare=False)
 
-    
-
 class A_star(BreadthFirst.Breadth_first):
+    '''
+    This class is an inheritance from Breadth First '''
     def __init__(self, end_board, starting_board):
         self.end_node = end_board
         self.current_node = starting_board
@@ -27,17 +27,11 @@ class A_star(BreadthFirst.Breadth_first):
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
         self.expanded_nodes = 0
-    
-    
-   
         
     def generate_nodes(self):
-       
-
         #1. Look at each possible move (on the parent board):
         # Loop through cars on the parent board
         for car in self.current_node.cars_list:                                 
-            
             
             for direction in [-1, 1]:
                 count = 1
@@ -48,19 +42,13 @@ class A_star(BreadthFirst.Breadth_first):
                 
                 # self.queue.put(PrioritizedItem(self.current_node.cars_list[i].distance_calculator_star(self.end_node.cars_list[i]), self.current_node.cars_list[i]))
                 # print(self.queue)
-
                 
                 while self.current_node.check_availability(car, new_coords) == True:
                     count +=1
-                    # print(new_coords)  
                                                 # Propose a move on the parent board
 
                     # new_coords = car.updated_coordinates
-                    carname = car.type
-                    # print(carname)
-                    
-                
-                    
+                    carname = car.type                    
 
                      #2. If a possible move is proposed, make a copy of the parent board:
                     child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
@@ -76,15 +64,10 @@ class A_star(BreadthFirst.Breadth_first):
                     child.update_board_history(carname, distance)                  # Update board history of the child
 
                     child_coords = str(child.coordinates_list)
-                    # print('hai')
-
                     
-
                     #4. Check whether child doesn't already exists in the all states set:
 
                     if child_coords not in self.all_states_set:
-                        # print('hoi')
-
                         #5. If not, add to queue and to all state set:
 
                         self.queue.put(PrioritizedItem(child.cost_star(self.end_node.cars_list),child))
