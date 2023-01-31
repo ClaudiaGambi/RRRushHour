@@ -28,8 +28,6 @@ de naam van de inputfile (het bord), en twee outputfiles. Een voorbeeld hiervan 
 python main.py gameboards/Rushhour12x12_7.csv -algo randomize output/end_board7.csv output/RandomOutput_Board12x12.csv
 ```
 
-Het bestand geeft een voorbeeld voor gebruik van de verschillende functies.
-
 ### Structuur
 
 De hierop volgende lijst beschrijft de belangrijkste mappen en files in het project, en waar je ze kan vinden:
