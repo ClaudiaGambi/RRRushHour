@@ -129,7 +129,7 @@ def main(mode, input_file, output_file1, output2):
       print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
 
       # Export the step history of the solution board to a csv file
-      breadth_first.current_node.step_history.to_csv('output.csv', index = False)
+      breadth_first.current_node.step_history.to_csv('data/output.csv', index = False)
 
 # --------------- Breadth First with heuristic: # blocking cars --------------
 
@@ -154,7 +154,7 @@ def main(mode, input_file, output_file1, output2):
       print(f"Number of expanded nodes: {breadth_first.expanded_nodes}")
 
       # Export the step history of the solution board to a csv file
-      breadth_first.current_node.step_history.to_csv('output.csv', index =False)
+      breadth_first.current_node.step_history.to_csv('data/output.csv', index =False)
 
 # --------------- Breadth First with heuristic: distance to exit -------------
 
@@ -177,10 +177,8 @@ def main(mode, input_file, output_file1, output2):
       print(f'History {best_first.current_node.step_history.head(30)}')
       print(f"Number of evaluated nodes: {best_first.evaluated_nodes}")
       print(f"Number of expanded nodes: {best_first.expanded_nodes}")
-      best_first.current_node.step_history.to_csv('output.csv', index =False)
-
       # Export the step history of the solution board to a csv file
-      best_first.current_node.step_history.to_csv('output.csv', index =False)
+      best_first.current_node.step_history.to_csv('data/output.csv', index =False)
 
 # --------------------------------- A* ---------------------------------------
 
@@ -204,7 +202,7 @@ def main(mode, input_file, output_file1, output2):
       Astar.run()
 
       # Export the step history of the solution board to a csv file
-      Astar.current_node.step_history.to_csv('output.csv', index = False)
+      Astar.current_node.step_history.to_csv('data/output.csv', index = False)
       print(Astar.expanded_nodes)
       print(Astar.evaluated_nodes)
 
@@ -217,8 +215,9 @@ def main(mode, input_file, output_file1, output2):
 
       # Add cars list to instance
       starting_board.read_input_file()
-      df = pd.read_csv('output.csv')
 
+      # read steps history
+      df = pd.read_csv(output_file1)
       visuals.Visual(starting_board, df)
 
 
@@ -255,12 +254,10 @@ def main(mode, input_file, output_file1, output2):
 
    elif mode == "game":
 
-      starting_board = brd.Board(input_file, board_size)
-      starting_board.readt()
-      df = pd.read_csv(output_file1)
-      print(df)
+      starting_board = brd.Board(input_file)
+      starting_board.read_input_file()
+      game.Game(starting_board)
 
-      game.Game()
 # --------------------------- Argument parser --------------------------------
 
 if __name__ == '__main__':
@@ -273,7 +270,7 @@ if __name__ == '__main__':
 
    # Add arguments to parser:
    parser.add_argument('-m', '--mode', help = "fill in mode")
-   parser.add_argument('-i','--input', help = 'input_file (csv)')
+   parser.add_argument('-i','--input', help = 'input file (csv)')
    parser.add_argument('-o1', '--output1', help = 'output file1 (csv)')
    parser.add_argument('-o2', '--output2', help = '[output file2 (csv)]') #optional
 

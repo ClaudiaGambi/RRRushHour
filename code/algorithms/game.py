@@ -102,15 +102,15 @@ class Game:
     In the game class, only tiny changes have been made to make it suitable for our game format.
     '''
     # board object as input, because this contains the original car information
-    def __init__(self, board, board_size):
+    def __init__(self, board):
 
         # get original cars list
         self.cars_list = board.cars_list
-
+        self.board_size = board.board_size        
         # make the cars list used in the game class
-        self.makeCars(board_size)
+        self.makeCars(self.board_size)
         self.turns = 0
-        self.board_size = board_size
+        
         
         #run pygame
         pygame.init() 
