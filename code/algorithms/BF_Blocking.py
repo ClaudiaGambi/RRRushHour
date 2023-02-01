@@ -27,7 +27,7 @@ class BF_Blocking(BF_NearExit.BF_NearExit):
         self.current_node = starting_board
         self.queue = [copy.deepcopy(starting_board)]
         self.queue = PriorityQueue()
-        self.queue.put(PrioritizedItem(self.current_node.blocking_number_calculator(), self.current_node))
+        self.queue.put(PrioritizedItem(self.current_node.blocking_cars(), self.current_node))
         self.solution_found = False
         self.all_states_set = set()
         self.all_states_set.add(str(self.current_node.coordinates_list))
@@ -55,7 +55,7 @@ class BF_Blocking(BF_NearExit.BF_NearExit):
                 distance = direction * step_count
 
                 # Safe the new coordinates of the possible new move
-                new_coords = car.step(distance)  
+                new_coords = car.propose_move(distance)  
 
                 # If there is a spot available for the car to be moved to on the current board
                 while self.current_node.check_availability(car, new_coords) == True:
@@ -101,4 +101,4 @@ class BF_Blocking(BF_NearExit.BF_NearExit):
                     distance = direction * step_count
 
                     # Update new coordinates
-                    new_coords = car.step(distance)  
+                    new_coords = car.propose_move(distance)  

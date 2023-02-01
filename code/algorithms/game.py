@@ -97,7 +97,7 @@ class Car:
         #make rectangle object
         self.rect = pygame.Rect(self.startX, self.startY, self.X, self.Y) 
 
-class game:
+class Game:
     '''
     In the game class, only tiny changes have been made to make it suitable for our game format.
     '''

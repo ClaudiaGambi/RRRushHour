@@ -25,9 +25,6 @@ class Random():
         is stored in the board history of the input board. The move count, amount
         of moves taken, are returned.
         """
-
-        # A counter keeping track of the moves made
-        move_count = 0
         
         # Keep on making random steps until the red car has reached the exit
         while self.board.cars_list[-1].coordinates_list[0] != self.board.exit:

@@ -106,16 +106,15 @@ class Visual:
     In the solution csv contains the moves in the right order. These moves are done automatically in the 'game'
     to show how to get to the solution.
     '''
-    def __init__(self, board, df, board_size):
+    def __init__(self, board, df):
 
         # Get cars list from board object
         self.cars_list = board.cars_list
-        self.makeCars(board_size)
+        self.board_size = board.board_size
+        self.makeCars()
 
         # Keep track of turns
         self.turns = 0
-
-        self.board_size = board_size
 
         # Drop not needed columns, get the right answers in a dataframe
         self.answers = df.loc[:, ~df.columns.str.contains('^Unnamed')]
@@ -219,7 +218,7 @@ class Visual:
 
         return car.rect
 
-    def makeCars(self, board_size): 
+    def makeCars(self): 
         '''
         This function takes the list of car objects from our own project and turns it into 
         a list suitable for this game.
@@ -234,9 +233,9 @@ class Visual:
 
             # Save car objects in cars list, make sure red car(X) is red
             if car.type == 'X':
-                self.cars.append(Car(board_size, car.orientation, car.length, car.coordinates_list[0][0] - 1, (board_size + 1) -car.coordinates_list[0][1] - 2, (255,0,0), car.type))
+                self.cars.append(Car(self.board_size, car.orientation, car.length, car.coordinates_list[0][0] - 1, (self.board_size + 1) -car.coordinates_list[0][1] - 2, (255,0,0), car.type))
             else:
-                self.cars.append(Car(board_size, car.orientation, car.length, car.coordinates_list[0][0] - 1, (board_size + 1) -car.coordinates_list[0][1] - 2, color, car.type))
+                self.cars.append(Car(self.board_size, car.orientation, car.length, car.coordinates_list[0][0] - 1, (self.board_size + 1) -car.coordinates_list[0][1] - 2, color, car.type))
 
     def gameOver(self): 
 

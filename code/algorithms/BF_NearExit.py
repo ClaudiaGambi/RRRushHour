@@ -26,7 +26,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
         self.current_node = starting_board
         self.queue = [copy.deepcopy(starting_board)]
         self.queue = PriorityQueue()
-        self.queue.put(PrioritizedItem(self.current_node.distance_calculator(), self.current_node))
+        self.queue.put(PrioritizedItem(self.current_node.distance_to_exit(), self.current_node))
         self.solution_found = False
         self.all_states_set = set()
         self.all_states_set.add(str(self.current_node.coordinates_list))
@@ -54,7 +54,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
                 distance = direction * count
 
                 # Safe the new coordinates of the possible new move
-                new_coords = car.step(distance)  
+                new_coords = car.propose_move(distance)  
 
                 # If there is a spot available for the car to be moved to on the current board
                 while self.current_node.check_availability(car, new_coords) == True:
@@ -88,7 +88,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
                         # Based on the total distance to end state, the queue is ordered
                         # For this child, the total distance is computed
                         # Based on that value the child is put in a certain spot in the queue
-                        self.queue.put(PrioritizedItem(child.distance_calculator(), child))
+                        self.queue.put(PrioritizedItem(child.distance_to_exit(), child))
 
                         # Add to all state set
                         self.all_states_set.add(child_coords)
@@ -100,7 +100,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
                     distance = direction * count
 
                     # Update new coordinates
-                    new_coords = car.step(distance)
+                    new_coords = car.propose_move(distance)
 
     def update_current_node(self):
         """

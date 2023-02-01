@@ -1,7 +1,7 @@
 # ----------------------- Import packages and code ----------------------------
+
 import copy
-import numpy as np
-from code.classes import plots
+
 # -----------------------------------------------------------------------------
 
 class Breadth_first():
@@ -43,7 +43,7 @@ class Breadth_first():
                 distance = direction * step_count
 
                 # Safe the new coordinates of the possible new move
-                new_coords = car.step(distance)
+                new_coords = car.propose_move(distance)
 
                 # If there is a spot available for the car to be moved to on the current board
                 while self.current_node.check_availability(car, new_coords) == True:
@@ -85,7 +85,7 @@ class Breadth_first():
                     distance = direction * step_count
 
                     # Update new coordinates
-                    new_coords = car.step(distance)
+                    new_coords = car.propose_move(distance)
                     
     def update_current_node(self):
         """

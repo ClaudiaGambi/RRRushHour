@@ -49,7 +49,7 @@ class A_star(BF_NearExit.BF_NearExit):
                 distance = direction * count
 
                 # Generate new coordinates with move 
-                new_coords = car.step(distance)
+                new_coords = car.propose_move(distance)
 
                 # Get index of car in current node
                 i = self.current_node.cars_list.index(car)
@@ -94,6 +94,6 @@ class A_star(BF_NearExit.BF_NearExit):
                     distance = direction * count
 
                     # propose new coordinates 
-                    new_coords = car.step(distance)
+                    new_coords = car.propose_move(distance)
 
     
