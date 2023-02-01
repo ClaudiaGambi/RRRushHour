@@ -1,5 +1,5 @@
 # from code.classes import board
-from code.algorithms import BreadthFirst
+from code.algorithms import BF_NearExit
 from queue import PriorityQueue
 from typing import Any
 from dataclasses import dataclass, field
@@ -10,7 +10,7 @@ class PrioritizedItem:
     priority: int 
     item: Any = field(compare=False)
 
-class A_star(BreadthFirst.Breadth_first):
+class A_star(BF_NearExit.BF_NearExit):
     '''
     This class is an inheritance from Breadth First '''
     def __init__(self, end_board, starting_board):
@@ -81,46 +81,4 @@ class A_star(BreadthFirst.Breadth_first):
                     distance = direction * count
                     new_coords = car.step(distance)
 
-    def update_current_node(self):
-        """
-        Method to update the current node. It takes the first node from the queue,
-        deletes it from there and moves it to the current node attribute.
-        """
-        # Update:
-        self.current_node = self.queue.get().item
-
-        #Update generation:
-        # old_generation = self.generation
-        # self.generation = len(self.current_node.step_history)
-        
-        #if old_generation != self.generation:
-            #print(f"\nNext generation: {self.generation} -------------------------------\n")
-    
-
-    def run(self):
-        """
-        Method that runs the algorithm. It continues untill a solution has been
-        found. Untill then, each node in the queue is evaluated and root nodes are 
-        created. When the solution has been found, the board history of that board
-        is returned, containing all the steps that have been taken to get there.
-        """        
-
-        # Continue untill a solution has been found:
-        while self.solution_found == False: 
-        
-            # Add baby nodes to queue:
-            self.generate_nodes()
-
-            # Check whether there's minimally one node in the queue:
-            if self.queue.qsize() == 0:
-                return print("No solution has been found.")
-
-            # Select new node and update queue:
-            self.update_current_node()
-
-                # Evaluate current node:
-            self.evaluate_node()
-
-        return self.current_node.step_history
-
-    
+   

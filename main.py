@@ -1,6 +1,5 @@
 
 # ----------------------- Import packages and code ----------------------------
-
 from code.algorithms import randomize
 from code.algorithms import A_Star
 from code.algorithms import BreadthFirst
@@ -18,7 +17,6 @@ import pandas as pd
 import numpy as np
 import re
 import csv
-
 # -----------------------------------------------------------------------------
 
 def main(algorithm, input_file, output_file1, output2):
