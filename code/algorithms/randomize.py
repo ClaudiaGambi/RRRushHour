@@ -1,7 +1,6 @@
 import random
 import pandas as pd
 from code.classes import board
-from code.classes  import plots
 
 
 
@@ -17,6 +16,7 @@ class Random():
         # self.new_board_df = pd.DataFrame() 
         self.csv = None
         self.move_count = 0
+        
         
     def run(self):
 

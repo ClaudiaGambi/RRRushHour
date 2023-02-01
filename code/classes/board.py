@@ -213,29 +213,29 @@ class Board():
             distance_total += car.distance_calculator_star(end_cars_list[i])
             
             # get red car
-            red_car = self.cars_list[-1]
+            # red_car = self.cars_list[-1]
 
-            # get fron coordinates of red car
-            red_coords_front = red_car.coordinates_list[1]
+            # # get fron coordinates of red car
+            # red_coords_front = red_car.coordinates_list[1]
 
-            # loop over distance from red car to exit 
-            for i in range(self.board_size - red_coords_front[0]):
+            # # loop over distance from red car to exit 
+            # for i in range(self.board_size - red_coords_front[0]):
 
-                # get coordinates in front of red car and add to highway set
-                coord = (red_coords_front[0] + i, red_coords_front[1])
-                highway.add(coord)
+            #     # get coordinates in front of red car and add to highway set
+            #     coord = (red_coords_front[0] + i, red_coords_front[1])
+            #     highway.add(coord)
 
         # Flatten coordinates list:
-            loose_coords = set(itertools.chain(*self.coordinates_list))
+            # loose_coords = set(itertools.chain(*self.coordinates_list))
 
         # Overlap:
-            blokkage = len(loose_coords.intersection(highway))
+            # blokkage = len(loose_coords.intersection(highway))
         
 
-        # compute cost
-        cost = distance_total + blokkage 
+        #compute cost
+        cost = distance_total 
         
-        return cost 
+        return cost
 
 
 

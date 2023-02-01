@@ -1,18 +1,27 @@
-# from code.classes import board
+# ----------------------- Import packages and code ----------------------------
 from code.algorithms import BF_NearExit
 from queue import PriorityQueue
 from typing import Any
 from dataclasses import dataclass, field
 import copy 
 
+# -----------------------------------------------------------------------------
+
 @dataclass(order=True)
 class PrioritizedItem:
+    """
+    Initialize priority queue
+    """
     priority: int 
     item: Any = field(compare=False)
 
 class A_star(BF_NearExit.BF_NearExit):
     '''
-    This class is an inheritance from Breadth First '''
+    This class is an inheritance from BF_NearExit and takes a starting board and endboard as inpt.
+    Astar works with a priorityqueue, the queue is prioritized based on the total distances between 
+    beginstates en endstates of cars. The amount of cars blocking the red car also is added 
+    to the value for the priorityqueue. 
+    '''
     def __init__(self, end_board, starting_board):
         self.end_node = end_board
         self.current_node = starting_board
@@ -27,6 +36,7 @@ class A_star(BF_NearExit.BF_NearExit):
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
         self.expanded_nodes = 0
+        self.evaluated_nodes = 0
         
     def generate_nodes(self):
         #1. Look at each possible move (on the parent board):
@@ -81,4 +91,4 @@ class A_star(BF_NearExit.BF_NearExit):
                     distance = direction * count
                     new_coords = car.step(distance)
 
-   
+    
