@@ -1,4 +1,3 @@
-# from code.classes import board
 from code.algorithms import BreadthFirst
 from queue import PriorityQueue
 from typing import Any
@@ -7,12 +6,16 @@ import copy
 
 @dataclass(order=True)
 class PrioritizedItem:
+    """
+    Initialize Priority Queue.
+    """
     priority: int 
     item: Any = field(compare=False)
 
 class A_star(BreadthFirst.Breadth_first):
     '''
-    This class is an inheritance from Breadth First '''
+    This class is an inheritance from Breadth First.
+    '''
     def __init__(self, end_board, starting_board):
         self.end_node = end_board
         self.current_node = starting_board
