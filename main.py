@@ -8,7 +8,7 @@ from code.algorithms import BF_NearExit
 from code.algorithms import BF_Blocking
 # from code.algorithms import game
 
-from code.classes import board
+from code.classes import board as brd
 # from code.classes import plots
 # from code.classes import visuals
 
@@ -49,7 +49,7 @@ def main(algorithm, input_file, output_file1, output2):
       for i in range(100):
 
          # Create starting board Board instance:
-         starting_board = board.Board(input_file, board_size)
+         starting_board = brd.Board(input_file, board_size)
 
          # Add carslist to instance:
          starting_board.df_to_object()
@@ -108,7 +108,7 @@ def main(algorithm, input_file, output_file1, output2):
    elif algorithm == "BreadthFirst":
       
       # Create starting board Board instance:
-      starting_board = board.Board(input_file, board_size)
+      starting_board = brd.Board(input_file, board_size)
       
       # Add carslist to instance:
       starting_board.df_to_object()
@@ -133,7 +133,7 @@ def main(algorithm, input_file, output_file1, output2):
    elif algorithm == "BF_Blocking":
       
       # Create starting board Board instance:
-      starting_board = board.Board(input_file, board_size)
+      starting_board = brd.Board(input_file, board_size)
       
       # Add carslist to instance
       starting_board.df_to_object()
@@ -158,7 +158,7 @@ def main(algorithm, input_file, output_file1, output2):
    elif algorithm == "BF_NearExit":
       
       # Create starting board Board instance:
-      starting_board = board.Board(input_file, board_size)
+      starting_board = brd.Board(input_file, board_size)
       
       # Add carslist to instance:
       starting_board.df_to_object()
@@ -183,7 +183,7 @@ def main(algorithm, input_file, output_file1, output2):
    elif algorithm == "Astar":
 
       # Create starting board Board instance:
-      starting_board = board.Board(input_file, board_size)
+      starting_board = brd.Board(input_file, board_size)
       
       # Add carslist to instance:
       starting_board.df_to_object()
@@ -192,7 +192,7 @@ def main(algorithm, input_file, output_file1, output2):
       starting_board.update_coordinates_board_state()
 
       # Create end board instance:
-      end_board = board.Board('gameboards/end_board4.csv', board_size)
+      end_board = brd.Board('output/end_board5.csv', board_size)
       end_board.df_to_object()
 
       # Run the algorithm:
@@ -201,6 +201,8 @@ def main(algorithm, input_file, output_file1, output2):
 
       # Export the step history of the solution board to a csv file:
       Astar.current_node.step_history.to_csv('output.csv', index = False)
+      print(Astar.expanded_nodes)
+      print(Astar.evaluated_nodes)
 
 # ---------------------------- Visualisation ---------------------------------
 
