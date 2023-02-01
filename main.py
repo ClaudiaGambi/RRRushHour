@@ -1,16 +1,11 @@
 
 # ----------------------- Import packages and code ----------------------------
-
 from code.algorithms import randomize
 from code.algorithms import A_Star
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_NearExit 
 from code.algorithms import BF_Blocking
-# from code.algorithms import game
-
 from code.classes import board as brd
-# from code.classes import plots
-# from code.classes import visuals
 
 import argparse
 import matplotlib.pyplot as plt
@@ -18,23 +13,22 @@ import pandas as pd
 import numpy as np
 import re
 import csv
-
 # -----------------------------------------------------------------------------
 
-def main(algorithm, input_file, output_file1, output2):
+def main(mode, input_file, output_file1, output2):
    """
    This function takes the input from the argument parser, which are the
-   filename and the algorithm that de file needs to be run on. The algorithm is
-   then called on the file accordingly. 
+   filename and the mode that de file needs to run. A mode can be an algorithm
+   that is then called on the file accordingly, or a code that creates a certain
+   visualisation or interactive simulation.
    """
    
    # Extract the boardsize from the output file name:
-   board_size = int(re.findall(r'\d+', input_file)[0])
    board_number = int(re.findall(r'\d+', input_file)[-1])
 
 # ---------------------------------- Random ----------------------------------
    
-   if algorithm == 'Random':
+   if mode == 'Random':
       
       # A list of the amount of steps taken untill the solution is found per run:
       move_counts_list = []
@@ -51,14 +45,14 @@ def main(algorithm, input_file, output_file1, output2):
          # count += 1
          # print(count)
 
-      # Create starting board Board instance:
-      starting_board = brd.Board(input_file, board_size)
+         # Create starting board Board instance:
+         starting_board = brd.Board(input_file)
 
-      # Add carslist to instance:
-      starting_board.df_to_object()
+         # Add carslist to instance:
+         starting_board.read_input_file()
 
-      # Creates the random algorithm instance:
-      random_algo = randomize.Random(board_size, starting_board)
+         # Creates the random algorithm instance:
+         random_algo = randomize.Random(starting_board)
 
       #Run the experiment:
       random_algo.run()
@@ -108,7 +102,7 @@ def main(algorithm, input_file, output_file1, output2):
 
 # ------------------------------ Breadth First -------------------------------
 
-   elif algorithm == "BreadthFirst":
+   elif mode == "BreadthFirst":
       
       # Create starting board Board instance:
       starting_board = brd.Board(input_file, board_size)
@@ -133,7 +127,7 @@ def main(algorithm, input_file, output_file1, output2):
 
 # --------------- Breadth First with heuristic: # blocking cars --------------
 
-   elif algorithm == "BF_Blocking":
+   elif mode == "BF_Blocking":
       
       # Create starting board Board instance:
       starting_board = brd.Board(input_file, board_size)
@@ -158,7 +152,7 @@ def main(algorithm, input_file, output_file1, output2):
 
 # --------------- Breadth First with heuristic: distance to exit -------------
 
-   elif algorithm == "BF_NearExit":
+   elif mode == "BF_NearExit":
       
       # Create starting board Board instance:
       starting_board = brd.Board(input_file, board_size)
@@ -183,7 +177,7 @@ def main(algorithm, input_file, output_file1, output2):
 
 # --------------------------------- A* ---------------------------------------
 
-   elif algorithm == "Astar":
+   elif mode == "Astar":
 
       # Create starting board Board instance:
       starting_board = brd.Board(input_file, board_size)
@@ -209,14 +203,14 @@ def main(algorithm, input_file, output_file1, output2):
 
 # ---------------------------- Visualisation ---------------------------------
 
-   elif algorithm == "Visual":
+   elif mode == "Visual":
 
 
       starting_board = board.Board(input_file, board_size)
       starting_board.df_to_object()
       df = pd.read_csv('output.csv')
 
-   elif algorithm == "plotHist":
+   elif mode == "plotHist":
       "Creates a histogram plot based on the input files and returns it as a png."
 
       # Bin colors:
@@ -247,7 +241,7 @@ def main(algorithm, input_file, output_file1, output2):
 
 # ------------------------ Interactive simulation ----------------------------
 
-   elif algorithm == "game":
+   elif mode == "game":
       starting_board = board.Board(input_file, board_size)
       starting_board.df_to_object()
       df = pd.read_csv(output_file1)
@@ -266,7 +260,7 @@ if __name__ == '__main__':
    parser = argparse.ArgumentParser(description = 'import dataframe with board values')
 
    # Add arguments to parser:
-   parser.add_argument('-algo', '--algorithm', help = "fill in algoritm/mode")
+   parser.add_argument('-m', '--mode', help = "fill in mode")
    parser.add_argument('-i','--input', help = 'input_file (csv)')
    parser.add_argument('-o1', '--output1', help = 'output file1 (csv)')
    parser.add_argument('-o2', '--output2', help = '[output file2 (csv)]') #optional
@@ -275,4 +269,4 @@ if __name__ == '__main__':
    args = parser.parse_args()
 
    # Run main with arguments from parser:
-   main(args.algorithm, args.input, args.output1, args.output2)
+   main(args.mode, args.input, args.output1, args.output2)

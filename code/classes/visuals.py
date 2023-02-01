@@ -11,15 +11,16 @@ run the visual that will show the results:
 
 python main.py -algo visual data/output.csv gameboards/Rushhour6x6_1.csv
 '''
-#imports libraries
+# ----------------------- Import packages and code ----------------------------
 import pygame
 from tkinter import *
 from tkinter import messagebox
 import random
 import pandas as pd
 import time
+# -----------------------------------------------------------------------------
 
-#to hide the main Tkinter window
+# To hide the main Tkinter window
 Tk().wm_withdraw() 
 
 class Car:
@@ -30,16 +31,16 @@ class Car:
     '''
     def __init__(self, board_size, orientation, size, column, row, color, identification):
 
-        #one square is has the length of 80
+        # One square is has the length of 80
         square = 80
 
-        # car identification
+        # Car identification
         self.identification = identification
 
-        #starting x-coordinate
+        # Starting x-coordinate
         self.startX = (column) * square 
 
-        #starting y-coordinate
+        # Starting y-coordinate
         self.startY = (row) * square
 
         self.orientation = orientation
@@ -48,7 +49,7 @@ class Car:
         length = square * size
         self.color = color
         
-        #for horizontal cars
+        # For horizontal cars
         if self.orientation == "H": 
             
             self.X = length
@@ -67,34 +68,34 @@ class Car:
             #Ending y coordinate of where the car can be positioned
             self.endLimitY = self.startY + self.Y
             
-        # for vertical cars
+        # For vertical cars
         else:
             self.X = square
             self.Y = length 
             self.startY = self.startY + square
 
-            #Starting x coordinate of where the car can be positioned
+            # Starting x coordinate of where the car can be positioned
             self.startLimitX = self.startX
 
-            #Starting y coordinate of where the car can be positioned
+            # Starting y coordinate of where the car can be positioned
             self.startLimitY = 0
 
-            #Ending x coordinate of where the car can be positioned
+            # Ending x coordinate of where the car can be positioned
             self.endLimitX = self.startX + self.X
             
-            #Ending y coordinate of where the car can be positioned
+            # Ending y coordinate of where the car can be positioned
             self.endLimitY = board_size * 80 - length + 80
 
-        #current x-coordinate of car
+        # Current x-coordinate of car
         self.currentX = self.startX 
 
-        #current y-coordinate of car
+        # Current y-coordinate of car
         self.currentY = self.startY 
 
-        #boolean if the car is currently being dragged or not
+        # Boolean if the car is currently being dragged or not
         self.rectDrag = False 
 
-        #make rectangle object
+        # Make rectangle object
         self.rect = pygame.Rect(self.startX, self.startY, self.X, self.Y) 
 
 class Visual:
@@ -107,87 +108,86 @@ class Visual:
     '''
     def __init__(self, board, df, board_size):
 
-        print(board, df, board_size)
-
-        # get cars list from board object
+        # Get cars list from board object
         self.cars_list = board.cars_list
         self.makeCars(board_size)
 
-        # keep track of turns
+        # Keep track of turns
         self.turns = 0
 
         self.board_size = board_size
 
-        # drop not needed columns, get the right answers in a dataframe
+        # Drop not needed columns, get the right answers in a dataframe
         self.answers = df.loc[:, ~df.columns.str.contains('^Unnamed')]
-        # self.answers = df.drop(0, axis=0)
-        print(self.answers)
         
-        pygame.init() #run pygame
+        # Run pygame
+        pygame.init()
+
         surfaceSize = self.board_size * 80
 
-        #make display window
+        # Make display window
         surface = pygame.display.set_mode((surfaceSize, surfaceSize)) 
 
         self.inGame = True
 
         while self.inGame == True:
 
-            #make the surface dark grey
+            # Make the surface dark grey
             surface.fill((102,102,102))
             
-            #display on window
+            # Display on window
             pygame.display.flip()
 
+            # For every car
             for car in self.cars: 
 
-                #color fill the rectangles
+                # Color fill the rectangles
                 surface.fill(car.color, car.rect) 
 
-                #draw rectangles, with black borders
+                # Draw rectangles, with black borders
                 pygame.draw.rect(surface, (0,0,0), car.rect, 5) 
 
-                #display on window
+                # Display on window
                 pygame.display.flip()
                 
-            #pygame events
+            # Pygame events
             self.ev = pygame.event.poll() 
 
-            #if window exited
+            # If window exited
             if self.ev.type == pygame.QUIT: 
                 self.inGame = False
 
-            # loop over the answers dataframe
+            # Loop over the answers dataframe
             for index, row in self.answers.iterrows():
 
-                # loop over cars
+                # Loop over cars
                 for car in self.cars:
 
-                    # if the car is the same as in the df, make the move
+                    # If the car is the same as in the df, make the move
                     if car.identification == row['car']:
 
                         move = row['move']
 
-                        # do this every second
+                        # Do this every second
                         time.sleep(1)
 
                         surface.fill((102,102,102), car.rect)
 
-                        # make the move
+                        # Make the move
                         new_rect = self.make_move(car, move)
         
-                        #color fill the rectangles
+                        # Color fill the rectangles
                         surface.fill(car.color, new_rect) 
                         
-                        # draw updated
+                        # Draw updated
                         pygame.draw.rect(surface, (0,0,0), new_rect, 5) 
                         
-                        #display on window
+                        # Display on window
                         pygame.display.flip() 
 
             self.gameOver()
 
-        #quit program
+        # Quit program
         pygame.quit() 
 
     def make_move(self, car, move):
@@ -200,21 +200,21 @@ class Visual:
         move = move * 80
         self.turns += 1
 
-        # if vertical:
+        # If vertical
         if car.orientation == 'V':
 
-            # make move
+            # Make move
             car.startY = car.startY + move
 
-            # save in rectangle object
+            # Save in rectangle object
             car.rect = pygame.Rect(car.startX, car.startY, car.X, car.Y)
 
-        # if horizontal
+        # If horizontal
         else:
-            # make move
+            # Make move
             car.startX = car.startX + move
 
-            # save in rectangle object
+            # Save in rectangle object
             car.rect = pygame.Rect(car.startX, car.startY, car.X, car.Y)
 
         return car.rect
@@ -224,15 +224,15 @@ class Visual:
         This function takes the list of car objects from our own project and turns it into 
         a list suitable for this game.
         '''
-        #list of car objects
+        # List of car objects
         self.cars = [] 
 
         for car in self.cars_list: 
 
-            # colors in pygame have a different range, so make new colors
+            # Colors in pygame have a different range, so make new colors
             color = (random.randrange(10, 250), random.randrange(10, 250), random.randrange(10, 250))
 
-            # save car objects in cars list, make sure red car(X) is red
+            # Save car objects in cars list, make sure red car(X) is red
             if car.type == 'X':
                 self.cars.append(Car(board_size, car.orientation, car.length, car.coordinates_list[0][0] - 1, (board_size + 1) -car.coordinates_list[0][1] - 2, (255,0,0), car.type))
             else:
@@ -240,7 +240,7 @@ class Visual:
 
     def gameOver(self): 
 
-        #checks if starting coordinate of red/last car is at the winning position or not
+        # Checks if starting coordinate of red/last car is at the winning position or not
         if self.cars[-1].startX == (self.board_size - 2) * 80: 
             messagebox.showinfo('Congratulations!','You have completed the game!\nYou did it in %d moves!' % self.turns)
             self.inGame = False #cut the loop
