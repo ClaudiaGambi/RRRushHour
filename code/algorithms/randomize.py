@@ -18,6 +18,7 @@ class Random():
         self.steps_df = pd.DataFrame()
         self.move_count = 0
         
+        
     def run(self):
         """
         Runs a random search algorithm untill a solution is found. This solution

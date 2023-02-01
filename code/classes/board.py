@@ -236,7 +236,7 @@ class Board():
         # summed
         cost = distance_total + blocking_number
         
-        return cost 
+        return cost
 
 
 

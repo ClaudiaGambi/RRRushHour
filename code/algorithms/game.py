@@ -11,13 +11,14 @@ To run:
 python main.py -algo game data/output.csv gameboards/Rushhour6x6_1.csv
 '''
 
-# import libraries
+# ----------------------- Import packages and code ----------------------------
 import pygame
 import math
 from tkinter import *
 from tkinter import messagebox
 import random
 import pandas as pd
+# -----------------------------------------------------------------------------
 
 # hide the main Tkinter window
 Tk().wm_withdraw() 
