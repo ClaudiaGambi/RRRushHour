@@ -261,10 +261,10 @@ if __name__ == '__main__':
    parser = argparse.ArgumentParser(description = 'import dataframe with board values')
 
    # Add arguments to parser:
-   parser.add_argument('algo', 'algorithm', help = "fill in algoritm/mode")
-   parser.add_argument('-input', help = 'input_file (csv)')
-   parser.add_argument('-output1', help = 'output file1 (csv)')
-   parser.add_argument('-output2', help = '[output file2 (csv)]') #optional
+   parser.add_argument('-algo', '--algorithm', help = "fill in algoritm/mode")
+   parser.add_argument('-i','--input', help = 'input_file (csv)')
+   parser.add_argument('-o1', '--output1', help = 'output file1 (csv)')
+   parser.add_argument('-o2', '--output2', help = '[output file2 (csv)]') #optional
 
    # Reads arguments from commandline:
    args = parser.parse_args()
