@@ -1,59 +1,59 @@
+
+# ----------------------- Import packages and code ----------------------------
+
 import random
 import pandas as pd
-#from code.classes import board
-#from code.classes  import plots
+
+# -----------------------------------------------------------------------------
 
 class Random():
-    '''
-    This class initializes a Random search for a Rushhour game. As input is a starting
-    board (Class: Board()) needed and the boardsize
-    '''
-    def __init__(self, board_size, starting_board):
+    """
+    This class initializes a Random search for a Rushhour game. As input is a
+    starting board in the form of a Board() instance needed.
+    """
+
+    def __init__(self, starting_board):
+
         self.board = starting_board
-        self.board_size = board_size
-        self.new_cars_list = []
-        self.steps_df = pd.DataFrame() 
-        self.csv = None
+        self.steps_df = pd.DataFrame()
         self.move_count = 0
         
     def run(self):
+        """
+        Runs a random search algorithm untill a solution is found. This solution
+        is stored in the board history of the input board. The move count, amount
+        of moves taken, are returned.
+        """
+
+        # A counter keeping track of the moves made
+        move_count = 0
         
-        self.new_cars_list = self.board.cars_list
-    
-        #exit = (self.board_size - 1 ,self.new_cars_list[-1].coordinates_list[0][1])
-        exit = self.board.exit
-        while self.new_cars_list[-1].coordinates_list[0] != exit:
+        # Keep on making random steps until the red car has reached the exit
+        while self.board.cars_list[-1].coordinates_list[0] != self.board.exit:
             
-            # choose randomly from car list
-            random_car = random.choice(self.new_cars_list)
+            # Choose a random car on the board
+            random_car = random.choice(self.board.cars_list)
             
+            # Choose a random move of one step to the left or to the right
+            random_move = random.choice([1, -1])
+            
+            # Propose a random move
+            new_coords = random_car.propose_move(random_move)
 
-            # choose direction randomly
-            random_direction = random.choice([1, -1])
-            
-            # propose a random step:
-            new_coords = random_car.step(random_direction)
-
-            
-            #Check availablity:
+            # Check the availablity of the proposed move
             availability = self.board.check_availability(random_car, new_coords)
 
-            #If available, save the step in (updated) dictionary:
+            # If available, make the move for real
             if availability == True:
-                random_car.update_coordinates(new_coords)
-                self.move_count += 1
-                self.board.update_coordinates_board_state()
-                # plot = plots.Plot_board()
-                # plot.create_board()
-                # plot.plot_dotted_cars(self.new_cars_list)
-            
 
-                # Keep track of the game steps:
-                # lst.append([random_car.type, random_direction])
-                
-        # print(f'amount of steps till sollution: {move_count}')
-        # df = pd.DataFrame(lst, columns = ["car", "move"])
-        # self.steps_df = pd.concat([self.steps_df, df])
+                # By updating the car coordinates
+                random_car.update_coordinates(new_coords)
+
+                # And by updating the board coordinates
+                self.board.update_coordinates_board_state()
+
+                # Finally, save the amount of steps taken
+                self.move_count += 1
 
         
         

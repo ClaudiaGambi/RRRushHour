@@ -1,124 +1,151 @@
+
+# ----------------------- Import packages and code ----------------------------
+
 import pandas as pd
 import random
-from code.classes import car
 import numpy as np
 import itertools
+import re
+
+from code.classes import car
+
+# -----------------------------------------------------------------------------
 
 class Board():
-    '''
-    The Board class has two functions: df_to_object and check_availability.
-    The df_to_object reads the file containing the initial board state and 
-    saves this in a Car object.
-
-    The check availability function checks for every propsed move if this 
-    move can be done: whether another car is in the way or wheter the car 
-    will move of the board.
-    '''
-    def __init__(self, file_name, board_size):
-        self.board_size = board_size
+    """
+    This class initializes a Board object representing a Rushhour gameboard. To 
+    initialize an instance a file with information about the location and
+    attributes about the cars on the board is needed.
+    """
+    
+    def __init__(self, file_name):
+        
         self.file = file_name
+        self.board_size = int(re.findall(r'\d+', file_name)[0])
         self.step_history = pd.DataFrame(columns = ["car", "move"])
         self.cars_list = []
         self.exit = ()
         self.coordinates_list = []
-        # self.distance_to_exit = 0
-        # self.distance_total = 0
         
+    def read_input_file(self):
+        """
+        Method to read the input file and convert all the relevant information
+        to Class attributes.
+        """
 
-    def df_to_object(self):
-
-        # read the csv file into a dataframe
+        # Read the csv file into a dataframe
         df = pd.read_csv(self.file)
 
-        for row, column in df.iterrows():
-            coord = (column[2], (self.board_size + 1) - column[3])
-            length = column[4]
-            orientation = column[1]
-            car_type = column[0]
-            list_coordinates = []
-
-            #Check what is the red one:
-            if car_type == 'X':
-                color = 'r'
-                self.exit = (self.board_size - 1, coord[1])
+        # Read the file row by row, each row contains information about one car
+        # on the board
+        for row, columns in df.iterrows():
             
-            #Assign random colors to the others:
+            # For vertical cars this coordinate is trunck coordinate,
+            # for horizontal cars this is the front coordinate
+            car_coordinate = (columns[2], (self.board_size + 1) - columns[3])
+
+            # Cars (length = 2) and trucks (length = 3) can be present
+            car_length = columns[4]
+
+            # The car can drive horizontally or vertically
+            car_orientation = columns[1]
+
+            # The cartype is unique for each car
+            car_type = columns[0]
+
+            # A list containing all the coordinates the car occupies
+            car_coordinates_list = []
+
+            # The car with the name 'X' should always be a red car
+            if car_type == 'X':
+                car_color = 'r'
+
+                # The exit has the same row coordinate as the red car,
+                # and is located at the side of the board
+                self.exit = (self.board_size - 1, car_coordinate[1])
+            
+            # Assign random colors to the other cars
             else:
-                color = (random.random(), random.random(), random.random())
+                car_color = (random.random(), random.random(), random.random())
                 
-            #Check orientation:
-            if orientation == "V":
+            # Create list of coordinates that are covered by the car,
+            # updating the coordinates (- or +) is dependent of the car orientation
+            # (see Car.propose_move(move) method comments)
+            if car_orientation == "V":
 
-                #Create list of coordinates that are covered by the car:
-                #loop over the length of the car to append each taken coordinate to the coordinates list
-                for i in range(length):
+                # Repeat for the length of the car
+                for i in range(car_length):
 
-                    #Save coordinate to list:
-                    list_coordinates.append(coord)
+                    # Save current coordinate to the list
+                    car_coordinates_list.append(car_coordinate)
 
-                    #Update coordinate:
-                    row = coord[1] - 1
-                    coord = (coord[0], row)
+                    # Update coordinate
+                    row = car_coordinate[1] - 1
+                    car_coordinate = (car_coordinate[0], row)
 
             else:
-                #Create list of coordinates that are covered by the car:
-                #loop over the length of the car to append each taken coordinate to the coordinates list
-                for i in range(length):
+                # Repeat for the length of the car
+                for i in range(car_length):
 
-                    #Save coordinate to list:
-                    list_coordinates.append(coord)
+                    #Save coordinate to list
+                    car_coordinates_list.append(car_coordinate)
 
-                    #Update coordinate:
-                    column = coord[0] + 1
-                    coord = (column, coord[1])
+                    #Update coordinate
+                    column = car_coordinate[0] + 1
+                    car_coordinate = (column, car_coordinate[1])
 
-            self.cars_list.append(car.Car(list_coordinates, length, orientation, car_type, color))
+            # Make a Car() instance and add this car in the board
+            self.cars_list.append(car.Car(car_coordinates_list, car_length, car_orientation, car_type, car_color))
 
-    def check_availability(self, moving_car, new_coords):
+    def check_availability(self, moving_car, proposed_coords):
         """
-        Method that checks whether the proposed coordinates (input) are not taken by another car yet.
-        It also checks that the car is not going of the board yet. Outputs boolean that is True when 
-        the proposed coordinates are a possibility.
+        Method that checks whether the proposed coordinates (input) are not
+        taken by another car yet. It also checks that the car is not going of
+        the board yet. Outputs boolean that is True when the proposed
+        coordinates are a possibility.
         """
+
+        # Make a list of all the loose unique coordinate numbers
+        flat_coords = list(set(itertools.chain(*proposed_coords)))
         
-        #2. Check whether the car stays on the board: -----------------------------------------------
-
-        final_destination = set(new_coords)
-
-        # Check whether the car coordinates are not of the board yet: -------------------------------
-        flat_coords = list(itertools.chain(*final_destination))
-
+        # Check whether each coordinate number is still on the board
         for number in flat_coords:
             if number > self.board_size or number < 1:
+                # Return False if this is not the case
                 return False
     
-        #3. Check whether the proposed route doesn't generate driving accidents with any car on the board:
-
-        #Loop through cars list:
+        # Check whether the proposed destination doesn't cause accidents with
+        # any car on the board
         for car in self.cars_list:
 
-            #Don't check with self:
+            # Don't check with self
             if car.type == moving_car.type:
                 continue
             
-            #Make a set of the car coordinates:
-            coords = set(car.coordinates_list)
+            # Check whether there is overlap
+            overlap = set(proposed_coords).intersection(set(car.coordinates_list))
             
-            #Check whether there is overlap:
-            overlap = final_destination.intersection(coords)
-            
-            #If there's no overlap, go to next car:
+            # If there's no overlap, go to next car
             if len(overlap) < 1:
                 continue
         
-            #Overlap? Availibilty not approved:
+            # Overlap? Availibilty not approved
             return False
         
-        # if there is no overlap and the car stays on the board:
+        # If there is no overlap and the car stays on the board return True
         return True
 
     def update_board_history(self, carName, move):
+        """
+        Method that updates the board history dataframe. As input it needs the
+        carname (e.g. "A") and the move (e.g. -2). These are then in a new row
+        added to the step history attribute.
+        """
+
+        # Make a new dataframe of one row
         new_row = pd.DataFrame({'car': [carName], 'move': [move]})
+
+        # Add this to the old dataframe
         self.step_history = pd.concat([self.step_history, new_row],ignore_index = True)
         
     def update_coordinates_board_state(self):
@@ -127,113 +154,87 @@ class Board():
         cars object in the cars list attribute of the board. Extracts the
         coordinates per car and adds those to the list.
         """
+
+        # A list of lists with all the car coordinates in the board
         self.coordinates_list = []
+
+        # Loop through the cars on the board and update the list of lists
         for car in self.cars_list:
             self.coordinates_list.append(car.coordinates_list)
 
-    def array_plot(self, coordinates_list):
+    def distance_to_exit(self):
         """
-        An easy 'plot' consistng of an arry to help debugging
+        Method to calculate the distance (number of coordinates) between the red 
+        car and the exit. The coordinates list and the exit attributes are
+        herefore used. The distance is returned as an integer.
         """
-        array_board = np.zeros((self.board_size, self.board_size))
-        count = 0
-        for coordinate in coordinates_list:
-            count += 1
 
-            for coord in coordinate:
-                column = coord[0]-1
-                row = coord[1]-1
-                array_board[row][column] = count
-        print(f"\n {array_board} \n")
+        # From the coordinates list the red car is selected (last one on the list),
+        # then the back coordinate is selected, then the column number is selected
+        column_coordinate = self.coordinates_list[-1][0][0]
 
-    def distance_calculator(self):
-        distance_to_exit = 0
-        #Red car > Back coordinate > Column coordinate:
-        X_coord = self.coordinates_list[-1][0][0]
-
-        #Exit > Column coordinate:
+        # From the exit the column number is selected as well
         exit = self.exit[0]
 
-        #Distance:
-        distance = exit - X_coord
+        # Calculate the difference
+        distance = exit - column_coordinate
 
-        #Added for BF_NearExit algorithm:
-        distance_to_exit = distance
+        return distance
 
-        return(distance_to_exit)
+    def blocking_cars(self):
+        """
+        Method to calculate the number of cars that are blocking the red car from
+        the exit. It uses the .. attribute. The number of cars in the way is
+        returned as an integer.
+        """
 
-    def blocking_number_calculator(self):
-
-        # Select column coordinates between red car and the exit:
-        highway = set()
+        # Select the red car Car() instance and the front coordinates
         red_car = self.cars_list[-1]
         red_coords_front = red_car.coordinates_list[1]
-        blocking_number = 0
 
+        # A set of the coordinates between the red car and the exit
+        red_road = set()
+
+        # Repeat for the number of coordinates between the red car and the exit
         for i in range(self.board_size - red_coords_front[0]):
-            coord = (red_coords_front[0] + i, red_coords_front[1])
-            highway.add(coord)
 
-        # Flatten coordinates list:
+            # Update coords and add to the road set
+            coord = (red_coords_front[0] + i, red_coords_front[1])
+            red_road.add(coord)
+
+        # Create a set of all the coordinates occupied in the board
         loose_coords = set(itertools.chain(*self.coordinates_list))
 
-        # Overlap:
-        blocking_number = len(loose_coords.intersection(highway))
+        # The overlap between the two is equal to the blocking cars number
+        blocking_number = len(loose_coords.intersection(red_road))
         
         return blocking_number
 
-
-
-    def distance(self, car, end_cars_list):
-        # self.distance_totale = 0
-
-        i = self.cars_list.index(car)
-        self.distance_total += car.distance_calculator_star(end_cars_list[i])
-            # print(distance)
-        
-        return self.distance_total
-    
     def cost_star(self, end_cars_list):
         """
-        Function that calculates the cost for every board instance based on distance from current spot to end destination 
-        and the amount of cars blocking the red car. The function returns the computed cost. 
+        Function that calculates the cost for a board instance based on
+        distance from current spot to end destination and the amount of cars
+        blocking the red car. The function returns the computed cost.
         """
 
-        #set variables for distance and the red car's way
+        # The total distance is the calculated distance of each car summed
         distance_total = 0
-        highway = set()
 
-        # loop over cars list
+        # Calculate the distance 
         for car in self.cars_list:
             
-            # get index of car
+            # Get index of car
             i = self.cars_list.index(car)
 
-            # calculate distance with function in car class and sum up
-            distance_total += car.distance_calculator_star(end_cars_list[i])
-            
-            # get red car
-            red_car = self.cars_list[-1]
+            # Calculate distance with function in car class and sum up
+            distance_total += car.distance_to_endstate(end_cars_list[i])
 
-            # get fron coordinates of red car
-            red_coords_front = red_car.coordinates_list[1]
+        # The number of cars that block the red car
+        blocking_number = self.blocking_cars()
 
-            # loop over distance from red car to exit 
-            for i in range(self.board_size - red_coords_front[0]):
-
-                # get coordinates in front of red car and add to highway set
-                coord = (red_coords_front[0] + i, red_coords_front[1])
-                highway.add(coord)
-
-        # Flatten coordinates list:
-            loose_coords = set(itertools.chain(*self.coordinates_list))
-
-        # Overlap:
-            blokkage = len(loose_coords.intersection(highway))
-        
-
-        # compute cost
-        cost = distance_total + blokkage 
+        # The A* cost is the blocking number and the total distance to endstate
+        # summed
+        cost = distance_total + blocking_number
         
         return cost 
 
