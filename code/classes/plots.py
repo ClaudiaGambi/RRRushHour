@@ -51,9 +51,5 @@ class Plot_board():
         plt.pause(1)
         plt.savefig('Board1.png')
         
-    def plot_histogram(self, list_of_lists):
-
-        for list in len(list_of_lists):
-            pyplot.hist(list, bins, )
 
 
