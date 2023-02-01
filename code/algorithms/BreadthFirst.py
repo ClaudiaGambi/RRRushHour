@@ -1,6 +1,5 @@
 import copy
 import numpy as np
-from code.classes import plots
 
 class Breadth_first():
     """The breadth first algorithm generates root nodes (possible next board

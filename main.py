@@ -46,37 +46,40 @@ def main(algorithm, input_file, output_file1, output2):
       most_found_endstate = "Will be written over by board instances"
 
       # Run the experiment 100 times:
-      for i in range(100):
+      # count = 0
+      # for i in range(100):
+         # count += 1
+         # print(count)
 
-         # Create starting board Board instance:
-         starting_board = brd.Board(input_file, board_size)
+      # Create starting board Board instance:
+      starting_board = brd.Board(input_file, board_size)
 
-         # Add carslist to instance:
-         starting_board.df_to_object()
+      # Add carslist to instance:
+      starting_board.df_to_object()
 
-         # Creates the random algorithm instance:
-         random_algo = randomize.Random(board_size, starting_board)
+      # Creates the random algorithm instance:
+      random_algo = randomize.Random(board_size, starting_board)
 
-         #Run the experiment:
-         random_algo.run()
+      #Run the experiment:
+      random_algo.run()
 
-         # Save the move count in a list (for creating a histogram plot):
-         move_counts_list.append(random_algo.move_count)
+      # Save the move count in a list (for creating a histogram plot):
+      move_counts_list.append(random_algo.move_count)
 
-         # Save occurance of each solution board:
-         board_coords = str(random_algo.board.coordinates_list)
+      # Save occurance of each solution board:
+      board_coords = str(random_algo.board.coordinates_list)
 
-         if board_coords not in solution_boards_count.keys():
-            solution_boards_count[board_coords] = 1
-         else:
-            solution_boards_count[board_coords] +=1
+      if board_coords not in solution_boards_count.keys():
+         solution_boards_count[board_coords] = 1
+      else:
+         solution_boards_count[board_coords] +=1
 
-         # Apoint most found endstate:
-         highest_occurence = max(solution_boards_count.values())
+      # Apoint most found endstate:
+      highest_occurence = max(solution_boards_count.values())
 
-         if solution_boards_count[board_coords] == highest_occurence:
-            most_found_endstate = random_algo.board
-      
+      if solution_boards_count[board_coords] == highest_occurence:
+         most_found_endstate = random_algo.board
+   
       # Look at each car in the most found endstate:
       lst_total = []
       for car in most_found_endstate.cars_list:
@@ -192,7 +195,7 @@ def main(algorithm, input_file, output_file1, output2):
       starting_board.update_coordinates_board_state()
 
       # Create end board instance:
-      end_board = brd.Board('output/end_board5.csv', board_size)
+      end_board = brd.Board('gameboards/end_board7.csv', board_size)
       end_board.df_to_object()
 
       # Run the algorithm:
