@@ -32,7 +32,7 @@ Voor de experimenten zijn alle algorimen met alle mogelijke borden gerunt. Deze 
 de naam van de inputfile (het bord), en een of twee outputfiles. Een voorbeeld hiervan is:
 
 ```
-python main.py gameboards/Rushhour12x12_7.csv -algo randomize output/end_board7.csv output/RandomOutput_Board12x12.csv
+python main.py gameboards/Rushhour12x12_7.csv -m randomize -o1 output/end_board7.csv
 ```
 De verschillende borden hebben de namen: gameboards/Rushhour6x6_1.csv, gameboards/Rushhour6x6_2.csv, gameboards/Rushhour6x6_3.csv, gameboards/Rushhour9x9_4.csv,
 gameboards/Rushhour9x9_5.csv, gameboards/Rushhour9x9_6.csv, gameboards/Rushhour12x12_7.csv
