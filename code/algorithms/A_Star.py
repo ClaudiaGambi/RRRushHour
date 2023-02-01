@@ -25,13 +25,10 @@ class A_star(BF_NearExit.BF_NearExit):
     def __init__(self, end_board, starting_board):
         self.end_node = end_board
         self.current_node = starting_board
-        #open_list
         self.queue = [copy.deepcopy(starting_board)]
         self.queue = PriorityQueue()
         self.queue.put(PrioritizedItem(self.current_node.cost_star(self.end_node.cars_list), self.current_node))
-        
         self.solution_found = False
-        #closed_list
         self.all_states_set = set()
         self.all_states_set.add(str(self.current_node.coordinates_list))
         self.generation = 1
@@ -44,51 +41,59 @@ class A_star(BF_NearExit.BF_NearExit):
         for car in self.current_node.cars_list:                                 
             
             for direction in [-1, 1]:
+
+                # Keep count 
                 count = 1
+
+                # Compute value of move 
                 distance = direction * count
+
+                # Generate new coordinates with move 
                 new_coords = car.step(distance)
-                # get index of car in current node
+
+                # Get index of car in current node
                 i = self.current_node.cars_list.index(car)
                 
-                # self.queue.put(PrioritizedItem(self.current_node.cars_list[i].distance_calculator_star(self.end_node.cars_list[i]), self.current_node.cars_list[i]))
-                # print(self.queue)
-                
+                # Loop while availability is true
                 while self.current_node.check_availability(car, new_coords) == True:
                     count +=1
-                                                # Propose a move on the parent board
-
-                    # new_coords = car.updated_coordinates
+                                                
+                    # Get name type of car for updates of board
                     carname = car.type                    
 
-                     #2. If a possible move is proposed, make a copy of the parent board:
-                    child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
+                     # If a possible move is proposed, make a copy of the parent board
+                     # Make a copy of the parent board
+                    child = copy.deepcopy(self.current_node)     
 
-                    #3. Adjust child board with the proposed move:
-                    # update coordinates of car in child board with index of mother board
-                    # print(f'before: {child.cars_list[i].coordinates_list}')
+                    # Adjust child board with the proposed move
+                    # update coordinates of car in child board with index of parent board
                     child.cars_list[i].update_coordinates(new_coords)
-                    # print(f'after:{child.cars_list[i].coordinates_list}')
-                    
-                    child.update_coordinates_board_state()                          # Update coordinates list of the child
-                
-                    child.update_board_history(carname, distance)                  # Update board history of the child
+                   
+                   # Update coordinates list of the child 
+                    child.update_coordinates_board_state()          
 
+                    # Update board history of the child
+                    child.update_board_history(carname, distance)   
+
+                    # Create string of board coordinates               
                     child_coords = str(child.coordinates_list)
                     
-                    #4. Check whether child doesn't already exists in the all states set:
-
+                    # Check whether child doesn't already exists in the all states set
                     if child_coords not in self.all_states_set:
-                        #5. If not, add to queue and to all state set:
 
+                        # If not, add to queue and to all state set
                         self.queue.put(PrioritizedItem(child.cost_star(self.end_node.cars_list),child))
 
-                        # print(child.distance(self.end_node.cars_list), child)
+                        # Add child coords to set
                         self.all_states_set.add(child_coords)
 
-                        # child.array_plot(child.coordinates_list)                    # Show array of the board
-
+                        # count expanded nodes              
                         self.expanded_nodes += 1
+
+                    # update move value with new count
                     distance = direction * count
+
+                    # propose new coordinates 
                     new_coords = car.step(distance)
 
     
