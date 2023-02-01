@@ -6,7 +6,7 @@ die alleen in hun rijrichting bewogen mogen worden. Ze mogen niet draaien. De op
 
 ## Experimenten
 
-Dit script is geschreven met het doel om te onderzoeken hoe bepaalde algoritmen en heuristieken presteren bij verschillende startsituaties en de (eventuele) verschillen te verklaren. Er zijn verschillende algoritmen en heuristieken in het script te vinden: een Randomized search, een Breadth First search, een Breadth First search gecombineerd met een 'distance red car to exit' heuristiek, een Breadth First search gecombineerd met een 'number of blocking cars' heuristiek, een A* search gecombineerd met een 'distance to endstate' heuristiek en A* gecombineerd met een 'distance to endstate' en een 'number of blocking cars' heuristiek.
+Dit script is geschreven met het doel om te onderzoeken hoe bepaalde algoritmen en heuristieken presteren bij verschillende startsituaties en de (eventuele) verschillen te verklaren. Er zijn verschillende algoritmen en heuristieken in het script te vinden: een Randomized search, een Breadth First search, een Breadth First search gecombineerd met een 'distance red car to exit' heuristiek, een Breadth First search gecombineerd met een 'number of blocking cars' heuristiek en A* gecombineerd met een 'distance to endstate' en een 'number of blocking cars' heuristiek.
 
 De prestatie van de algoritmen is wordt verdeeld in drie onderdelen: voor hoeveel startsituaties er een oplossing wordt gevonden, hoe goed de gevonden oplossingen zijn en hoe efficient de zoektocht was.
 
