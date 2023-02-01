@@ -21,8 +21,8 @@ class Board():
         self.cars_list = []
         self.exit = ()
         self.coordinates_list = []
-        self.distance_to_exit = 0
-        self.distance_total = 0
+        # self.distance_to_exit = 0
+        # self.distance_total = 0
         
 
     def df_to_object(self):
@@ -147,7 +147,7 @@ class Board():
         print(f"\n {array_board} \n")
 
     def distance_calculator(self):
-
+        distance_to_exit = 0
         #Red car > Back coordinate > Column coordinate:
         X_coord = self.coordinates_list[-1][0][0]
 
@@ -158,7 +158,9 @@ class Board():
         distance = exit - X_coord
 
         #Added for BF_NearExit algorithm:
-        self.distance_to_exit = distance
+        distance_to_exit = distance
+
+        return(distance_to_exit)
 
     def blocking_number_calculator(self):
 
@@ -166,6 +168,7 @@ class Board():
         highway = set()
         red_car = self.cars_list[-1]
         red_coords_front = red_car.coordinates_list[1]
+        blocking_number = 0
 
         for i in range(self.board_size - red_coords_front[0]):
             coord = (red_coords_front[0] + i, red_coords_front[1])
@@ -175,7 +178,9 @@ class Board():
         loose_coords = set(itertools.chain(*self.coordinates_list))
 
         # Overlap:
-        self.blocking_number = len(loose_coords.intersection(highway))
+        blocking_number = len(loose_coords.intersection(highway))
+        
+        return blocking_number
 
 
 

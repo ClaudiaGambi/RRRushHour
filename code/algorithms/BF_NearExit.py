@@ -55,12 +55,13 @@ class BF_NearExit(BreadthFirst.Breadth_first):
             
             
             for direction in [-1, 1]:
-                count = 0
-                availability = True
-                while availability == True:
+                count = 1
+                distance = direction * count
+                new_coords = car.step(distance)  
+                # availability = True
+                while self.current_node.check_availability(car, new_coords) == True:
                     count +=1
-                    distance = direction * count
-                    new_coords = car.step(distance)  
+                   
                     # print(new_coords)  
                                                 # Propose a move on the parent board
 
@@ -70,43 +71,41 @@ class BF_NearExit(BreadthFirst.Breadth_first):
                     # get index of car in current node
                     i = self.current_node.cars_list.index(car)
 
-                    availability = self.current_node.check_availability(car, new_coords) 
-                    # print(availability)
                     # Check availability on the parent board
 
             #2. If a possible move is proposed, make a copy of the parent board:
-                    if availability == True:
-                        child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
-
-            #3. Adjust child board with the proposed move:
-            # update coordinates of car in child board with index of mother board
-                        # print(f'before: {child.cars_list[i].coordinates_list}')
-                        child.cars_list[i].update_coordinates(new_coords)
-                        # print(f'after:{child.cars_list[i].coordinates_list}')
-                        
-                        child.update_coordinates_board_state()                          # Update coordinates list of the child
                     
-                        child.update_board_history(carname, distance)                  # Update board history of the child
+                    child = copy.deepcopy(self.current_node)                        # Make a copy of the parent board
 
-                        child_coords = str(child.coordinates_list)
+        #3. Adjust child board with the proposed move:
+        # update coordinates of car in child board with index of mother board
+                    # print(f'before: {child.cars_list[i].coordinates_list}')
+                    child.cars_list[i].update_coordinates(new_coords)
+                    # print(f'after:{child.cars_list[i].coordinates_list}')
+                    
+                    child.update_coordinates_board_state()                          # Update coordinates list of the child
+                
+                    child.update_board_history(carname, distance)                  # Update board history of the child
 
-                        
+                    child_coords = str(child.coordinates_list)
 
-            #4. Check whether child doesn't already exists in the all states set:
+                    
 
-                        if child_coords not in self.all_states_set:
+        #4. Check whether child doesn't already exists in the all states set:
 
-            #5. If not, add to queue and to all state set:
+                    if child_coords not in self.all_states_set:
 
-                            # child.distance_calculator()
+        #5. If not, add to queue and to all state set:
 
-                            self.queue.put(PrioritizedItem(child.distance_calculator(), child))
+                        # child.distance_calculator()
 
-                            self.all_states_set.add(child_coords)
+                        self.queue.put(PrioritizedItem(child.distance_calculator(), child))
 
-                            # child.array_plot(child.coordinates_list)                    # Show array of the board
+                        self.all_states_set.add(child_coords)
 
-                            self.expanded_nodes += 1
+                        # child.array_plot(child.coordinates_list)                    # Show array of the board
+
+                        self.expanded_nodes += 1
 
                     distance = direction * count
                     new_coords = car.step(distance)
@@ -128,7 +127,7 @@ class BF_NearExit(BreadthFirst.Breadth_first):
         # Update:
         self.current_node = self.queue.get().item
 
-        # Update generation:
+        #Update generation:
         # old_generation = self.generation
         # self.generation = len(self.current_node.step_history)
         

@@ -170,10 +170,10 @@ def main(algorithm, input_file, output_file1, output2):
       best_first = BF_NearExit.BF_NearExit(starting_board)
       best_first.run()
 
-      # Print information about algorithm tree:
       print(f'HISTORY{best_first.current_node.step_history.head(30)}')
       print(f"Number of evaluated nodes: {best_first.evaluated_nodes}")
       print(f"Number of expanded nodes: {best_first.expanded_nodes}")
+      best_first.current_node.step_history.to_csv('output.csv', index =False)
 
       # Export the step history of the solution board to a csv file:
       best_first.current_node.step_history.to_csv('output.csv', index =False)
