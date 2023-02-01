@@ -37,7 +37,7 @@ python main.py gameboards/Rushhour12x12_7.csv -m randomize -o1 output/end_board7
 De verschillende borden hebben de namen: gameboards/Rushhour6x6_1.csv, gameboards/Rushhour6x6_2.csv, gameboards/Rushhour6x6_3.csv, gameboards/Rushhour9x9_4.csv,
 gameboards/Rushhour9x9_5.csv, gameboards/Rushhour9x9_6.csv, gameboards/Rushhour12x12_7.csv
 
-De verschillende modes van het programma hebben de namen: Random, BreadthFirst, BF_Blocking, BF_NearExit, Astar, Game en Visual.
+De verschillende modes van het programma hebben de namen: Random, BreadthFirst, BF_Blocking, BF_NearExit, Astar, game en Visual.
 
 ### Structuur
 
