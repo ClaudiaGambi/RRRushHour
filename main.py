@@ -6,13 +6,13 @@ from code.algorithms import A_Star
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_NearExit 
 from code.algorithms import BF_Blocking
-from code.algorithms import game
+# from code.algorithms import game
 
 from code.classes import board as brd
-from code.classes import visuals
+# from code.classes import visuals
 
 import argparse
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pandas as pd 
 import numpy as np
 import re
@@ -45,10 +45,12 @@ def main(mode, input_file, output_file1, output2):
       most_found_endstate = "Will be written over by board instances"
 
       # Run the experiment 100 times
-      count = 0
+      round = 0
       for i in range(100):
-         count += 1
-         print(count)
+
+         # Print the round
+         round += 1
+         print(round)
         
          # Create starting board Board instance
          starting_board = brd.Board(input_file)
@@ -73,11 +75,11 @@ def main(mode, input_file, output_file1, output2):
          else:
             solution_boards_count[board_coords] +=1
 
-      # Apoint most found endstate
-      highest_occurence = max(solution_boards_count.values())
+         # Apoint most found endstate
+         highest_occurence = max(solution_boards_count.values())
 
-      if solution_boards_count[board_coords] == highest_occurence:
-         most_found_endstate = random_algo.board
+         if solution_boards_count[board_coords] == highest_occurence:
+            most_found_endstate = random_algo.board
    
       # Look at each car in the most found endstate
       lst_total = []
@@ -95,7 +97,7 @@ def main(mode, input_file, output_file1, output2):
 
       # Move count list
       data = ",".join([str(i) for i in move_counts_list])
-      with open(f"output/RandomOutput_Board{board_size}x{board_size}.csv", "w", newline = "") as fou:
+      with open(f"output/RandomOutput_Board{most_found_endstate.board_size}x{most_found_endstate.board_size}.csv", "w", newline = "") as fou:
          fou.write(data)
 
       # Print information about the amount of steps
