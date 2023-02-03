@@ -6,13 +6,13 @@ from code.algorithms import A_Star
 from code.algorithms import BreadthFirst
 from code.algorithms import BF_NearExit 
 from code.algorithms import BF_Blocking
-# from code.algorithms import game
+from code.algorithms import game
 
 from code.classes import board as brd
-# from code.classes import visuals
+from code.classes import visuals
 
 import argparse
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import pandas as pd 
 import numpy as np
 import re
@@ -249,6 +249,9 @@ def main(mode, input_file, output_file1, output2):
          # Plot
          plt.hist(board, alpha = 0.8, color = trafic_light[i], label= f'Board {board_size}x{board_size}')
       
+      plt.xlabel("Steps to solution")
+      plt.ylabel("Occurences")
+      plt.title("Random algorithm output")
       plt.legend(loc='upper right')
       plt.show()
 
